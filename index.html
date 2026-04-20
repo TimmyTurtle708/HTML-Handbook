@@ -174,7 +174,7 @@
     width: 110px;
     height: 36px;
 }
-</style></head><body class="edit-mode" cz-shortcut-listen="true"><plasmo-csui id="plasmo-inspector"></plasmo-csui>
+</style></head><body class="" cz-shortcut-listen="true"><plasmo-csui id="plasmo-inspector"></plasmo-csui>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reallusion HTML Email 工作手冊 v6</title>
@@ -525,8 +525,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
         <span id="ghBtnLabel">已連線</span>
       </button>
-      <button class="edit-toggle-btn active" id="editToggleBtn" onclick="toggleEditMode()" title="開啟/關閉編輯模式">
-        <span class="edit-dot"></span><span id="editBtnLabel">完成編輯</span>
+      <button class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEditMode()" title="開啟/關閉編輯模式">
+        <span class="edit-dot"></span><span id="editBtnLabel">編輯</span>
       </button>
     </div>
     <!-- 主 TAB -->
@@ -3093,8 +3093,8 @@ color: white;<button class="tcpb" onclick="cpyTut('tc_t1_2',event)">複製</butt
       <div class="gh-field">
         <label>Personal Access Token</label>
         <div style="position:relative;display:flex;gap:6px;align-items:center">
-          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxx" style="flex:1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-          <button type="button" onclick="toggleTokenVis()" style="padding:6px 10px;border:1px solid #ddd;border-radius:8px;background:#f5f5f3;color:#888;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0" id="tokenVisBtn">顯示</button>
+          <input type="text" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxx" style="flex:1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <button type="button" onclick="toggleTokenVis()" style="padding:6px 10px;border:1px solid #ddd;border-radius:8px;background:#f5f5f3;color:#888;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0" id="tokenVisBtn">隱藏</button>
         </div>
         <div class="hint">在 GitHub → Settings → Developer settings → Personal access tokens 產生，勾選 <strong>repo</strong> 權限即可。Token 只存在你自己的瀏覽器裡，不會上傳到任何地方。</div>
       </div>
@@ -3111,7 +3111,7 @@ color: white;<button class="tcpb" onclick="cpyTut('tc_t1_2',event)">複製</butt
         <input type="text" id="ghFilename" placeholder="index.html">
         <div class="hint">通常就是 <strong>index.html</strong>，如果你的 Repo 裡叫別的名字就改這裡。</div>
       </div>
-      <div class="gh-status ok" id="ghStatus">✅ 連線成功！已連接到 TimmyTurtle708/HTML-Handbook</div>
+      <div class="gh-status" id="ghStatus"></div>
     </div>
     <div class="gh-panel-footer">
       <button class="gh-cancel-btn" onclick="closeGHPanel()">取消</button>
@@ -3121,7 +3121,7 @@ color: white;<button class="tcpb" onclick="cpyTut('tc_t1_2',event)">複製</butt
 </div>
 
 <!-- ===== Edit Toast ===== -->
-<div class="edit-save-toast" id="editToast">
+<div class="edit-save-toast show" id="editToast">
   <span class="toast-dot"></span><span id="toastMsg">✏️ 編輯模式已開啟 — 點擊文字可直接修改</span>
 </div>
 
