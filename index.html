@@ -3634,7 +3634,13 @@ async function pushHandbookToGitHub(showFeedback = false) {
   if (!s.token) return false;
 
   try {
-    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    // 推送前清除擴充套件注入的雜質，確保乾淨的 HTML
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('plasmo-csui, [id^="plasmo-"], [class*="plasmo"]').forEach(el => el.remove());
+    clone.querySelectorAll('style').forEach(el => {
+      if (el.textContent.includes('Evernote') || el.textContent.includes('plasmo')) el.remove();
+    });
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
     const base64 = toBase64(html);
 
     // 先取得現有檔案的 SHA（更新需要）
