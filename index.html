@@ -1,0 +1,2767 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reallusion HTML Email 工作手冊 v6</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;font-size:17px;line-height:1.7}
+
+/* ===== Sticky Header ===== */
+.site-header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e5e5e2;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.header-inner{max-width:980px;margin:0 auto;padding:0 16px}
+.header-top{display:flex;align-items:center;gap:12px;padding:10px 0 0}
+.site-title{font-size:16px;font-weight:600;color:#1a1a1a;white-space:nowrap}
+.global-search{flex:1;max-width:260px;padding:6px 12px;border:1px solid #e5e5e2;border-radius:20px;background:#f5f5f3;color:#1a1a1a;font-size:13px;outline:none;transition:border-color .15s}
+.global-search:focus{border-color:#bbb;background:#fff}
+.main-tabs{display:flex;gap:4px;padding:8px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.main-tabs::-webkit-scrollbar{display:none}
+.mtab{padding:7px 16px;border:none;border-radius:8px 8px 0 0;background:transparent;color:#888;font-size:14px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+.mtab:hover{color:#1a1a1a;background:#f5f5f3}
+.mtab.active{color:#1a1a1a;font-weight:500;border-bottom:2px solid #1a1a1a;background:transparent}
+
+/* Sub tabs */
+.sub-bar{background:#f0f0ed;border-top:1px solid #e5e5e2;max-width:100%;padding:7px 0;display:none;align-items:center;gap:6px;flex-wrap:wrap}
+.sub-bar-inner{max-width:980px;margin:0 auto;padding:0 16px;display:flex;gap:6px;flex-wrap:wrap}
+.sub-bar.visible{display:block}
+.stab{padding:4px 14px;border:none;border-radius:20px;background:transparent;color:#666;font-size:13px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.stab:hover{background:rgba(0,0,0,.07);color:#1a1a1a}
+.stab.active{background:#fff;color:#1a1a1a;font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.subpage{display:block;width:100%;overflow:hidden}
+
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px}
+.page{display:none}.page.active{display:block}
+
+/* ===== 快速語法表格 ===== */
+.syntax-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e2}
+.syntax-table th{padding:8px 14px;text-align:left;font-size:12px;font-weight:500;color:#888;background:#f9f9f7;border-bottom:1px solid #e5e5e2;letter-spacing:.04em;text-transform:uppercase}
+.syntax-table td{padding:8px 14px;border-bottom:1px solid #f0f0ec;vertical-align:middle}
+.syntax-table tr:last-child td{border-bottom:none}
+.syntax-table tr:hover td{background:#fafaf8}
+.syn-name{font-size:14px;font-weight:500;color:#1a1a1a;white-space:nowrap}
+.syn-code{font-family:'SF Mono',Consolas,monospace;font-size:12px;color:#555;background:#f5f5f3;padding:3px 7px;border-radius:5px;cursor:pointer;border:1px solid #e5e5e2;display:inline-block;max-width:480px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.syn-code:hover{background:#ebebeb;border-color:#ccc}
+.syn-note{font-size:13px;color:#888;white-space:nowrap}
+.section-lbl{font-size:15px;font-weight:600;color:#555;margin-bottom:10px}
+
+/* ===== 區塊語法庫 — icon 化 ===== */
+.block-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.bcard{background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden}
+.bcard:hover{border-color:#ccc}
+.bcard-thumb{width:100%;aspect-ratio:16/9;background:#f5f5f3;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;cursor:pointer}
+.bcard-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .25s}
+.bcard:hover .bcard-thumb img{transform:scale(1.03)}
+.bcard-thumb-ph{display:flex;flex-direction:column;align-items:center;gap:5px;color:#ccc;font-size:12px;pointer-events:none}
+/* 上傳 icon — 懸浮在縮圖右上角 */
+.bcard-upload-btn{position:absolute;top:7px;right:7px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.1);display:none;align-items:center;justify-content:center;cursor:pointer;color:#555;transition:background .15s}
+.bcard-thumb:hover .bcard-upload-btn{display:flex}
+.bcard-upload-btn:hover{background:#fff}
+.bcard-upload-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+/* 刪除圖 icon */
+.bcard-del-btn{position:absolute;top:7px;left:7px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.1);display:none;align-items:center;justify-content:center;cursor:pointer;color:#E24B4A;transition:background .15s}
+.bcard-thumb:hover .bcard-del-btn{display:flex}
+.bcard-del-btn:hover{background:#fff}
+.bcard-strip{height:3px}
+.bcard-body{padding:10px 12px 12px}
+.bcard-title{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:4px}
+.bcard-desc{font-size:13px;color:#888;line-height:1.5;margin-bottom:8px}
+/* code 區塊 — 複製 icon 懸浮右上，展開箭頭在底部 */
+.bcard-code-wrap{position:relative}
+.bcard-code{background:#f5f5f3;border:1px solid #e5e5e2;border-radius:8px;padding:4px 8px;font-family:'SF Mono',Consolas,monospace;font-size:12px;color:#1a1a1a;white-space:pre-wrap;word-break:break-all;line-height:1.7;max-height:28px;overflow:hidden}
+.bcard-code.expanded{max-height:none}
+.bcard-copy-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:5px;background:rgba(255,255,255,.9);border:1px solid #e5e5e2;display:none;align-items:center;justify-content:center;cursor:pointer;color:#555}
+.bcard-code-wrap:hover .bcard-copy-btn{display:flex}
+.bcard-copy-btn:hover{background:#fff;border-color:#bbb}
+.bcard-expand-btn{width:100%;display:flex;align-items:center;justify-content:center;padding:4px 0 0;cursor:pointer;color:#bbb;font-size:11px;gap:3px;margin-top:4px;background:none;border:none}
+.bcard-expand-btn:hover{color:#888}
+
+/* ===== 色碼庫 ===== */
+.ui-section{margin-bottom:28px}
+.ui-section-title{font-size:15px;font-weight:600;color:#555;margin-bottom:10px}
+.ui-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ui-row{display:flex;align-items:stretch;background:#fff;border:1px solid #e5e5e2;border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.ui-row:hover{border-color:#bbb}
+.ui-row.copied{border-color:#82be0f}
+/* 左欄：色塊上緣切齊標題，Aa 預覽緊貼在下 */
+.ui-left{display:flex;flex-direction:column;align-items:center;padding:12px;gap:6px;flex-shrink:0;width:64px;border-right:1px solid #f0f0ec}
+.ui-swatch{width:40px;height:40px;border-radius:4px;border:1px solid rgba(0,0,0,.08);flex-shrink:0}
+.ui-preview{font-size:12px;line-height:1;color:#888}
+/* 右欄：名稱＋備註靠近，code 與上方分開 */
+.ui-middle{flex:1;min-width:0;padding:12px 8px 12px 12px;display:flex;flex-direction:column;gap:2px}
+.ui-name{font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.4}
+.ui-note{font-size:12px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ui-note.empty{color:#ccc;font-style:italic}
+.ui-codeline{font-family:'SF Mono',Consolas,monospace;font-size:11px;color:#555;background:#f5f5f3;padding:2px 6px;border-radius:4px;border:1px solid #ececea;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.6;display:block;margin-top:2px}
+.ui-copy-btn{flex-shrink:0;width:32px;display:flex;align-items:center;justify-content:center;border-left:1px solid #f0f0ec;color:#bbb;transition:color .15s;background:transparent}
+.ui-row:hover .ui-copy-btn{color:#888}
+.ui-row.copied .ui-copy-btn{color:#82be0f}
+
+/* ===== Checklist ===== */
+.pbar{height:3px;background:#e5e5e2;border-radius:2px;margin-bottom:12px}
+.pfill{height:100%;border-radius:2px;background:#639922;transition:width .3s}
+.rbtn{font-size:13px;padding:4px 10px;border:1px solid #e5e5e2;border-radius:8px;background:transparent;color:#888;cursor:pointer;margin-left:auto}
+.rbtn:hover{background:#f5f5f3}
+.cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px}
+.cl-sec{margin-bottom:16px;background:#ffffff;border:1px solid #e5e5e2;border-radius:8px;}
+.cl-hd{font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px;margin-bottom:6px}
+.cl-hd.danger{background:#FCEBEB;color:#A32D2D}
+.cl-hd.info{background:#E6F1FB;color:#185FA5}
+.cl-hd.success{background:#EAF3DE;color:#3B6D11}
+.cl-hd.warn{background:#FAEEDA;color:#854F0B}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:6px 12px;border-radius:8px;font-size:14px;color:#1a1a1a;line-height:1.5;cursor:pointer}
+.cl-item:hover{background:#f5f5f3}
+.cl-item.done{color:#bbb;text-decoration:line-through}
+.cl-item.done .chkbox{background:#639922;border-color:#639922}
+.chkbox{width:17px;height:17px;border:1.5px solid #ccc;border-radius:3px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.tick{display:block;width:5px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(1px,-1px)}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.pr{background:#E24B4A}.pa{background:#EF9F27}.pb{background:#378ADD}
+
+/* ===== 注意事項 ===== */
+.nblk{background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.ntitle{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.ntext{font-size:13px;color:#666;line-height:1.7;white-space:pre-wrap}
+
+/* ===== 問題圖記 — icon 化 ===== */
+.igallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.icard{background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden;transition:border-color .15s,transform .18s,box-shadow .18s}
+.icard:hover{border-color:#bbb;transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.ithumb{width:100%;aspect-ratio:16/10;background:#f5f5f3;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;cursor:pointer}
+.ithumb img{width:100%;height:100%;object-fit:cover;transition:transform .25s}
+.icard:hover .ithumb img{transform:scale(1.06)}
+/* 編輯 icon — 右上角 hover 才出現 */
+.iedit-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.1);display:none;align-items:center;justify-content:center;cursor:pointer;color:#555;z-index:2;transition:background .15s}
+.ithumb:hover .iedit-btn{display:flex}
+.iedit-btn:hover{background:#fff}
+.iph{display:flex;flex-direction:column;align-items:center;gap:5px;color:#bbb;font-size:12px;text-align:center;padding:8px}
+.istrip{height:3px;flex-shrink:0}
+.iinfo{padding:8px 11px 11px}
+.ititle{font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.4}
+.icat-lbl{font-size:12px;color:#bbb;margin-top:2px}
+.frow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.f-btn{padding:5px 11px;border:1px solid #e5e5e2;border-radius:20px;background:#fff;color:#888;font-size:13px;cursor:pointer}
+.f-btn.on,.f-btn:hover{background:#f0f0ec;color:#1a1a1a}
+
+/* ===== 情境模式 ===== */
+.ctx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.ctx-card{background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden}
+.ctx-card:hover{border-color:#ccc}
+.ctx-head{padding:12px 14px;border-bottom:1px solid #f0f0ec;display:flex;align-items:center;gap:10px;cursor:pointer}
+.ctx-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ctx-title{font-size:14px;font-weight:500;color:#1a1a1a;flex:1}
+.ctx-count{font-size:11px;color:#bbb;background:#f5f5f3;padding:2px 7px;border-radius:10px}
+.ctx-body{display:none;padding:10px 14px 14px}
+.ctx-body.open{display:block}
+.ctx-desc{font-size:13px;color:#888;margin-bottom:10px;line-height:1.6}
+.ctx-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #f5f5f3}
+.ctx-item:last-child{border-bottom:none}
+.ctx-item-name{font-size:13px;font-weight:500;color:#1a1a1a;width:120px;flex-shrink:0;line-height:1.5}
+.ctx-item-code{font-family:'SF Mono',Consolas,monospace;font-size:11px;color:#555;background:#f5f5f3;padding:2px 6px;border-radius:4px;border:1px solid #ececea;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;line-height:1.6}
+.ctx-item-code:hover{background:#ebebeb}
+.ctx-tip{font-size:12px;color:#185FA5;background:#E6F1FB;padding:6px 10px;border-radius:8px;margin-top:10px;line-height:1.6}
+
+/* ===== 新手教學 ===== */
+.tut-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:20px}
+.tut-card{background:#fff;border:1px solid #e5e5e2;border-radius:12px;overflow:hidden}
+.tut-card:hover{border-color:#ccc}
+.tut-hd{padding:11px 13px;display:flex;align-items:center;gap:8px;cursor:pointer}
+.tut-num{width:22px;height:22px;border-radius:50%;background:#f0f0ec;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#888;flex-shrink:0}
+.tut-title{font-size:14px;font-weight:500;color:#1a1a1a;flex:1}
+.chev{font-size:11px;color:#bbb;transition:transform .18s;flex-shrink:0}
+.chev.open{transform:rotate(90deg)}
+.tut-body{display:none;padding:0 13px 14px;border-top:1px solid #f0f0ec}
+.tut-body.open{display:block}
+.tut-desc{font-size:13px;color:#555;line-height:1.7;margin:10px 0 8px;white-space:pre-wrap}
+.tut-code{background:#f5f5f3;border:1px solid #e5e5e2;border-radius:8px;padding:9px 11px;font-family:'SF Mono',Consolas,monospace;font-size:12px;color:#1a1a1a;white-space:pre;overflow-x:auto;line-height:1.7;margin-top:6px;position:relative}
+.tcpb{position:absolute;top:6px;right:6px;padding:2px 7px;font-size:11px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#888;cursor:pointer}
+.tut-warn{font-size:13px;color:#854F0B;background:#FAEEDA;padding:7px 11px;border-radius:8px;margin-top:8px;line-height:1.6}
+.tut-tip{font-size:13px;color:#185FA5;background:#E6F1FB;padding:7px 11px;border-radius:8px;margin-top:8px;line-height:1.6}
+.tut-link{font-size:13px;color:#185FA5;margin-top:6px;display:block}
+.tut-slbl{font-size:12px;font-weight:500;color:#888;margin:20px 0 8px}
+
+/* ===== Modal ===== */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.imgzoom{max-width:92vw;max-height:92vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5);cursor:zoom-out}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:640px;overflow:hidden;max-height:90vh;overflow-y:auto}
+.mhead{padding:14px 16px;border-bottom:1px solid #f0f0ec;display:flex;align-items:center;gap:10px;position:sticky;top:0;background:#fff;z-index:2}
+.mbadge{font-size:12px;padding:2px 8px;border-radius:20px;font-weight:500}
+.mtitle{font-size:16px;font-weight:500;color:#1a1a1a;flex:1}
+.xcls{width:28px;height:28px;border:1px solid #e5e5e2;border-radius:8px;background:transparent;color:#888;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.xcls:hover{background:#f5f5f3}
+.mbody{padding:16px}
+.uzone{width:100%;min-height:180px;border:1.5px dashed #ccc;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;margin-bottom:14px;position:relative;overflow:hidden;background:#f9f9f7}
+.uzone:hover{border-color:#aaa}
+.uzone img.prev{width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;cursor:zoom-in}
+.uzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.uhint{font-size:13px;color:#bbb;text-align:center;line-height:1.6;pointer-events:none}
+.dlbl{font-size:13px;font-weight:500;color:#888;margin-bottom:5px;margin-top:10px}
+.dta{width:100%;min-height:80px;padding:8px 10px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;font-size:14px;line-height:1.6;resize:vertical;font-family:inherit}
+.dta:focus,.cta:focus{outline:none;border-color:#aaa}
+.cta{width:100%;min-height:70px;padding:8px 10px;border:1px solid #ddd;border-radius:8px;background:#f5f5f3;color:#1a1a1a;font-size:13px;line-height:1.7;resize:vertical;font-family:'SF Mono',Consolas,monospace}
+.svbtn{width:100%;padding:9px;border:1px solid #ddd;border-radius:8px;background:#f5f5f3;color:#1a1a1a;font-size:14px;cursor:pointer;margin-top:12px}
+.svbtn:hover{background:#ebebeb}
+.svok{display:none;font-size:12px;color:#3B6D11;background:#EAF3DE;padding:3px 10px;border-radius:10px;margin-top:6px;text-align:center}
+.zoom-hint{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;padding:2px 6px;border-radius:4px;pointer-events:none}
+
+/* ===== Global search results ===== */
+.gsearch-section{margin-bottom:20px}
+.gsearch-section-title{font-size:11px;font-weight:500;color:#bbb;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.gsearch-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fff;border:1px solid #e5e5e2;border-radius:8px;cursor:pointer;margin-bottom:6px}
+.gsearch-item:hover{border-color:#bbb}
+.gsearch-tag{font-size:11px;padding:2px 7px;border-radius:10px;background:#f5f5f3;color:#888;flex-shrink:0}
+.gsearch-name{font-size:13px;font-weight:500;color:#1a1a1a;flex:1}
+.gsearch-code{font-family:'SF Mono',Consolas,monospace;font-size:11px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
+.gsearch-empty{text-align:center;color:#bbb;padding:40px;font-size:14px}
+
+/* ===== RWD ===== */
+@media(max-width:700px){
+  .wrap{padding:16px 12px}
+  .ui-grid{grid-template-columns:1fr}
+  .block-grid{grid-template-columns:1fr}
+  .cl-grid{grid-template-columns:1fr}
+  .tut-grid{grid-template-columns:1fr}
+  .igallery{grid-template-columns:repeat(2,1fr)}
+  .syntax-table th:last-child,.syntax-table td:last-child{display:none}
+  .mtab{padding:6px 12px;font-size:13px}
+  .global-search{max-width:160px}
+}
+
+/* ===== 編輯模式 ===== */
+.edit-toggle-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid #e5e5e2;border-radius:20px;background:#fff;color:#888;font-size:13px;cursor:pointer;margin-left:8px;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.edit-toggle-btn:hover{border-color:#bbb;color:#1a1a1a}
+.edit-toggle-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.edit-toggle-btn .edit-dot{width:7px;height:7px;border-radius:50%;background:#ccc;transition:background .15s}
+.edit-toggle-btn.active .edit-dot{background:#82be0f}
+[contenteditable="true"]{outline:none;border-radius:3px;transition:background .15s,box-shadow .15s}
+.edit-mode [contenteditable="true"]:hover{background:rgba(130,190,15,.08);box-shadow:0 0 0 2px rgba(130,190,15,.25);cursor:text}
+.edit-mode [contenteditable="true"]:focus{background:rgba(130,190,15,.06);box-shadow:0 0 0 2px rgba(130,190,15,.5)}
+.card-edit-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(130,190,15,.04);border:2px dashed rgba(130,190,15,.35);border-radius:12px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:1}
+.edit-mode .bcard:hover .card-edit-overlay,.edit-mode .nblk:hover .card-edit-overlay{opacity:1}
+.bcard,.nblk,.tut-card,.icard{position:relative}
+.card-actions{position:absolute;top:6px;right:6px;z-index:10;display:none;flex-direction:row;gap:4px}
+.edit-mode .bcard:hover .card-actions,.edit-mode .nblk:hover .card-actions{display:flex}
+.card-act-btn{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.95);border:1px solid #ddd;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#555;transition:background .15s}
+.card-act-btn:hover{background:#fff;border-color:#bbb}
+.card-act-btn.danger:hover{color:#E24B4A;border-color:#E24B4A}
+.add-card-btn{display:none;width:100%;padding:10px;border:1.5px dashed #ddd;border-radius:12px;background:transparent;color:#bbb;font-size:13px;cursor:pointer;transition:all .15s;text-align:center;margin-top:4px}
+.add-card-btn:hover{border-color:#82be0f;color:#82be0f;background:rgba(130,190,15,.04)}
+.edit-mode .add-card-btn{display:block}
+.edit-mode .syn-code{white-space:pre-wrap;word-break:break-all}
+.add-row-btn{display:none;width:100%;padding:7px;background:transparent;border:1.5px dashed #ddd;border-top:none;color:#bbb;font-size:13px;cursor:pointer;transition:all .15s;text-align:center;border-radius:0 0 12px 12px}
+.add-row-btn:hover{border-color:#82be0f;color:#82be0f;background:rgba(130,190,15,.04)}
+.edit-mode .add-row-btn{display:block}
+.row-del-btn{display:none;width:20px;height:20px;border-radius:4px;background:transparent;border:none;align-items:center;justify-content:center;cursor:pointer;color:#ccc;font-size:14px;line-height:1;transition:color .12s}
+.row-del-btn:hover{color:#E24B4A}
+.edit-mode tr:hover .row-del-btn{display:flex}
+.edit-mode tr:hover td{background:#fafff5!important}
+.cl-edit-btn{display:none;width:20px;height:20px;border-radius:4px;background:transparent;border:none;align-items:center;justify-content:center;cursor:pointer;color:#ccc;margin-left:auto;transition:color .12s}
+.edit-mode .cl-item:hover .cl-edit-btn{display:flex}
+.cl-edit-btn:hover{color:#378ADD}
+.cl-add-btn{display:none;width:100%;padding:6px 12px;background:transparent;border:none;border-top:1px dashed #e5e5e2;color:#bbb;font-size:13px;cursor:pointer;text-align:left;transition:color .12s}
+.cl-add-btn:hover{color:#639922}
+.edit-mode .cl-add-btn{display:block}
+.edit-save-toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:#1a1a1a;color:#fff;font-size:13px;padding:10px 16px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none;display:flex;align-items:center;gap:8px}
+.edit-save-toast.show{opacity:1;transform:translateY(0)}
+.edit-save-toast .toast-dot{width:7px;height:7px;border-radius:50%;background:#82be0f;flex-shrink:0}
+
+/* ===== GitHub 設定面板 ===== */
+.gh-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid #e5e5e2;border-radius:20px;background:#fff;color:#888;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.gh-btn:hover{border-color:#bbb;color:#1a1a1a}
+.gh-btn.connected{border-color:#82be0f;color:#3B6D11;background:#EAF3DE}
+.gh-panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:3000;align-items:center;justify-content:center;padding:20px}
+.gh-panel-overlay.open{display:flex}
+.gh-panel{background:#fff;border-radius:16px;width:100%;max-width:520px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.gh-panel-head{padding:14px 16px;border-bottom:1px solid #f0f0ec;display:flex;align-items:center;gap:10px}
+.gh-panel-title{font-size:15px;font-weight:500;color:#1a1a1a;flex:1}
+.gh-panel-body{padding:18px;display:flex;flex-direction:column;gap:14px}
+.gh-field label{font-size:12px;font-weight:500;color:#888;display:block;margin-bottom:5px}
+.gh-field input{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:14px;color:#1a1a1a;font-family:inherit}
+.gh-field input:focus{outline:none;border-color:#82be0f}
+.gh-field .hint{font-size:12px;color:#aaa;margin-top:4px;line-height:1.5}
+.gh-field .hint a{color:#185FA5}
+.gh-status{font-size:13px;padding:8px 12px;border-radius:8px;display:none}
+.gh-status.ok{background:#EAF3DE;color:#3B6D11;display:block}
+.gh-status.err{background:#FCEBEB;color:#A32D2D;display:block}
+.gh-panel-footer{padding:12px 16px;border-top:1px solid #f0f0ec;display:flex;gap:8px;justify-content:flex-end}
+.gh-save-btn{padding:8px 18px;border-radius:8px;font-size:14px;cursor:pointer;background:#1a1a1a;color:#fff;border:1px solid #1a1a1a;transition:all .15s}
+.gh-save-btn:hover{background:#333}
+.gh-cancel-btn{padding:8px 18px;border-radius:8px;font-size:14px;cursor:pointer;background:#fff;color:#888;border:1px solid #ddd;transition:all .15s}
+.gh-cancel-btn:hover{border-color:#bbb;color:#1a1a1a}
+.gh-uploading{font-size:12px;color:#185FA5;background:#E6F1FB;padding:4px 10px;border-radius:8px;display:none;margin-top:4px;text-align:center}
+.gh-uploading.show{display:block}
+.edit-panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center;padding:20px}
+.edit-panel-overlay.open{display:flex}
+.edit-panel{background:#fff;border-radius:16px;width:100%;max-width:600px;overflow:hidden;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.ep-head{padding:14px 16px;border-bottom:1px solid #f0f0ec;display:flex;align-items:center;gap:10px;position:sticky;top:0;background:#fff;z-index:2}
+.ep-title{font-size:15px;font-weight:500;color:#1a1a1a;flex:1}
+.ep-body{padding:16px;display:flex;flex-direction:column;gap:12px}
+.ep-field label{font-size:12px;font-weight:500;color:#888;display:block;margin-bottom:5px}
+.ep-field input,.ep-field textarea,.ep-field select{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;font-size:14px;line-height:1.6;font-family:inherit}
+.ep-field textarea{min-height:80px;resize:vertical}
+.ep-field textarea.code-ta{font-family:'SF Mono',Consolas,monospace;font-size:12px;min-height:120px;background:#f5f5f3}
+.ep-field input:focus,.ep-field textarea:focus,.ep-field select:focus{outline:none;border-color:#82be0f}
+.ep-footer{padding:12px 16px;border-top:1px solid #f0f0ec;display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:#fff}
+.ep-btn{padding:8px 18px;border-radius:8px;font-size:14px;cursor:pointer;transition:all .15s;border:1px solid #ddd;background:#fff;color:#888}
+.ep-btn:hover{border-color:#bbb;color:#1a1a1a}
+.ep-btn.primary{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.ep-btn.primary:hover{background:#333}
+.ep-btn.danger{color:#E24B4A;border-color:#E24B4A}
+.ep-btn.danger:hover{background:#FCEBEB}
+.edit-mode .nblk,.edit-mode .bcard-body,.edit-mode .tut-hd{
+  -webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none;
+}
+
+/* ===== 標籤篩選系統 ===== */
+.tag-filter-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;align-items:center}
+.tag-filter-lbl{font-size:12px;color:#bbb;white-space:nowrap;margin-right:2px}
+.tag-chip{padding:4px 12px;border:1px solid #e5e5e2;border-radius:20px;background:#fff;color:#888;font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tag-chip:hover{border-color:#82be0f;color:#82be0f}
+.tag-chip.active{background:#82be0f;color:#fff;border-color:#82be0f}
+.tag-chip.manage{border-style:dashed;color:#bbb}
+.tag-chip.manage:hover{border-color:#378ADD;color:#378ADD}
+.syn-tag-dots{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
+.syn-tag-dot{width:6px;height:6px;border-radius:50%;background:#82be0f;flex-shrink:0;title:''}
+.bcard-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.bcard-tag{font-size:11px;padding:2px 7px;border-radius:10px;background:#f0f0ec;color:#888}
+.hidden-by-tag{display:none!important}
+/* 手機上讓 card action 按鈕更好點 */
+@media(max-width:700px){
+  .edit-mode .card-actions{display:flex!important}
+  .edit-mode .bcard-upload-btn{display:flex!important}
+  .edit-mode .bcard-del-btn{display:flex!important}
+  .edit-mode .iedit-btn{display:flex!important}
+  .edit-toggle-btn{padding:5px 10px;font-size:12px}
+  .ep-btn{padding:9px 14px;font-size:13px}
+  .ep-field input,.ep-field textarea,.ep-field select{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Sticky Header ===== -->
+<div class="site-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <span class="site-title">HTML Email 工作手冊</span>
+      <input class="global-search" id="gsearch" placeholder="搜尋全站…" oninput="doGlobalSearch(this.value)">
+      <button class="gh-btn" id="ghBtn" onclick="openGHPanel()" title="GitHub 設定">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        <span id="ghBtnLabel">GitHub</span>
+      </button>
+      <button class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEditMode()" title="開啟/關閉編輯模式">
+        <span class="edit-dot"></span><span id="editBtnLabel">編輯</span>
+      </button>
+    </div>
+    <!-- 主 TAB -->
+    <div class="main-tabs">
+      <button class="mtab active" onclick="setMainTab('ref',this)">語法庫</button>
+      <button class="mtab" onclick="setMainTab('ui',this)">UI 規範</button>
+      <button class="mtab" onclick="setMainTab('check',this)">Check清單</button>
+      <button class="mtab" onclick="setMainTab('notes',this)">注意事項</button>
+      <button class="mtab" onclick="setMainTab('tut',this)">新手教學</button>
+    </div>
+  </div>
+  <!-- 子 TAB（語法庫才顯示） -->
+  <div class="sub-bar" id="sub-bar">
+    <div class="sub-bar-inner">
+      <button class="stab active" onclick="setSubTab('syn',this)">快速語法</button>
+      <button class="stab" onclick="setSubTab('block',this)">區塊語法</button>
+      <button class="stab" onclick="setSubTab('issues',this)">問題圖記</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ===== 全域搜尋結果 ===== -->
+<div id="gsearch-page" class="page" style="display:none"><div id="gsearch-results"></div></div>
+
+<!-- ===== 語法庫子頁 ===== -->
+<div id="ref" class="page active">
+  <div id="syn" class="subpage active">
+    <div class="tag-filter-bar" id="syn-tag-bar"></div>
+    <div id="syn-container"></div>
+  </div>
+  <div id="block" class="subpage" style="display:none">
+    <div class="tag-filter-bar" id="block-tag-bar"></div>
+    <div class="block-grid" id="block-grid"></div>
+  </div>
+  <div id="issues" class="subpage" style="display:none">
+    <div class="frow" id="iff"></div>
+    <div class="igallery" id="ig"></div>
+  </div>
+</div>
+
+<!-- ===== UI 規範 ===== -->
+<div id="ui" class="page">
+  <div id="ui-container"></div>
+</div>
+
+<!-- ===== Checklist ===== -->
+<div id="check" class="page">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+    <div style="flex:1"><div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div></div>
+    <span id="pt" style="font-size:12px;color:#888;white-space:nowrap">0/0</span>
+    <button class="rbtn" onclick="resetCheck()">重置</button>
+  </div>
+  <div class="cl-grid" id="cg"></div>
+</div>
+
+<!-- ===== 注意事項 ===== -->
+<div id="notes" class="page"><div id="nc"></div></div>
+
+<!-- ===== 新手教學 ===== -->
+<div id="tut" class="page"><div id="tc"></div></div>
+
+</div><!-- .wrap -->
+
+<!-- ===== Overlay: 圖片放大 ===== -->
+<div class="overlay" id="img-overlay" onclick="closeImgOverlay()">
+  <img class="imgzoom" id="img-zoom-el" src="" alt="">
+</div>
+
+<!-- ===== Overlay: 問題圖記 Modal ===== -->
+<div class="overlay" id="issue-overlay" onclick="handleIssueBg(event)">
+  <div class="modal">
+    <div class="mhead">
+      <span class="mbadge" id="m-badge"></span>
+      <span class="mtitle" id="m-title"></span>
+      <button class="xcls" onclick="closeIssueModal()">&#215;</button>
+    </div>
+    <div class="mbody">
+      <div class="uzone modal-img-wrap" id="uzone">
+        <input type="file" accept="image/*" onchange="handleImg(event)">
+        <div class="uhint" id="uhint">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" style="display:block;margin:0 auto 4px"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          點此上傳截圖（或拖曳）<br>JPG / PNG / GIF
+        </div>
+      </div>
+      <div class="dlbl">問題情境說明</div>
+      <textarea class="dta" id="m-desc" placeholder="描述問題發生的原因、情況…"></textarea>
+      <div class="dlbl">解決方法 / Code</div>
+      <textarea class="cta" id="m-code" placeholder="貼上解決的 code 或步驟…"></textarea>
+      <button class="svbtn" onclick="saveIssue()">儲存筆記</button>
+      <div class="gh-uploading" id="ghUploading">⬆️ 正在上傳到 GitHub…</div>
+      <div class="svok" id="svok">已儲存</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GitHub 設定面板 ===== -->
+<div class="gh-panel-overlay" id="ghPanelOverlay" onclick="handleGHBg(event)">
+  <div class="gh-panel">
+    <div class="gh-panel-head">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      <span class="gh-panel-title">GitHub 連線設定</span>
+      <button class="xcls" onclick="closeGHPanel()">&#215;</button>
+    </div>
+    <div class="gh-panel-body">
+      <div class="gh-field">
+        <label>Personal Access Token</label>
+        <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxx">
+        <div class="hint">在 GitHub → Settings → Developer settings → Personal access tokens 產生，勾選 <strong>repo</strong> 權限即可。Token 只存在你自己的瀏覽器裡，不會上傳到任何地方。</div>
+      </div>
+      <div class="gh-field">
+        <label>GitHub 用戶名稱</label>
+        <input type="text" id="ghOwner" placeholder="ChiYun-Li">
+      </div>
+      <div class="gh-field">
+        <label>Repository 名稱</label>
+        <input type="text" id="ghRepo" placeholder="HTML-Handbook">
+      </div>
+      <div class="gh-field">
+        <label>手冊檔名（在 Repo 裡的路徑）</label>
+        <input type="text" id="ghFilename" placeholder="index.html">
+        <div class="hint">通常就是 <strong>index.html</strong>，如果你的 Repo 裡叫別的名字就改這裡。</div>
+      </div>
+      <div class="gh-status" id="ghStatus"></div>
+    </div>
+    <div class="gh-panel-footer">
+      <button class="gh-cancel-btn" onclick="closeGHPanel()">取消</button>
+      <button class="gh-save-btn" onclick="saveGHSettings()">儲存設定</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Edit Toast ===== -->
+<div class="edit-save-toast" id="editToast">
+  <span class="toast-dot"></span><span id="toastMsg">已儲存</span>
+</div>
+
+<!-- ===== Edit Panel (card/block/note editor) ===== -->
+<div class="edit-panel-overlay" id="editPanelOverlay" onclick="handleEPBg(event)">
+  <div class="edit-panel" id="editPanel">
+    <div class="ep-head">
+      <span class="ep-title" id="epTitle">編輯卡片</span>
+      <button class="xcls" onclick="closeEditPanel()">&#215;</button>
+    </div>
+    <div class="ep-body" id="epBody"><!-- dynamic --></div>
+    <div class="ep-footer" id="epFooter"><!-- dynamic --></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// EDIT MODE ENGINE
+// ============================================================
+let editMode = false;
+let customData = {};
+
+// load saved custom data from localStorage
+try {
+  const saved = localStorage.getItem('rl_custom_v6');
+  if (saved) customData = JSON.parse(saved);
+} catch(e) {}
+
+function saveCustomData() {
+  try { localStorage.setItem('rl_custom_v6', JSON.stringify(customData)); } catch(e) {}
+  // 如果已設定 GitHub，同步上傳手冊
+  if (getGHSettings().token) {
+    pushHandbookToGitHub();
+  }
+}
+
+// ============================================================
+// GitHub 設定
+// ============================================================
+function getGHSettings() {
+  try {
+    const s = localStorage.getItem('rl_gh_settings');
+    return s ? JSON.parse(s) : {};
+  } catch(e) { return {}; }
+}
+
+function openGHPanel() {
+  const s = getGHSettings();
+  document.getElementById('ghToken').value = s.token || '';
+  document.getElementById('ghOwner').value = s.owner || 'ChiYun-Li';
+  document.getElementById('ghRepo').value = s.repo || 'HTML-Handbook';
+  document.getElementById('ghFilename').value = s.filename || 'index.html';
+  document.getElementById('ghStatus').className = 'gh-status';
+  document.getElementById('ghStatus').textContent = '';
+  document.getElementById('ghPanelOverlay').classList.add('open');
+}
+
+function closeGHPanel() {
+  document.getElementById('ghPanelOverlay').classList.remove('open');
+}
+
+function handleGHBg(e) {
+  if (e.target === document.getElementById('ghPanelOverlay')) closeGHPanel();
+}
+
+async function saveGHSettings() {
+  const token = document.getElementById('ghToken').value.trim();
+  const owner = document.getElementById('ghOwner').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  const filename = document.getElementById('ghFilename').value.trim() || 'index.html';
+  const statusEl = document.getElementById('ghStatus');
+
+  if (!token || !owner || !repo) {
+    statusEl.className = 'gh-status err';
+    statusEl.textContent = '⚠️ 請填寫所有欄位';
+    return;
+  }
+
+  statusEl.className = 'gh-status ok';
+  statusEl.textContent = '🔄 驗證中…';
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!res.ok) throw new Error('無法連接 Repo，請確認 Token 和 Repo 名稱是否正確');
+    const data = await res.json();
+
+    localStorage.setItem('rl_gh_settings', JSON.stringify({ token, owner, repo, filename }));
+
+    statusEl.className = 'gh-status ok';
+    statusEl.textContent = `✅ 連線成功！已連接到 ${data.full_name}`;
+
+    const btn = document.getElementById('ghBtn');
+    btn.classList.add('connected');
+    document.getElementById('ghBtnLabel').textContent = '已連線';
+
+    setTimeout(() => closeGHPanel(), 1500);
+  } catch(e) {
+    statusEl.className = 'gh-status err';
+    statusEl.textContent = `❌ ${e.message}`;
+  }
+}
+
+// ============================================================
+// GitHub 上傳：把目前手冊 HTML 推送到 GitHub
+// ============================================================
+async function pushHandbookToGitHub(showFeedback = false) {
+  const s = getGHSettings();
+  if (!s.token) return false;
+
+  try {
+    // 取得目前頁面的完整 HTML
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const base64 = btoa(unescape(encodeURIComponent(html)));
+
+    // 先取得現有檔案的 SHA（更新需要）
+    let sha = '';
+    try {
+      const getRes = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.filename}`, {
+        headers: { 'Authorization': `token ${s.token}`, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      if (getRes.ok) {
+        const fileData = await getRes.json();
+        sha = fileData.sha || '';
+      }
+    } catch(e) {}
+
+    const body = {
+      message: `✏️ 手冊內容更新 ${new Date().toLocaleString('zh-TW')}`,
+      content: base64,
+      ...(sha ? { sha } : {})
+    };
+
+    const res = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.filename}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${s.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) throw new Error('上傳失敗');
+    if (showFeedback) showToast('✅ 已同步到 GitHub');
+    return true;
+  } catch(e) {
+    if (showFeedback) showToast('⚠️ GitHub 同步失敗，請確認 Token 是否有效');
+    return false;
+  }
+}
+
+// ============================================================
+// GitHub 上傳：跑版筆記圖片 + notes.json
+// ============================================================
+async function pushNoteToGitHub(noteId, imgDataUrl, desc, code) {
+  const s = getGHSettings();
+  if (!s.token) return false;
+
+  const uploadEl = document.getElementById('ghUploading');
+  try {
+    uploadEl.classList.add('show');
+
+    // 1. 上傳圖片（如果有）
+    if (imgDataUrl) {
+      const imgBase64 = imgDataUrl.split(',')[1];
+      const ext = imgDataUrl.startsWith('data:image/png') ? 'png' : imgDataUrl.startsWith('data:image/gif') ? 'gif' : 'jpg';
+      const imgPath = `bug-notes/img_${noteId}_${Date.now()}.${ext}`;
+
+      // 取得可能已存在的 SHA
+      let imgSha = '';
+      try {
+        const chk = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/${imgPath}`, {
+          headers: { 'Authorization': `token ${s.token}` }
+        });
+        if (chk.ok) { const d = await chk.json(); imgSha = d.sha || ''; }
+      } catch(e) {}
+
+      await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/${imgPath}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `token ${s.token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `📷 跑版截圖 #${noteId}`,
+          content: imgBase64,
+          ...(imgSha ? { sha: imgSha } : {})
+        })
+      });
+
+      // 記錄 raw 圖片網址到 ieData
+      if (!ieData[noteId]) ieData[noteId] = {};
+      ieData[noteId].ghImgUrl = `https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${imgPath}`;
+    }
+
+    // 2. 更新 notes.json
+    const allNotes = {};
+    Object.keys(ieData).forEach(k => {
+      allNotes[k] = {
+        id: k,
+        desc: ieData[k].desc || '',
+        code: ieData[k].code || '',
+        ghImgUrl: ieData[k].ghImgUrl || '',
+        updatedAt: new Date().toISOString()
+      };
+    });
+
+    const notesPath = 'bug-notes/notes.json';
+    let notesSha = '';
+    try {
+      const chk = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/${notesPath}`, {
+        headers: { 'Authorization': `token ${s.token}` }
+      });
+      if (chk.ok) { const d = await chk.json(); notesSha = d.sha || ''; }
+    } catch(e) {}
+
+    const notesBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(allNotes, null, 2))));
+    await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/${notesPath}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${s.token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `📝 更新跑版筆記 #${noteId}`,
+        content: notesBase64,
+        ...(notesSha ? { sha: notesSha } : {})
+      })
+    });
+
+    uploadEl.classList.remove('show');
+    return true;
+  } catch(e) {
+    uploadEl.classList.remove('show');
+    return false;
+  }
+}
+
+// 初始化時更新 GitHub 按鈕狀態
+(function initGHBtn() {
+  const s = getGHSettings();
+  if (s.token) {
+    const btn = document.getElementById('ghBtn');
+    if (btn) { btn.classList.add('connected'); document.getElementById('ghBtnLabel').textContent = '已連線'; }
+  }
+})();
+
+function toggleEditMode() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  const btn = document.getElementById('editToggleBtn');
+  const lbl = document.getElementById('editBtnLabel');
+  btn.classList.toggle('active', editMode);
+  lbl.textContent = editMode ? '完成編輯' : '編輯';
+  if (editMode) {
+    showToast('✏️ 編輯模式已開啟 — 點擊文字可直接修改');
+  } else {
+    saveAllEdits();
+    const ghSettings = getGHSettings();
+    if (ghSettings.token) {
+      showToast('⬆️ 正在同步到 GitHub…', 3000);
+      pushHandbookToGitHub(false).then(ok => {
+        showToast(ok ? '✅ 已儲存並同步到 GitHub' : '✅ 已儲存（GitHub 同步失敗，請檢查 Token）');
+      });
+    } else {
+      showToast('✅ 已儲存所有變更（尚未設定 GitHub）');
+    }
+  }
+}
+
+function showToast(msg, duration=2200) {
+  const t = document.getElementById('editToast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ============================================================
+// GENERIC contenteditable helpers
+// ============================================================
+function makeEditable(el, onSave) {
+  if (!el) return;
+  el.setAttribute('contenteditable', 'true');
+  el.addEventListener('blur', () => { if (onSave) onSave(el.innerText.trim()); });
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
+  });
+}
+
+// ============================================================
+// BLOCK CARDS — add edit panel support + add/delete
+// ============================================================
+function renderBlocks() {
+  const blocks = getBlocks();
+  const grid = document.getElementById('block-grid');
+  grid.innerHTML = blocks.map(b => renderBlockCard(b)).join('') +
+    `<button class="add-card-btn" onclick="addBlockCard()">＋ 新增區塊卡片</button>`;
+  renderTagBar('block-tag-bar', activeBlockTag, 'setBlockTag');
+  if (activeBlockTag) filterBlocksByTag();
+}
+
+function getBlocks() {
+  return BLOCKS_DATA.map(b => {
+    const c = customData['block_' + b.id] || {};
+    return Object.assign({}, b, c);
+  }).concat((customData.customBlocks || []));
+}
+
+function renderBlockCard(b) {
+  const img = blockImgs[b.id];
+  const thumbContent = img
+    ? `<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover">`
+    : `<div class="bcard-thumb-ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>上傳預覽截圖</span></div>`;
+  const tagsHtml = (b.tags||[]).length
+    ? `<div class="bcard-tags">${(b.tags||[]).map(t=>`<span class="bcard-tag">${t}</span>`).join('')}</div>` : '';
+  return `<div class="bcard" data-bid="${b.id}">
+    <div class="card-edit-overlay"></div>
+    <div class="card-actions">
+      <button class="card-act-btn" title="設定標籤" onclick="openBlockTagEditor('${b.id}')">🏷</button>
+      <button class="card-act-btn" title="編輯" onclick="openBlockEditor('${b.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+      <button class="card-act-btn danger" title="刪除" onclick="deleteBlockCard('${b.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+    </div>
+    <div class="bcard-thumb" onclick="${img ? `openImgZoom('${img}')` : ''}" >
+      ${thumbContent}
+      <div class="bcard-upload-btn" title="上傳截圖" onclick="event.stopPropagation()">
+        ${UPLOAD_ICON}
+        <input type="file" accept="image/*,image/gif" onchange="uploadBlockImg('${b.id}',event)">
+      </div>
+      ${img ? `<div class="bcard-del-btn" title="刪除截圖" onclick="event.stopPropagation();deleteBlockImg('${b.id}')">${DEL_ICON}</div>` : ''}
+    </div>
+    <div class="bcard-strip" style="background:${b.strip||'#ccc'}"></div>
+    <div class="bcard-body">
+      <div class="bcard-title">${b.title}</div>
+      <div class="bcard-desc">${b.desc}</div>
+      ${tagsHtml}
+      <div class="bcard-code-wrap">
+        <div class="bcard-code" id="bcode-${b.id}">${ESC(b.code)}</div>
+        <div class="bcard-copy-btn" title="複製 code" onclick="copyBlock('${b.id}')">${COPY_ICON}</div>
+      </div>
+      <button class="bcard-expand-btn" id="bexp-${b.id}" onclick="toggleBlockCode('${b.id}')">
+        ${EXPAND_ICON}<span>展開</span>
+      </button>
+    </div>
+  </div>`;
+}
+
+function openBlockEditor(id) {
+  if (!editMode) return;
+  const blocks = getBlocks();
+  const b = blocks.find(x => x.id == id) || {};
+  const isCustom = !BLOCKS_DATA.find(x => x.id == id);
+  openEditPanel('編輯區塊卡片', `
+    <div class="ep-field"><label>標題</label><input id="ep_btitle" value="${(b.title||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>說明</label><input id="ep_bdesc" value="${(b.desc||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>顏色條 (hex，例如 #639922)</label>
+      <div class="color-row">
+        <input type="color" id="ep_bstripColor" value="${b.strip||'#cccccc'}" oninput="document.getElementById('ep_bstripTxt').value=this.value;document.getElementById('ep_stripPrev').style.background=this.value">
+        <input type="text" id="ep_bstripTxt" value="${b.strip||'#cccccc'}" oninput="document.getElementById('ep_bstripColor').value=this.value;document.getElementById('ep_stripPrev').style.background=this.value">
+      </div>
+      <div class="strip-preview" id="ep_stripPrev" style="background:${b.strip||'#cccccc'}"></div>
+    </div>
+    <div class="ep-field"><label>Code</label><textarea class="code-ta" id="ep_bcode">${(b.code||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea></div>
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    ...(isCustom ? [{ label: '刪除卡片', cls: 'danger', fn: `deleteBlockCard('${id}')` }] : []),
+    { label: '儲存', cls: 'primary', fn: `saveBlockEdit('${id}')` }
+  ]);
+}
+
+function saveBlockEdit(id) {
+  const title = document.getElementById('ep_btitle').value.trim();
+  const desc = document.getElementById('ep_bdesc').value.trim();
+  const strip = document.getElementById('ep_bstripTxt').value.trim();
+  const code = document.getElementById('ep_bcode').value;
+  const key = 'block_' + id;
+  customData[key] = { title, desc, strip, code };
+  // Also update BLOCKS_DATA if it's an original block
+  const orig = BLOCKS_DATA.find(x => x.id == id);
+  if (orig) { orig.title = title; orig.desc = desc; orig.strip = strip; orig.code = code; }
+  // Update custom blocks
+  if (customData.customBlocks) {
+    const cb = customData.customBlocks.find(x => x.id == id);
+    if (cb) { cb.title = title; cb.desc = desc; cb.strip = strip; cb.code = code; }
+  }
+  saveCustomData();
+  closeEditPanel();
+  renderBlocks();
+  showToast('✅ 卡片已儲存');
+}
+
+function addBlockCard() {
+  if (!editMode) return;
+  const newId = 'custom_' + Date.now();
+  const newBlock = { id: newId, title: '新區塊', desc: '說明文字', strip: '#639922', code: '<!-- 在這裡貼上你的 HTML code -->' };
+  if (!customData.customBlocks) customData.customBlocks = [];
+  customData.customBlocks.push(newBlock);
+  saveCustomData();
+  renderBlocks();
+  setTimeout(() => openBlockEditor(newId), 100);
+}
+
+function deleteBlockCard(id) {
+  if (!confirm('確定要刪除這張卡片？')) return;
+  const orig = BLOCKS_DATA.findIndex(x => x.id == id);
+  if (orig !== -1) {
+    // Mark as deleted for originals
+    customData['block_' + id + '_deleted'] = true;
+    BLOCKS_DATA.splice(orig, 1);
+  }
+  if (customData.customBlocks) {
+    customData.customBlocks = customData.customBlocks.filter(x => x.id != id);
+  }
+  saveCustomData();
+  closeEditPanel();
+  renderBlocks();
+  showToast('🗑️ 卡片已刪除');
+}
+
+// Override copyBlock to use merged data
+const _origCopyBlock = window.copyBlock;
+function copyBlock(id) {
+  const blocks = getBlocks();
+  const b = blocks.find(x => x.id == id);
+  if (!b) return;
+  navigator.clipboard.writeText(b.code).then(() => {
+    const btn = document.querySelector(`#bcode-${id}`)?.parentElement?.querySelector('.bcard-copy-btn');
+    if (btn) { btn.style.color = '#3B6D11'; btn.style.background = '#EAF3DE'; setTimeout(() => { btn.style.color = ''; btn.style.background = ''; }, 1400); }
+  });
+}
+
+// ============================================================
+// SYNTAX TABLE — inline edit + add/delete rows
+// ============================================================
+function renderSyn() {
+  const con = document.getElementById('syn-container');
+  // Merge custom data into SYN_GROUPS
+  if (customData.synGroups) {
+    customData.synGroups.forEach((cg, gi) => {
+      if (SYN_GROUPS[gi]) {
+        SYN_GROUPS[gi].label = cg.label || SYN_GROUPS[gi].label;
+        if (cg.items) SYN_GROUPS[gi].items = cg.items;
+      }
+    });
+    if (customData.extraSynGroups) {
+      customData.extraSynGroups.forEach(g => {
+        if (!SYN_GROUPS.find(x => x.label === g.label)) SYN_GROUPS.push(g);
+      });
+    }
+  }
+  const html = SYN_GROUPS.map((grp, gi) => {
+    const trs = grp.items.map((x, ii) => {
+      const tagDots = (x.tags||[]).length
+        ? `<div class="syn-tag-dots">${(x.tags||[]).map(t=>`<span class="syn-tag-dot" title="${t}"></span>`).join('')}</div>` : '';
+      const tagBtn = editMode
+        ? `<td style="width:24px;padding:4px"><button class="row-del-btn" style="display:flex;color:#82be0f" onclick="openSynTagEditor(${gi},${ii})" title="設定標籤">🏷</button></td>` : '';
+      return `<tr data-gi="${gi}" data-ii="${ii}">
+        <td><span class="syn-name" data-field="name" data-gi="${gi}" data-ii="${ii}">${x.n}</span>${tagDots}</td>
+        <td><span class="syn-code" onclick="editMode?null:copySyn(this,'${ESC2(x.c)}')" data-field="code" data-gi="${gi}" data-ii="${ii}" title="${editMode?'點擊編輯':'點擊複製'}">${ESC(x.c)}</span></td>
+        <td><span class="syn-note" data-field="note" data-gi="${gi}" data-ii="${ii}">${x.note || ''}</span></td>
+        <td style="width:24px;padding:4px"><button class="row-del-btn" onclick="deleteSynRow(${gi},${ii})" title="刪除">✕</button></td>
+        ${tagBtn}
+      </tr>`;
+    }).join('');
+    const colSpan = editMode ? 5 : 4;
+    return `<div class="section-lbl">${grp.label}</div>
+    <table class="syntax-table" style="margin-bottom:4px">
+      <thead><tr><th style="width:160px">名稱</th><th>code（點擊複製）</th><th style="width:140px">備註</th><th style="width:24px"></th>${editMode?'<th style="width:24px"></th>':''}</tr></thead>
+      <tbody id="syn-tbody-${gi}">${trs}</tbody>
+    </table>
+    <button class="add-row-btn" onclick="addSynRow(${gi})">＋ 新增語法</button>`;
+  }).join('') + `<button class="add-card-btn" onclick="addSynGroup()" style="margin-top:12px">＋ 新增語法群組</button>`;
+  con.innerHTML = html;
+  attachSynEditListeners();
+  // render tag bar
+  renderTagBar('syn-tag-bar', activeSynTag, 'setSynTag');
+  if (activeSynTag) filterSynByTag();
+}
+
+function attachSynEditListeners() {
+  document.querySelectorAll('.syn-name[data-field], .syn-note[data-field]').forEach(el => {
+    el.addEventListener('click', () => {
+      if (!editMode) return;
+      el.setAttribute('contenteditable', 'true');
+      el.focus();
+    });
+    el.addEventListener('blur', () => {
+      if (!editMode) return;
+      el.removeAttribute('contenteditable');
+      const gi = +el.dataset.gi, ii = +el.dataset.ii;
+      if (el.dataset.field === 'name') SYN_GROUPS[gi].items[ii].n = el.innerText.trim();
+      if (el.dataset.field === 'note') SYN_GROUPS[gi].items[ii].note = el.innerText.trim();
+      saveSynState();
+    });
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
+  });
+  document.querySelectorAll('.syn-code[data-field]').forEach(el => {
+    el.addEventListener('click', () => {
+      if (!editMode) { const gi = +el.dataset.gi, ii = +el.dataset.ii; copySyn(el, SYN_GROUPS[gi].items[ii].c); return; }
+      el.setAttribute('contenteditable', 'true');
+      el.focus();
+    });
+    el.addEventListener('blur', () => {
+      if (!editMode) return;
+      el.removeAttribute('contenteditable');
+      const gi = +el.dataset.gi, ii = +el.dataset.ii;
+      SYN_GROUPS[gi].items[ii].c = el.innerText.trim();
+      saveSynState();
+    });
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
+  });
+}
+
+function addSynRow(gi) {
+  SYN_GROUPS[gi].items.push({ n: '新語法', c: '輸入 code', note: '' });
+  saveSynState();
+  renderSyn();
+  showToast('✅ 已新增語法列');
+}
+
+function deleteSynRow(gi, ii) {
+  SYN_GROUPS[gi].items.splice(ii, 1);
+  saveSynState();
+  renderSyn();
+}
+
+function addSynGroup() {
+  SYN_GROUPS.push({ label: '新群組', items: [{ n: '新語法', c: '輸入 code', note: '' }] });
+  if (!customData.extraSynGroups) customData.extraSynGroups = [];
+  saveSynState();
+  renderSyn();
+  showToast('✅ 已新增語法群組');
+}
+
+function saveSynState() {
+  customData.synGroups = SYN_GROUPS.map(g => ({ label: g.label, items: g.items.map(i => ({ n: i.n, c: i.c, note: i.note || '' })) }));
+  saveCustomData();
+}
+
+// ============================================================
+// NOTES — inline edit + add/delete
+// ============================================================
+function renderNotes() {
+  const el = document.getElementById('nc');
+  if (!el) return;
+  if (customData.notes) NOTES.splice(0, NOTES.length, ...customData.notes);
+  el.innerHTML = NOTES.map((n, i) => `<div class="nblk" data-ni="${i}" style="user-select:${editMode?'none':'text'}">
+    <div class="card-edit-overlay"></div>
+    <div class="card-actions">
+      <button class="card-act-btn" title="編輯" onclick="openNoteEditor(${i})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+      <button class="card-act-btn danger" title="刪除" onclick="deleteNote(${i})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+    </div>
+    <div class="ntitle">${n.t}</div>
+    <div class="ntext">${n.b}</div>
+  </div>`).join('') + `<button class="add-card-btn" onclick="addNote()">＋ 新增注意事項</button>`;
+}
+
+function openNoteEditor(i) {
+  if (!editMode) return;
+  const n = NOTES[i];
+  openEditPanel('編輯注意事項', `
+    <div class="ep-field"><label>標題</label><input id="ep_ntitle" value="${(n.t||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>內容</label><textarea id="ep_nbody">${n.b||''}</textarea></div>
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    { label: '刪除', cls: 'danger', fn: `deleteNote(${i})` },
+    { label: '儲存', cls: 'primary', fn: `saveNoteEdit(${i})` }
+  ]);
+}
+
+function saveNoteEdit(i) {
+  NOTES[i].t = document.getElementById('ep_ntitle').value.trim();
+  NOTES[i].b = document.getElementById('ep_nbody').value.trim();
+  customData.notes = NOTES.map(n => ({ t: n.t, b: n.b }));
+  saveCustomData();
+  closeEditPanel();
+  renderNotes();
+  showToast('✅ 已儲存');
+}
+
+function addNote() {
+  NOTES.push({ t: '新注意事項', b: '在這裡輸入詳細內容...' });
+  customData.notes = NOTES.map(n => ({ t: n.t, b: n.b }));
+  saveCustomData();
+  renderNotes();
+  showToast('✅ 已新增注意事項');
+}
+
+function deleteNote(i) {
+  if (!confirm('確定要刪除這則注意事項？')) return;
+  NOTES.splice(i, 1);
+  customData.notes = NOTES.map(n => ({ t: n.t, b: n.b }));
+  saveCustomData();
+  renderNotes();
+  showToast('🗑️ 已刪除');
+}
+
+// ============================================================
+// CHECKLIST — add/edit/delete items
+// ============================================================
+function renderCheck() {
+  const grid = document.getElementById('cg');
+  if (!grid) return;
+  if (customData.checks) {
+    Object.keys(customData.checks).forEach(k => {
+      if (CHECKS[k]) CHECKS[k].items = customData.checks[k].items;
+      else CHECKS[k] = customData.checks[k];
+    });
+  }
+  grid.innerHTML = Object.keys(CHECKS).map(title => {
+    const sec = CHECKS[title];
+    const items = sec.items.map((it, i) => {
+      const k = title + '_' + i; const ck = ckState[k];
+      const pd = it.p ? `<span class="pdot p${it.p}"></span>` : `<span style="width:6px;flex-shrink:0"></span>`;
+      return `<div class="cl-item${ck ? ' done' : ''}" onclick="tck('${title.replace(/'/g, "\\'")}',${i})">
+        <div class="chkbox">${ck ? '<span class="tick"></span>' : ''}</div>${pd}<span>${it.t}</span>
+        <button class="cl-edit-btn" onclick="event.stopPropagation();editCheckItem('${title.replace(/'/g, "\\'")}',${i})" title="編輯">✎</button>
+      </div>`;
+    }).join('');
+    return `<div class="cl-sec"><div class="cl-hd ${sec.cls}">${title}</div>${items}
+      <button class="cl-add-btn" onclick="addCheckItem('${title.replace(/'/g, "\\'")}')">＋ 新增項目</button>
+    </div>`;
+  }).join('');
+  updProg();
+}
+
+function editCheckItem(title, i) {
+  if (!editMode) return;
+  const item = CHECKS[title].items[i];
+  openEditPanel('編輯清單項目', `
+    <div class="ep-field"><label>項目文字</label><input id="ep_cltext" value="${(item.t||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>優先度顏色</label>
+      <select id="ep_clpri">
+        <option value="" ${!item.p?'selected':''}>無</option>
+        <option value="r" ${item.p==='r'?'selected':''}>🔴 紅 (高優先)</option>
+        <option value="a" ${item.p==='a'?'selected':''}>🟡 橙 (中優先)</option>
+        <option value="b" ${item.p==='b'?'selected':''}>🔵 藍 (低優先)</option>
+      </select>
+    </div>
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    { label: '刪除項目', cls: 'danger', fn: `deleteCheckItem('${title.replace(/'/g,"\\'")}',${i})` },
+    { label: '儲存', cls: 'primary', fn: `saveCheckItem('${title.replace(/'/g,"\\'")}',${i})` }
+  ]);
+}
+
+function saveCheckItem(title, i) {
+  CHECKS[title].items[i].t = document.getElementById('ep_cltext').value.trim();
+  CHECKS[title].items[i].p = document.getElementById('ep_clpri').value || null;
+  if (!customData.checks) customData.checks = {};
+  if (!customData.checks[title]) customData.checks[title] = { cls: CHECKS[title].cls, items: [] };
+  customData.checks[title].items = CHECKS[title].items.map(it => ({ t: it.t, p: it.p || null }));
+  saveCustomData();
+  closeEditPanel();
+  renderCheck();
+  showToast('✅ 已儲存');
+}
+
+function deleteCheckItem(title, i) {
+  CHECKS[title].items.splice(i, 1);
+  if (!customData.checks) customData.checks = {};
+  customData.checks[title] = { cls: CHECKS[title].cls, items: CHECKS[title].items.map(it => ({ t: it.t, p: it.p || null })) };
+  saveCustomData();
+  closeEditPanel();
+  renderCheck();
+  showToast('🗑️ 已刪除');
+}
+
+function addCheckItem(title) {
+  if (!editMode) return;
+  CHECKS[title].items.push({ t: '新項目', p: null });
+  if (!customData.checks) customData.checks = {};
+  customData.checks[title] = { cls: CHECKS[title].cls, items: CHECKS[title].items.map(it => ({ t: it.t, p: it.p || null })) };
+  saveCustomData();
+  renderCheck();
+  const sec = CHECKS[title];
+  editCheckItem(title, sec.items.length - 1);
+}
+
+// ============================================================
+// TUTORIAL — add/edit/delete
+// ============================================================
+function renderTut() {
+  const el = document.getElementById('tc');
+  if (!el) return;
+  if (customData.tutSections) TUT_SECTIONS.splice(0, TUT_SECTIONS.length, ...customData.tutSections);
+  el.innerHTML = TUT_SECTIONS.map((sec, si) => {
+    const cards = sec.items.map((item, ii) => {
+      const id = `t${si}_${ii}`;
+      return `<div class="tut-card" data-si="${si}" data-ii="${ii}">
+        <div class="tut-hd" onclick="togTut('${id}')">
+          <div class="tut-num">${ii + 1}</div>
+          <span class="tut-title">${item.t}</span>
+          <span class="chev" id="tcv_${id}">&#9658;</span>
+          ${editMode ? `<button class="card-act-btn" style="margin-left:4px;flex-shrink:0" onclick="event.stopPropagation();editTutItem(${si},${ii})" title="編輯"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>` : ''}
+        </div>
+        <div class="tut-body" id="tcb_${id}">
+          <p class="tut-desc">${item.desc}</p>
+          ${item.code ? `<div class="tut-code" id="tc_${id}">${ESC(item.code)}<button class="tcpb" onclick="cpyTut('tc_${id}',event)">複製</button></div>` : ''}
+          ${item.warn ? `<div class="tut-warn">${item.warn}</div>` : ''}
+          ${item.tip ? `<div class="tut-tip">${item.tip}</div>` : ''}
+          ${item.link ? `<a class="tut-link" href="${item.link}" target="_blank">${item.link}</a>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="tut-slbl">${sec.title}</div>
+    <div class="tut-grid">${cards}</div>
+    ${editMode ? `<button class="add-card-btn" onclick="addTutItem(${si})" style="margin-bottom:16px">＋ 新增教學卡片</button>` : ''}`;
+  }).join('') + (editMode ? `<button class="add-card-btn" onclick="addTutSection()" style="margin-top:12px">＋ 新增教學章節</button>` : '');
+}
+
+function editTutItem(si, ii) {
+  const item = TUT_SECTIONS[si].items[ii];
+  openEditPanel('編輯教學卡片', `
+    <div class="ep-field"><label>標題</label><input id="ep_ttt" value="${(item.t||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>說明文字</label><textarea id="ep_tdesc">${item.desc||''}</textarea></div>
+    <div class="ep-field"><label>Code（選填）</label><textarea class="code-ta" id="ep_tcode">${item.code||''}</textarea></div>
+    <div class="ep-field"><label>警告（橙底，選填）</label><input id="ep_twarn" value="${(item.warn||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>提示（藍底，選填）</label><input id="ep_ttip" value="${(item.tip||'').replace(/"/g,'&quot;')}"></div>
+    <div class="ep-field"><label>連結（選填）</label><input id="ep_tlink" value="${item.link||''}"></div>
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    { label: '刪除', cls: 'danger', fn: `deleteTutItem(${si},${ii})` },
+    { label: '儲存', cls: 'primary', fn: `saveTutItem(${si},${ii})` }
+  ]);
+}
+
+function saveTutItem(si, ii) {
+  TUT_SECTIONS[si].items[ii] = {
+    t: document.getElementById('ep_ttt').value.trim(),
+    desc: document.getElementById('ep_tdesc').value.trim(),
+    code: document.getElementById('ep_tcode').value.trim() || undefined,
+    warn: document.getElementById('ep_twarn').value.trim() || undefined,
+    tip: document.getElementById('ep_ttip').value.trim() || undefined,
+    link: document.getElementById('ep_tlink').value.trim() || undefined,
+  };
+  customData.tutSections = JSON.parse(JSON.stringify(TUT_SECTIONS));
+  saveCustomData();
+  closeEditPanel();
+  renderTut();
+  showToast('✅ 已儲存');
+}
+
+function deleteTutItem(si, ii) {
+  TUT_SECTIONS[si].items.splice(ii, 1);
+  customData.tutSections = JSON.parse(JSON.stringify(TUT_SECTIONS));
+  saveCustomData();
+  closeEditPanel();
+  renderTut();
+  showToast('🗑️ 已刪除');
+}
+
+function addTutItem(si) {
+  TUT_SECTIONS[si].items.push({ t: '新卡片標題', desc: '說明文字...' });
+  customData.tutSections = JSON.parse(JSON.stringify(TUT_SECTIONS));
+  saveCustomData();
+  renderTut();
+  editTutItem(si, TUT_SECTIONS[si].items.length - 1);
+}
+
+function addTutSection() {
+  TUT_SECTIONS.push({ title: '新章節', items: [{ t: '新卡片', desc: '說明...' }] });
+  customData.tutSections = JSON.parse(JSON.stringify(TUT_SECTIONS));
+  saveCustomData();
+  renderTut();
+  showToast('✅ 已新增章節');
+}
+
+// ============================================================
+// EDIT PANEL (generic modal)
+// ============================================================
+function openEditPanel(title, bodyHtml, buttons) {
+  document.getElementById('epTitle').textContent = title;
+  document.getElementById('epBody').innerHTML = bodyHtml;
+  document.getElementById('epFooter').innerHTML = buttons.map(b =>
+    `<button class="ep-btn ${b.cls}" onclick="${b.fn}">${b.label}</button>`
+  ).join('');
+  document.getElementById('editPanelOverlay').classList.add('open');
+}
+
+function closeEditPanel() {
+  document.getElementById('editPanelOverlay').classList.remove('open');
+}
+
+function handleEPBg(e) {
+  if (e.target === document.getElementById('editPanelOverlay')) closeEditPanel();
+}
+
+// ============================================================
+// TAG FILTER ENGINE
+// ============================================================
+let activeSynTag = null;
+let activeBlockTag = null;
+
+function getEffectiveTags() {
+  return customData.customTags ? [...ALL_TAGS, ...customData.customTags] : ALL_TAGS;
+}
+
+function renderTagBar(barId, activeTag, onSelect) {
+  const bar = document.getElementById(barId);
+  if (!bar) return;
+  const tags = getEffectiveTags();
+  const manageBtn = editMode
+    ? `<button class="tag-chip manage" onclick="openTagManager()">⚙ 管理標籤</button>`
+    : '';
+  bar.innerHTML = `<span class="tag-filter-lbl">篩選：</span>
+    <button class="tag-chip${!activeTag ? ' active' : ''}" onclick="${onSelect}(null)">全部</button>
+    ${tags.map(t => `<button class="tag-chip${activeTag===t?' active':''}" onclick="${onSelect}('${t}')">${t}</button>`).join('')}
+    ${manageBtn}`;
+}
+
+function setSynTag(tag) {
+  activeSynTag = tag;
+  renderTagBar('syn-tag-bar', activeSynTag, 'setSynTag');
+  filterSynByTag();
+}
+
+function setBlockTag(tag) {
+  activeBlockTag = tag;
+  renderTagBar('block-tag-bar', activeBlockTag, 'setBlockTag');
+  filterBlocksByTag();
+}
+
+function filterSynByTag() {
+  if (!activeSynTag) {
+    document.querySelectorAll('#syn-container tr[data-gi]').forEach(r => r.classList.remove('hidden-by-tag'));
+    document.querySelectorAll('#syn-container .syntax-table, #syn-container .section-lbl, #syn-container .add-row-btn').forEach(el => el.classList.remove('hidden-by-tag'));
+    return;
+  }
+  SYN_GROUPS.forEach((grp, gi) => {
+    let anyVisible = false;
+    grp.items.forEach((item, ii) => {
+      const row = document.querySelector(`tr[data-gi="${gi}"][data-ii="${ii}"]`);
+      const hasTag = (item.tags || []).includes(activeSynTag);
+      if (row) row.classList.toggle('hidden-by-tag', !hasTag);
+      if (hasTag) anyVisible = true;
+    });
+    // hide entire table if no rows match
+    const tbody = document.getElementById(`syn-tbody-${gi}`);
+    if (tbody) {
+      const table = tbody.closest('table');
+      const lbl = table ? table.previousElementSibling : null;
+      const addBtn = table ? table.nextElementSibling : null;
+      if (table) table.classList.toggle('hidden-by-tag', !anyVisible);
+      if (lbl && lbl.classList.contains('section-lbl')) lbl.classList.toggle('hidden-by-tag', !anyVisible);
+      if (addBtn && addBtn.classList.contains('add-row-btn')) addBtn.classList.toggle('hidden-by-tag', !anyVisible);
+    }
+  });
+}
+
+function filterBlocksByTag() {
+  const cards = document.querySelectorAll('#block-grid .bcard');
+  if (!activeBlockTag) {
+    cards.forEach(c => c.classList.remove('hidden-by-tag'));
+    return;
+  }
+  const blocks = getBlocks();
+  cards.forEach(card => {
+    const bid = card.dataset.bid;
+    const b = blocks.find(x => String(x.id) === String(bid));
+    const hasTag = b && (b.tags || []).includes(activeBlockTag);
+    card.classList.toggle('hidden-by-tag', !hasTag);
+  });
+}
+
+// Tag manager
+function openTagManager() {
+  const tags = getEffectiveTags();
+  openEditPanel('管理情境標籤', `
+    <div style="font-size:13px;color:#888;margin-bottom:12px;line-height:1.6">標籤用於快速語法和區塊語法的篩選。刪除標籤不會影響已套用該標籤的語法資料。</div>
+    <div id="ep_taglist" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+      ${tags.map((t,i) => `<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border:1px solid #e5e5e2;border-radius:20px;font-size:13px">
+        ${t}
+        ${i >= ALL_TAGS.length ? `<button onclick="removeCustomTag('${t}')" style="border:none;background:none;color:#ccc;cursor:pointer;font-size:14px;line-height:1;padding:0 2px" title="刪除">✕</button>` : ''}
+      </span>`).join('')}
+    </div>
+    <div class="ep-field"><label>新增標籤</label>
+      <div style="display:flex;gap:8px">
+        <input id="ep_newTag" placeholder="輸入標籤名稱" style="flex:1">
+        <button onclick="addCustomTag()" class="ep-btn primary" style="white-space:nowrap">新增</button>
+      </div>
+    </div>
+  `, [
+    { label: '完成', cls: 'primary', fn: 'closeEditPanel();renderTagBar(\'syn-tag-bar\',activeSynTag,\'setSynTag\');renderTagBar(\'block-tag-bar\',activeBlockTag,\'setBlockTag\')' }
+  ]);
+}
+
+function addCustomTag() {
+  const input = document.getElementById('ep_newTag');
+  const val = (input?.value || '').trim();
+  if (!val) return;
+  if (!customData.customTags) customData.customTags = [];
+  if (!getEffectiveTags().includes(val)) {
+    customData.customTags.push(val);
+    saveCustomData();
+  }
+  input.value = '';
+  openTagManager();
+}
+
+function removeCustomTag(tag) {
+  if (customData.customTags) {
+    customData.customTags = customData.customTags.filter(t => t !== tag);
+    saveCustomData();
+  }
+  openTagManager();
+}
+
+// Editing tags on a block via the block editor — update saveBlockEdit to handle tags
+const _origSaveBlockEdit = window.saveBlockEdit;
+
+function openBlockTagEditor(id) {
+  const blocks = getBlocks();
+  const b = blocks.find(x => x.id == id) || {};
+  const allTags = getEffectiveTags();
+  const currentTags = b.tags || [];
+  openEditPanel(`設定標籤：${b.title}`, `
+    <div style="font-size:13px;color:#888;margin-bottom:10px">選擇這個區塊適用的情境標籤（可多選）</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${allTags.map(t => `<button onclick="toggleTagBtn(this,'${t}')" class="tag-chip${currentTags.includes(t)?' active':''}" style="font-size:13px">${t}</button>`).join('')}
+    </div>
+    <input type="hidden" id="ep_btags" value="${currentTags.join(',')}">
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    { label: '儲存', cls: 'primary', fn: `saveBlockTags('${id}')` }
+  ]);
+}
+
+function toggleTagBtn(btn, tag) {
+  btn.classList.toggle('active');
+  const input = document.getElementById('ep_btags');
+  let tags = input.value ? input.value.split(',').filter(Boolean) : [];
+  if (tags.includes(tag)) tags = tags.filter(t => t !== tag);
+  else tags.push(tag);
+  input.value = tags.join(',');
+}
+
+function saveBlockTags(id) {
+  const tagsVal = document.getElementById('ep_btags').value;
+  const tags = tagsVal ? tagsVal.split(',').filter(Boolean) : [];
+  const orig = BLOCKS_DATA.find(x => x.id == id);
+  if (orig) orig.tags = tags;
+  if (customData.customBlocks) {
+    const cb = customData.customBlocks.find(x => x.id == id);
+    if (cb) cb.tags = tags;
+  }
+  if (!customData['block_' + id]) customData['block_' + id] = {};
+  customData['block_' + id].tags = tags;
+  saveCustomData();
+  closeEditPanel();
+  renderBlocks();
+  filterBlocksByTag();
+  showToast('✅ 標籤已儲存');
+}
+
+// Also add tag editing to syn rows
+function openSynTagEditor(gi, ii) {
+  const item = SYN_GROUPS[gi].items[ii];
+  const allTags = getEffectiveTags();
+  const currentTags = item.tags || [];
+  openEditPanel(`設定標籤：${item.n}`, `
+    <div style="font-size:13px;color:#888;margin-bottom:10px">選擇這條語法適用的情境標籤（可多選）</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${allTags.map(t => `<button onclick="toggleTagBtn(this,'${t}')" class="tag-chip${currentTags.includes(t)?' active':''}" style="font-size:13px">${t}</button>`).join('')}
+    </div>
+    <input type="hidden" id="ep_stags" value="${currentTags.join(',')}">
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    { label: '儲存', cls: 'primary', fn: `saveSynTags(${gi},${ii})` }
+  ]);
+}
+
+function saveSynTags(gi, ii) {
+  const tagsVal = document.getElementById('ep_stags').value;
+  SYN_GROUPS[gi].items[ii].tags = tagsVal ? tagsVal.split(',').filter(Boolean) : [];
+  saveSynState();
+  closeEditPanel();
+  renderSyn();
+  filterSynByTag();
+  showToast('✅ 標籤已儲存');
+}
+
+function saveAllEdits() {
+  saveSynState();
+  saveUIState();
+  customData.notes = NOTES.map(n => ({ t: n.t, b: n.b }));
+  saveCustomData();
+}
+
+// ============================================================
+// LOAD SAVED DATA ON INIT (apply customData to data structures)
+// ============================================================
+function applyCustomData() {
+  // blocks
+  Object.keys(customData).forEach(k => {
+    if (k.startsWith('block_') && !k.endsWith('_deleted')) {
+      const id = k.replace('block_', '');
+      const b = BLOCKS_DATA.find(x => x.id == id);
+      if (b) Object.assign(b, customData[k]);
+    }
+    if (k.endsWith('_deleted')) {
+      const id = k.replace('block_', '').replace('_deleted', '');
+      const i = BLOCKS_DATA.findIndex(x => x.id == id);
+      if (i !== -1) BLOCKS_DATA.splice(i, 1);
+    }
+  });
+  // syn groups
+  if (customData.synGroups) {
+    customData.synGroups.forEach((cg, gi) => {
+      if (SYN_GROUPS[gi]) {
+        SYN_GROUPS[gi].label = cg.label || SYN_GROUPS[gi].label;
+        if (cg.items) SYN_GROUPS[gi].items = cg.items;
+      }
+    });
+  }
+  // notes
+  if (customData.notes) NOTES.splice(0, NOTES.length, ...customData.notes);
+  // checks
+  if (customData.checks) {
+    Object.keys(customData.checks).forEach(k => {
+      if (CHECKS[k]) CHECKS[k].items = customData.checks[k].items;
+    });
+  }
+  // tut
+  if (customData.tutSections) TUT_SECTIONS.splice(0, TUT_SECTIONS.length, ...customData.tutSections);
+  // ui sections
+  if (customData.uiSections) {
+    customData.uiSections.forEach((cs, si) => {
+      if (UI_SECTIONS[si] && cs.items) UI_SECTIONS[si].items = cs.items;
+    });
+  }
+}
+</script>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+// 情境標籤定義
+const ALL_TAGS = ['Banner','折價券','按鈕','文字排版','圖片','RWD','定價','信件結構','裝飾邊框','間距'];
+
+// 快速語法：一行短語法表格
+const SYN_GROUPS = [
+  { label: '文字樣式', items: [
+    {n:'刪除線',      c:'text-decoration: line-through;',                     tags:['文字排版','定價']},
+    {n:'字母全大寫',  c:'text-transform: uppercase;',                         tags:['文字排版','Banner']},
+    {n:'超連結去底線',c:'text-decoration: none;',                             tags:['按鈕','文字排版']},
+    {n:'超連結加底線',c:'text-decoration: underline;',                        tags:['文字排版']},
+    {n:'行高',        c:'line-height: 1.7;',                                   tags:['文字排版']},
+    {n:'字粗',        c:'font-weight: 700;',                                   tags:['文字排版']},
+    {n:'空白字元',    c:'&nbsp;',                                               tags:['間距']},
+    {n:'& 符號',      c:'&amp;',                                               tags:[]},
+    {n:'橫槓 em dash',c:'&mdash;',                                             tags:['文字排版']},
+  ]},
+  { label: '對齊 & 排版', items: [
+    {n:'水平置中',    c:'align="center"',                  note:'加在 td 屬性上', tags:['RWD']},
+    {n:'垂直置頂',    c:'valign="top"',                    note:'加在 td 屬性上', tags:['RWD']},
+    {n:'垂直置中',    c:'valign="middle"',                                        tags:['RWD']},
+    {n:'消除圖片底部空白', c:'display: block;',            note:'加在 img style', tags:['圖片']},
+    {n:'換行',        c:'<br>',                                                    tags:['文字排版']},
+    {n:'TABLE margin 0', c:'margin: 0 auto !important;',                          tags:['RWD','間距']},
+  ]},
+  { label: '框線 & 裝飾', items: [
+    {n:'虛線邊框',    c:'border-bottom: 1px dashed #c4c4c4;',                 tags:['裝飾邊框']},
+    {n:'實線邊框',    c:'border-bottom: 1px solid #dadada;',                  tags:['裝飾邊框']},
+    {n:'圓角左右上',  c:'border-top-left-radius: 10px; border-top-right-radius: 10px;', tags:['裝飾邊框','按鈕']},
+    {n:'陰影-1',      c:'box-shadow: 0px 0px 16px 0px #D4D4D4;',              tags:['裝飾邊框']},
+    {n:'陰影-2',      c:'box-shadow: 0px 2px 10px #cccccc;',                  tags:['裝飾邊框']},
+  ]},
+  { label: '特殊語法', items: [
+    {n:'HTML 備註',   c:'<!-- 備註說明 -->',                                   tags:[]},
+    {n:'blank 間隔td',c:'<!--blank--><td class="stack-column-center" width="20" height="20" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->', tags:['間距']},
+    {n:'在新視窗開啟',c:'target="_blank"',                                    tags:['按鈕']},
+    {n:'iframe',      c:'<iframe src="#" frameborder="0" allow="autoplay"></iframe>', tags:[]},
+    {n:'背景圖片 table', c:'<table bgcolor="#2b2b2b" cellpadding="0">',        tags:['Banner']},
+    {n:'背景漸層(45度)',  c:'background: linear-gradient(to bottom left, #7d68cc, #9f87f5);', tags:['Banner','裝飾邊框']},
+    {n:'分隔段落',    c:'style="border-bottom: 1px dashed #8a8a8a;"',          tags:['裝飾邊框']},
+    {n:'摺疊所有code',    c:'CTRL+K + CTRL+0',                                tags:[]},
+    {n:'展開所有摺疊',    c:'Ctrl+K Ctrl+J',                                  tags:[]},
+    {n:'快速選取',    c:'Shift+加方向鍵 Shift+Ctrl+加方向鍵',                 tags:[]},
+    {n:'小圖置中不下移', c:'style="vertical-align: middle; padding-bottom: 3px;"', tags:['圖片']},
+    {n:'Mar. 2024 日期格式', c:'Mar. 2026', note:'右上角日期格式',             tags:['信件結構']},
+    {n:'兩邊因字數不一樣高', c:'</a><br>&nbsp;', note:'暴力解法 不同電腦有風險', tags:['RWD']},
+    {n:'字數不足跑版', c:'<table width="100%">', note:'在外層 table 加上',     tags:['RWD']},
+  ]},
+  { label: 'F12 快捷鍵', items: [
+    {n:'背景圖片摳圖', c:'F12 > Elements > 找到有背景圖的元素 > Styles面板找background-image > 右鍵複製URL'},
+    {n:'SVG 摳圖',     c:'F12 > Elements > 找到SVG > 右鍵 Copy > Copy outerHTML'},
+    {n:'查詢mobile尺寸', c:'F12 > 手機圖示 > 768px 高，desktop: 1920x高'},
+  ]},
+  { label: '圖片語法', items: [
+    {n:'Logo CC5',     c:'<img src="images/logo-CC5.png" width="230" alt="" style="display:block;">', note:'IC8 用 width="200"'},
+    {n:'說明圖(全寬)', c:'<img src="images/info-1.jpg" width="100%" alt="" style="display:block;">'},
+    {n:'小icon inline',c:'<img src="images/arrow-82be0f.png" width="8" alt="" style="vertical-align:middle;padding-bottom:3px;">'},
+  ]},
+];
+
+// 區塊語法：大型結構，附截圖位置
+const BLOCKS_DATA = [
+  {id:'b1', title:'Email 容器（基本外框）',     strip:'#378ADD', tags:['信件結構'],
+   desc:'最外層 700px table，所有內容的容器。',
+   code:`<table width="700" border="0" cellspacing="0" cellpadding="0" class="email-container" style="background-color: #222222; padding: 40px 30px 50px;">
+  <tr>
+    <td>內容</td>
+  </tr>
+</table>`},
+  {id:'b2', title:'左右並排（2欄）',            strip:'#7F77DD', tags:['RWD'],
+   desc:'左右兩欄並列，手機版會堆疊。',
+   code:`<table width="700" border="0" cellspacing="0" cellpadding="0" class="email-container" style="padding: 30px;">
+  <tr>
+    <td width="50%" class="stack-column-center">左欄</td>
+    <!--blank--><td width="16" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->
+    <td width="50%" class="stack-column-center">右欄</td>
+  </tr>
+</table>`},
+  {id:'b3', title:'上下堆疊（單欄）',           strip:'#639922', tags:['RWD','信件結構'],
+   desc:'單欄垂直排列，手機自動置中。',
+   code:`<table width="700" border="0" cellspacing="0" cellpadding="0" class="email-container" style="padding: 30px;">
+  <tr><td class="stack-column-center">上面內容</td></tr>
+  <tr><td class="stack-column-center">下面內容</td></tr>
+</table>`},
+  {id:'b4', title:'2x2 四格',                   strip:'#BA7517', tags:['RWD'],
+   desc:'上下左右各兩欄，手機版堆疊。',
+   code:`<table width="700" border="0" cellspacing="0" cellpadding="0" class="email-container" style="padding: 30px;">
+  <tr>
+    <td class="stack-column-center">左上</td>
+    <!--blank--><td width="16" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->
+    <td class="stack-column-center">右上</td>
+  </tr>
+  <tr>
+    <td class="stack-column-center">左下</td>
+    <!--blank--><td width="16" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->
+    <td class="stack-column-center">右下</td>
+  </tr>
+</table>`},
+  {id:'b5', title:'CTA 按鈕（綠底）',           strip:'#639922', tags:['按鈕'],
+   desc:'綠底 button-a-green，hover 變淺綠。',
+   code:`<a href="#" target="_blank" style="text-decoration: none;">
+  <table width="200" class="email-container button-a-green" cellpadding="0" cellspacing="0" border="0"
+    style="padding: 8px 16px; font-weight: 600; font-size: 16px; color: #ffffff;
+           border: 1px solid #82BE0F; border-radius: 4px; background-color: #82be0f;">
+    <tr><td align="center">按鈕文字 <img src="images/arrow-ffffff.gif" width="11" alt=""></td></tr>
+  </table>
+</a>`},
+  {id:'b6', title:'CTA 按鈕（綠框透明底）',     strip:'#639922', tags:['按鈕'],
+   desc:'button-b-green，hover 變淺綠透明。',
+   code:`<a href="#" target="_blank" style="text-decoration: none;">
+  <table width="180" class="email-container button-b-green" cellpadding="0" cellspacing="0" border="0"
+    style="padding: 8px 16px; font-weight: 600; font-size: 16px; color: #82BE0F;
+           border: 1px solid #82BE0F; border-radius: 4px;">
+    <tr><td align="center">按鈕文字 <img src="images/arrow-82be0f.png" width="8" alt=""></td></tr>
+  </table>
+</a>`},
+  {id:'b7', title:'Text Bar 01（漸層深色）',     strip:'#378ADD', tags:['Banner','裝飾邊框'],
+   desc:'常用頂部提示條，帶漸層背景。',
+   code:`<div align="center" class="text-center mob-email-title-16"
+  style="background-color: #3c4a52;
+         background: linear-gradient(to bottom left, #3b4e64, #3c494e);
+         padding: 8px 16px; border-radius: 0px; text-transform: uppercase;">
+  <span style="font-size: 18px; font-weight: 700; color: #ffffff;">文字內容</span>
+  <span style="font-size: 18px; font-weight: 700; color: #ffcb22;">日期/重點</span>
+</div>`},
+  {id:'b8', title:'Text Bar 02（深黑底）',       strip:'#888780', tags:['Banner','裝飾邊框'],
+   desc:'純黑底文字條，搭配綠色重點字。',
+   code:`<div align="center" class="text-center mob-email-title-16"
+  style="background-color: #1d1d1d; padding: 14px 16px;
+         border-radius: 4px; text-transform: uppercase;">
+  <span style="font-size: 18px; font-weight: 700; color: #82be0f;">重點文字</span>
+  <span style="font-size: 18px; font-weight: 600; color: #ffffff;">說明文字</span>
+</div>`},
+  {id:'b9', title:'Label 標籤',                  strip:'#BA7517', tags:['裝飾邊框','Banner'],
+   desc:'圓角標籤，通常放在 block 上方。',
+   code:`<div style="font-size: 17px; font-weight: 600; color: #ffffff;">
+  <span style="background-color: #478d9c; padding: 8px 32px;
+               border-top-left-radius: 32px; border-top-right-radius: 32px;
+               border-bottom-right-radius: 32px;">New Label</span>
+</div>`},
+  {id:'b10',title:'Email Preview 文字',          strip:'#888780', tags:['信件結構'],
+   desc:'收件匣預覽文字，設定在 body 最上方隱藏 div。',
+   code:`<div style="display:none; color:#ffffff; font-size:1px; line-height:1px;
+     max-height:0px; max-width:0px; opacity:0; overflow:hidden;
+     mso-hide:all; font-family:sans-serif;">
+  預覽文字寫這裡
+  &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  （不夠用就繼續複製貼上 &#847;&zwnj;&nbsp;）
+</div>`},
+  {id:'b11',title:'Coupon 折價券區塊',           strip:'#E24B4A', tags:['折價券'],
+   desc:'黑底左側綠線的折價碼 + Shop Now 按鈕。',
+   code:`<table width="100%" class="email-container mob-padding-15" cellpadding="0" cellspacing="0" border="0"
+  style="background-color:#000; padding:24px 32px 28px;
+         border-left:7px solid #82be0f; border-radius:4px;">
+  <tr><td>
+    <table align="left" class="email-container" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td class="stack-column-center" align="center" width="180">
+          <div style="color:#fff; font-size:17px; font-weight:600;
+                      padding:6px 20px; background-color:#3b3b3b;">
+            COUPON30
+          </div>
+        </td>
+        <!--blank--><td width="12" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->
+        <td class="stack-column-center" width="160">
+          <div class="button-a-green"
+               style="padding:6px 20px; background-color:#82be0f; border:#82be0f 1px solid;
+                      font-weight:600; font-size:16px;">
+            <a href="#" target="_blank" style="display:block; color:#fff; text-decoration:none;">
+              <table class="email-container" cellpadding="0" cellspacing="0" border="0">
+                <tr><td align="center">Shop Now</td></tr>
+              </table>
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+</table>`},
+  {id:'b12',title:'Coupon 注意事項（灰底虛線框）', strip:'#888780', tags:['折價券','裝飾邊框'],
+   desc:'灰底虛線框 ul 列表，放在 coupon 下方。',
+   code:`<table width="100%" class="email-container" cellpadding="0" cellspacing="0" border="0"
+  style="padding:16px 20px; background:#e4e4e4;
+         border:#c0c0c0 1px dashed; border-radius:4px;">
+  <tr><td class="text-center">
+    <div style="font-size:15px; font-weight:700; color:#4d4d4d; padding-bottom:6px;">
+      Coupon Note:
+    </div>
+    <ul style="margin:0; padding-left:20px; font-size:14px; color:#7a7a7a; text-align:left;">
+      <li>Valid for <span style="color:#4d4d4d; font-weight:600;">all products</span></li>
+      <li>One-time use per member</li>
+      <li>Cannot be combined with other discounts</li>
+    </ul>
+    <div style="font-size:13px; color:#757575; padding-top:10px;">
+      * Reallusion reserves the right to modify this offer at any time.
+    </div>
+  </td></tr>
+</table>`},
+  {id:'b13',title:'span 強調文字',               strip:'#7F77DD', tags:['文字排版'],
+   desc:'inline 加粗加深色，比 b 標籤效果更好。',
+   code:`<span style="color: #4d4d4d; font-weight: 600;">強調文字</span>`},
+  {id:'b14',title:'超連結文字',                  strip:'#378ADD', tags:['按鈕','文字排版'],
+   desc:'文字連結，hover 時底線消失。',
+   code:`<a href="https://網址" target="_blank" class="button-text"
+   style="color: #82be0f; text-decoration: none;">
+  連結文字
+</a>`},
+  {id:'b15',title:'3欄 Feature 亮點',            strip:'#639922', tags:['RWD','圖片'],
+   desc:'3欄圖+標題+說明並排，手機版堆疊。',
+   code:`<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td width="32%" align="center" valign="top" class="stack-column-center">
+      <img src="images/info-1.jpg" width="100%" alt="" style="display:block; border-radius:4px;">
+      <div style="font-size:15px; font-weight:600; color:#333; padding-top:10px;">標題 01</div>
+      <div style="font-size:13px; color:#666; padding-top:6px; line-height:1.5;">說明文字。</div>
+    </td>
+    <!--blank--><td width="12" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->
+    <td width="32%" align="center" valign="top" class="stack-column-center">
+      <img src="images/info-1.jpg" width="100%" alt="" style="display:block; border-radius:4px;">
+      <div style="font-size:15px; font-weight:600; color:#333; padding-top:10px;">標題 02</div>
+      <div style="font-size:13px; color:#666; padding-top:6px; line-height:1.5;">說明文字。</div>
+    </td>
+    <!--blank--><td width="12" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->
+    <td width="32%" align="center" valign="top" class="stack-column-center">
+      <img src="images/info-1.jpg" width="100%" alt="" style="display:block; border-radius:4px;">
+      <div style="font-size:15px; font-weight:600; color:#333; padding-top:10px;">標題 03</div>
+      <div style="font-size:13px; color:#666; padding-top:6px; line-height:1.5;">說明文字。</div>
+    </td>
+  </tr>
+</table>`},
+  {id:'b16',title:'比較表格',                    strip:'#185FA5', tags:['定價'],
+   desc:'3欄對比表，適合方案比較。',
+   code:`<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+  <tr>
+    <td style="padding:10px 12px; font-weight:700; color:#fff; background:#333; width:30%;">項目</td>
+    <td style="padding:10px 12px; font-weight:700; color:#fff; background:#82be0f; text-align:center; width:35%;">方案 A</td>
+    <td style="padding:10px 12px; font-weight:700; color:#fff; background:#555; text-align:center; width:35%;">方案 B</td>
+  </tr>
+  <tr style="background:#f9f9f9;">
+    <td style="padding:10px 12px; font-weight:600; color:#444; border-bottom:1px solid #e8e8e8;">Best For</td>
+    <td style="padding:10px 12px; color:#666; text-align:center; border-bottom:1px solid #e8e8e8;">說明</td>
+    <td style="padding:10px 12px; color:#666; text-align:center; border-bottom:1px solid #e8e8e8;">說明</td>
+  </tr>
+  <tr>
+    <td style="padding:10px 12px; font-weight:600; color:#444;">Discounts</td>
+    <td style="padding:10px 12px; color:#666; text-align:center;">30% OFF</td>
+    <td style="padding:10px 12px; color:#666; text-align:center;">—</td>
+  </tr>
+</table>`},
+  {id:'b17',title:'定價卡片（原價+現價+標籤）',  strip:'#E24B4A', tags:['定價','折價券'],
+   desc:'原價劃線、現價大字、Member Exclusive 標籤。',
+   code:`<div style="text-align:center; padding:24px;">
+  <div style="font-size:16px; color:#ccc; text-decoration:line-through;">Value: $498</div>
+  <div style="font-size:36px; font-weight:700; color:#333;">$329</div>
+  <div style="padding-top:8px;">
+    <span style="background:#ff9f00; color:#fff; font-size:13px; font-weight:700;
+                 padding:4px 12px; border-radius:4px;">Member Exclusive</span>
+    &nbsp;
+    <span style="background:#f5f5f5; color:#888; font-size:13px;
+                 padding:4px 12px; border-radius:4px; border:1px solid #e0e0e0;">Ends Mar 23</span>
+  </div>
+</div>`},
+  {id:'b18',title:'月付/年付並排',               strip:'#185FA5', tags:['定價'],
+   desc:'訂閱方案月付與年付選項並排，年付綠框強調。',
+   code:`<table align="center" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="stack-column-center" align="center"
+        style="padding:12px 20px; border:1px solid #e0e0e0; border-radius:8px;">
+      <div style="font-size:12px; color:#888; padding-bottom:4px;">Billed Monthly</div>
+      <div style="font-size:28px; font-weight:700; color:#333;">$79</div>
+      <div style="font-size:12px; color:#888;">/mo</div>
+    </td>
+    <!--blank--><td width="16" style="font-size:0px;">&nbsp;</td><!--blank-->
+    <td class="stack-column-center" align="center"
+        style="padding:12px 20px; border:2px solid #82be0f; border-radius:8px; background:#f7fbf0;">
+      <div style="font-size:12px; font-weight:600; color:#82be0f; padding-bottom:4px;">Billed Annually ★</div>
+      <div style="font-size:28px; font-weight:700; color:#333;">$33.25</div>
+      <div style="font-size:12px; color:#888;">/mo</div>
+    </td>
+  </tr>
+</table>`},
+];
+
+// UI 規範：文字定義 + 色碼
+const UI_SECTIONS = [
+  { label: '文字層級定義', items: [
+    { name:'大標題 H1',   hex:'333333', cls:'mob-email-title-32',
+      style:'font-size:48px; font-weight:700; color:#333333; line-height:1.2; padding-top:0px;',
+      extra:'text-transform:uppercase;',
+      preview:'Aa', previewStyle:'font-size:15px;font-weight:700;color:#333', note:'桌機 48px，手機 32px，常用：44/42/40px' },
+    { name:'次標題 H2',   hex:'4d4d4d', cls:'mob-email-title-22',
+      style:'font-size:24px; font-weight:500; color:#4d4d4d; line-height:1.2; padding-top:0px;',
+      preview:'Aa', previewStyle:'font-size:15px;font-weight:500;color:#4d4d4d', note:'桌機 24px，手機 22px' },
+    { name:'小標題 H3',   hex:'444444', cls:'mob-email-title-16',
+      style:'font-size:18px; font-weight:400; color:#444444; line-height:1.6; padding-top:0px;',
+      preview:'Aa', previewStyle:'font-size:15px;font-weight:400;color:#444', note:'桌機 18px，手機 16px，17px也常用' },
+    { name:'內文',        hex:'666666', cls:'mob-email-body',
+      style:'font-size:15px; font-weight:400; color:#666666; line-height:1.6; padding-top:0px;',
+      preview:'Aa', previewStyle:'font-size:14px;font-weight:400;color:#666', note:'手機 15px' },
+    { name:'超連結文字',  hex:'82be0f', cls:'button-text',
+      style:'color:#82be0f;',
+      fullcode:'<a href="#" target="_blank" class="button-text" style="color:#82be0f;">',
+      preview:'Aa', previewStyle:'font-size:15px;color:#82be0f;font-weight:500', note:'hover 時底線消失' },
+    { name:'備註文字',    hex:'888888', cls:'',
+      style:'font-size:13px; font-weight:400; color:#888888;',
+      preview:'Aa', previewStyle:'font-size:15px;font-weight:400;color:#888888', note:'' },
+  ]},
+  { label: 'IC CC 品牌色', items: [
+    { name:'IC CC 標準色 ★', hex:'82be0f', cls:'', style:'color:#82be0f;', preview:'Aa', previewStyle:'font-size:15px;font-weight:700;color:#82be0f', note:'最常用' },
+    { name:'黑底上的綠',  hex:'7dc600', cls:'', style:'color:#7dc600;', preview:'Aa', previewStyle:'font-size:15px;font-weight:700;color:#7dc600', note:'' },
+    { name:'(2)黑底上的綠',hex:'a1d242',cls:'', style:'color:#a1d242;', preview:'35+', previewStyle:'font-size:15px;font-weight:700;color:#a1d242', note:'大數字適用' },
+    { name:'IC CC hover', hex:'a2cc5b', cls:'', style:'color:#a2cc5b;', preview:'Aa', previewStyle:'font-size:15px;color:#a2cc5b', note:'style hover: 8dcd11' },
+    { name:'可配橙的背景',hex:'cce3be', cls:'', style:'background-color:#cce3be;', preview:'', previewStyle:'', note:'' },
+  ]},
+  { label: 'CTA 按鈕色', items: [
+    { name:'CTA 標準色 ★',hex:'8380d0', cls:'', style:'color:#8380d0;', preview:'Aa', previewStyle:'font-size:15px;color:#8380d0', note:'' },
+    { name:'CTA 按鈕色',  hex:'e95632', cls:'', style:'color:#e95632;', preview:'Aa', previewStyle:'font-size:15px;color:#e95632', note:'' },
+    { name:'黑底上的紅',  hex:'ff623b', cls:'', style:'color:#ff623b;', preview:'Aa', previewStyle:'font-size:15px;color:#ff623b', note:'' },
+    { name:'按鈕 hover',  hex:'fc6c49', cls:'', style:'color:#fc6c49;', preview:'Aa', previewStyle:'font-size:15px;color:#fc6c49', note:'' },
+    { name:'鮮豔 TEXT BAR',hex:'ff5a32',cls:'', style:'color:#ff5a32;', preview:'Aa', previewStyle:'font-size:15px;color:#ff5a32', note:'' },
+  ]},
+  { label: '促銷/STORE 系列', items: [
+    { name:'促銷紅 1',    hex:'f55024', cls:'', style:'color:#f55024;', preview:'Aa', previewStyle:'font-size:15px;color:#f55024', note:'' },
+    { name:'促銷紅 2',    hex:'ff572d', cls:'', style:'color:#ff572d;', preview:'Aa', previewStyle:'font-size:15px;color:#ff572d', note:'' },
+    { name:'STORE 常用 ★',hex:'ff9f00', cls:'', style:'color:#ff9f00;', preview:'Aa', previewStyle:'font-size:15px;font-weight:700;color:#ff9f00', note:'' },
+    { name:'STORE hover', hex:'ffbb00', cls:'button-yellow', style:'color:#ffbb00;', preview:'Aa', previewStyle:'font-size:15px;color:#ffbb00', note:'class="button-yellow"' },
+    { name:'深色底上的橘',hex:'f2ac07', cls:'', style:'color:#f2ac07;', preview:'Aa', previewStyle:'font-size:15px;color:#f2ac07', note:'來自古老 Subscribe Newsletter' },
+    { name:'STORE 按鈕色',hex:'ff8500', cls:'', style:'color:#ff8500;', preview:'Aa', previewStyle:'font-size:15px;color:#ff8500', note:'來自 2022 DMT' },
+    { name:'配橙背景 1',  hex:'fff9e7', cls:'', style:'background-color:#fff9e7;', preview:'', previewStyle:'', note:'' },
+    { name:'配橙背景 2',  hex:'fff6b6', cls:'', style:'background-color:#fff6b6;', preview:'', previewStyle:'', note:'' },
+  ]},
+  { label: 'Label & TextBar', items: [
+    { name:'Text bar (ATC)',  hex:'134f5c', cls:'', style:'background-color:#134f5c;', preview:'Label', previewStyle:'font-size:11px;background:#134f5c;padding:1px 4px;border-radius:2px;color:#fff', note:'來自 ATC textbar' },
+    { name:'Text bar 小標',   hex:'478d9c', cls:'', style:'background-color:#478d9c;', preview:'Label', previewStyle:'font-size:11px;background:#478d9c;padding:1px 4px;border-radius:2px;color:#fff', note:'ATC 首頁大編幅小標' },
+    { name:'Text bar CC5 WIP',hex:'283f51', cls:'', style:'background-color:#283f51;', preview:'Label', previewStyle:'font-size:11px;background:#283f51;padding:1px 4px;border-radius:2px;color:#fff', note:'CC5 WIP 2' },
+    { name:'Text bar CC5 WIP2',hex:'413c36',cls:'', style:'background-color:#413c36;', preview:'Label', previewStyle:'font-size:11px;background:#413c36;padding:1px 4px;border-radius:2px;color:#fff', note:'CC5 WIP 2' },
+    { name:'Text bar MKP',    hex:'2a72a6', cls:'', style:'background-color:#2a72a6;', preview:'Label', previewStyle:'font-size:11px;background:#2a72a6;padding:1px 4px;border-radius:2px;color:#fff', note:'來自 MKP 信' },
+    { name:'New Release',     hex:'ff9600', cls:'', style:'color:#ff9600;', preview:'NEW', previewStyle:'font-size:12px;font-weight:700;color:#ff9600', note:'' },
+    { name:'Label 色',        hex:'ffd966', cls:'', style:'background-color:#ffd966;', preview:'Label', previewStyle:'font-size:11px;background:#ffd966;padding:1px 4px;border-radius:2px;color:#18181a', note:'文字搭配 #18181a' },
+  ]},
+  { label: 'Prime / Corporate / Newsletter', items: [
+    { name:'Prime News',  hex:'2e9d94', cls:'', style:'color:#2e9d94;', preview:'Aa', previewStyle:'font-size:15px;color:#2e9d94', note:'' },
+    { name:'Prime',       hex:'339c90', cls:'', style:'color:#339c90;', preview:'Aa', previewStyle:'font-size:15px;color:#339c90', note:'' },
+    { name:'Prime hover', hex:'1faca0', cls:'', style:'color:#1faca0;', preview:'Aa', previewStyle:'font-size:15px;color:#1faca0', note:'' },
+    { name:'Corporate',   hex:'36abe9', cls:'', style:'color:#36abe9;', preview:'Aa', previewStyle:'font-size:15px;color:#36abe9', note:'' },
+    { name:'WorkGroup',   hex:'558ed6', cls:'', style:'color:#558ed6;', preview:'Aa', previewStyle:'font-size:15px;color:#558ed6', note:'' },
+    { name:'Newsletter',  hex:'03a3ff', cls:'', style:'color:#03a3ff;', preview:'Aa', previewStyle:'font-size:15px;color:#03a3ff', note:'' },
+    { name:'News Text bar',hex:'3575bc',cls:'', style:'background-color:#3575bc;', preview:'', previewStyle:'', note:'' },
+  ]},
+  { label: '背景色', items: [
+    { name:'海報主背景',  hex:'222222', cls:'', style:'background-color:#222222;', preview:'', previewStyle:'', note:'幾乎每封都用，深灰帶藍黑' },
+    { name:'灰藍背景',    hex:'313635', cls:'', style:'background-color:#313635;', preview:'', previewStyle:'', note:'' },
+    { name:'更灰藍背景',  hex:'3c4951', cls:'', style:'background-color:#3c4951;', preview:'', previewStyle:'', note:'來自 CC5 背鋼' },
+    { name:'Text Bar 底色',hex:'3c4a52',cls:'', style:'background-color:#3c4a52; padding:8px 16px; border-radius:4px;', preview:'', previewStyle:'', note:'' },
+    { name:'深色內文背景',hex:'202020', cls:'', style:'background-color:#202020;', preview:'', previewStyle:'', note:'' },
+    { name:'純黑',        hex:'111111', cls:'', style:'background-color:#111111;', preview:'', previewStyle:'', note:'' },
+  ]},
+  { label: '分隔線色', items: [
+    { name:'分隔線',  hex:'979797', cls:'', style:'color:#979797;',
+      preview:'', previewStyle:'',
+      swatchOnly:true, swatchStyle:'border-bottom:2px solid #979797;height:10px',
+      note:'' },
+    { name:'虛線',    hex:'c4c4c4', cls:'', style:'border-bottom:1px dashed #c4c4c4; padding-top:8px;',
+      preview:'', previewStyle:'',
+      swatchOnly:true, swatchStyle:'border-bottom:1px dashed #c4c4c4;height:10px',
+      note:'' },
+    { name:'實線',    hex:'dadada', cls:'', style:'border-bottom:1px solid #dadada; padding-top:8px;',
+      preview:'', previewStyle:'',
+      swatchOnly:true, swatchStyle:'border-bottom:1px solid #dadada;height:10px',
+      note:'' },
+  ]},
+  {
+    label: 'Head Style (hover)',
+    note: '* 此區可能會因為用戶 Outlook 版本過舊而完全失效，需注意即便沒有此效果也能正常顯示。',
+    codeblock: true,
+    items: [
+      { name:'.button-a-green:hover', note:'綠底按鈕 hover',
+        code:`.button-a-green:hover {
+    background: #98ce33 !important;
+    border: 1px solid #98ce33 !important;
+}` },
+      { name:'.button-b-green:hover', note:'綠框透明底按鈕 hover',
+        code:`.button-b-green:hover {
+    background: #81be0f2c !important;
+    color: #ffffff !important;
+}` },
+      { name:'.button-yellow:hover', note:'黃底按鈕 hover',
+        code:`.button-yellow:hover {
+    background: #ffbb00 !important;
+}` },
+      { name:'.button-red', note:'紅底按鈕（非hover，直接套用）',
+        code:`.button-red {
+    background: #fc6c49 !important;
+}` },
+      { name:'.button-666666:hover', note:'灰底按鈕 hover',
+        code:`.button-666666:hover {
+    background: #6666667a !important;
+}` },
+      { name:'.button-cccccc:hover', note:'淺灰按鈕 hover',
+        code:`.button-cccccc:hover {
+    background: #cccccc !important;
+}` },
+      { name:'.button-e7e7e7:hover', note:'極淺灰按鈕 hover',
+        code:`.button-e7e7e7:hover {
+    background: #d8d8d8 !important;
+}` },
+      { name:'.button-gray:hover', note:'灰白按鈕 hover',
+        code:`.button-gray:hover {
+    background: #ebebeb !important;
+}` },
+      { name:'.button-campaign:hover', note:'活動按鈕 hover',
+        code:`.button-campaign:hover {
+    background: #3affce !important;
+}` },
+      { name:'.button-text:hover', note:'文字連結 hover 去底線',
+        code:`.button-text:hover {
+    text-decoration: none !important;
+}` },
+    ],
+  },
+];
+
+const CHECKS = {
+  '初次校稿':{cls:'info',items:[
+    {t:'Cannot see 能不能點',p:'r'},{t:'跨月時 — 檢查右上角日期 | Feb, 2024',p:'r'},
+    {t:'跨年時 — 檢查 Copyright！',p:'r'},{t:'搜尋替換：清理絕對連結',p:null},
+    {t:'搜尋 tbody 全部替換刪除',p:'a'},{t:'搜尋 &amp;amp; 全部替換刪除',p:'b'},
+    {t:'注意圖片 img 都有加 display:block（有些情況不用）',p:'a'},{t:'邊邊角角圓角正常',p:null},
+    {t:'陰影正常',p:null},{t:'所有 tr 折疊正常',p:'a'},{t:'備註寫清楚',p:null},
+    {t:'檔名皆無空格、+',p:'a'},{t:'檔案容量 GIF:1MB ｜ JPG 50KB',p:null},
+    {t:'images 整理/刪除沒用上的圖片',p:'b'},{t:'檔案和原檔命名一致',p:'b'},
+    {t:'超連結：搜尋 href 逐一 Check',p:'r'},{t:'hover 顏色底線正常（容易變紅出錯）',p:'a'},{t:'Alt 盡量填寫',p:null},
+  ]},
+  'RWD 確認':{cls:'success',items:[
+    {t:'最頂部的留白',p:null},{t:'箭頭換行',p:null},{t:'灰底正常',p:null},
+    {t:'標題過大（mob-title-22）',p:null},{t:'間距正常（mob-paddint-15）',p:null},
+  ]},
+  '測試信再次 Check':{cls:'warn',items:[
+    {t:'文字後面出現不屬於 preview 的文字',p:null},{t:'Logo 能不能點',p:null},{t:'Cannot see 能不能點',p:null},
+    {t:'超連結正常 逐一 Check！',p:'r'},{t:'hover 顏色底線正常',p:'a'},
+    {t:'折價券、活動日期 效期正確',p:'r'},{t:'箭頭掉圖、變小',p:null},
+    {t:'遺漏上傳小圖片（ICON label 時鐘）',p:null},{t:'務必實際用手機再次確認',p:'r'},
+  ]},
+  '交付注意':{cls:'danger',items:[
+    {t:'懶人法去絕對連結：cannot see 也會被換掉',p:'r'},
+    {t:'兩邊字數不一樣高暴力解法：加br&nbsp;（有風險）',p:'a'},
+    {t:'改圖時檔名要換一下，避免卡暫存',p:'a'},
+    {t:'有修改要請對方再次上傳圖片',p:'a'},
+    {t:'(網頁專用) include 有動到務必告知上傳',p:'b'},
+    {t:'字數不足跑版解法：table 加上 width=100%',p:'a'},
+  ]},
+};
+
+const NOTES = [
+  {t:'倒數計時注意事項',b:'1. alt="" 都打上截止日期，以免失效時還能有個文字，順便加上style以免他超級大。\n2. 開信數超過1萬會失效，可以不同信生不同連結。\n3. Newsletter擋不適合放，原因是同時使用在hub會讓倒數計時失效（看似有在倒但重新整理時間又倒流了）。'},
+  {t:'索老大大阿科普 fillin 篩選公式',b:'篩掉 @reallusion.com 信箱：\n=IF(ISNUMBER(SEARCH("@reallusion.com",A1)),"",A1)'},
+  {t:'跑版暴力解法',b:'兩邊因字數不一樣高：</a><br>&nbsp;（不同電腦看還是有風險）\n\n字數不足跑版：table 加上 width="100%"'},
+  {t:'HTML 容量超過 100b 大絕',b:'Shift+Tab 縮排，縮到100以下\n（全選body後執行）'},
+  {t:'懶人法去掉絕對連結',b:'注意：最上面的 cannot see 也會被換掉！'},
+  {t:'改圖暫存問題',b:'需要改圖時，檔名要換一下，避免卡暫存（同檔名必卡）\n有修改要請對方再次上傳，圖片須告知上傳圖片'},
+];
+
+const ICATS = {
+  rwd:   {l:'RWD',   bg:'#E6F1FB',fg:'#185FA5',s:'#378ADD'},
+  layout:{l:'排版',  bg:'#EEEDFE',fg:'#534AB7',s:'#7F77DD'},
+  style: {l:'樣式',  bg:'#EAF3DE',fg:'#3B6D11',s:'#639922'},
+  image: {l:'圖片',  bg:'#FAEEDA',fg:'#854F0B',s:'#BA7517'},
+  func:  {l:'功能',  bg:'#FCEBEB',fg:'#A32D2D',s:'#E24B4A'},
+  misc:  {l:'其他',  bg:'#F1EFE8',fg:'#5F5E5A',s:'#888780'},
+};
+const ISSUES = [
+  {id:1,c:'rwd',t:'RWD 跑版'},{id:2,c:'style',t:'超連結 & 底線不見'},
+  {id:3,c:'layout',t:'跑版'},{id:4,c:'layout',t:'副標退到橘線後橘線延伸'},
+  {id:5,c:'layout',t:'高度無法置頂'},{id:6,c:'style',t:'EMAIL 字看起來比網頁還粗'},
+  {id:7,c:'rwd',t:'測試信大跑版'},{id:8,c:'layout',t:'左右 td 高低問題'},
+  {id:9,c:'layout',t:'LABEL 作法拆成上下兩個 table'},{id:10,c:'image',t:'圖片下方莫名空格'},
+  {id:11,c:'misc',t:'網頁影片筆記'},{id:12,c:'rwd',t:'遷就 RWD 改排版'},
+  {id:13,c:'layout',t:'自動生成的 tbody'},{id:14,c:'misc',t:'教索菲亞教學'},
+  {id:15,c:'style',t:'用虛線當作邊緣樣式'},{id:16,c:'misc',t:'F12 背景圖片摳圖法'},
+  {id:17,c:'misc',t:'F12 SVG 摳圖法'},{id:18,c:'style',t:'字型跑掉'},
+  {id:19,c:'layout',t:'按鈕移不上去'},{id:20,c:'layout',t:'ICON 置中不了'},
+  {id:21,c:'func',t:'機制信 兩個 @@ 相關'},{id:22,c:'func',t:'Workgroup 擋按鈕'},
+];
+
+const TUT_SECTIONS = [
+  {title:'🧠 心理建設（先看這裡）',items:[
+    {t:'你學的 HTML 在這裡為什麼不能用？',
+     desc:`這是每個新手最大的困惑，也是最重要的心理建設。\n\n你在外面學的現代 HTML/CSS，預設對象是「瀏覽器」。瀏覽器 Chrome、Firefox、Safari 都很努力跟上 Web 標準，支援 flexbox、grid、CSS 變數、動畫⋯⋯\n\n但 Email 的對象是「郵件客戶端」，而每個客戶端各自解讀 HTML 的方式都不一樣，而且差異大到嚇人。`,
+     warn:'Email HTML ≠ 網頁 HTML。這不是你學的東西有問題，而是 Email 這個媒介本身就活在另一個時代。'},
+    {t:'Outlook 為什麼這麼難搞？（歷史背景）',
+     desc:`Outlook 2007 之後微軟做了一個影響深遠的決定：改用 Microsoft Word 當作郵件的渲染引擎。\n\n這意味著什麼？Word 是文字處理軟體，不是瀏覽器。它的 CSS 支援停留在非常原始的程度，而且一直沒有大幅改善。\n\n• Outlook 2007–2019：用 Word 渲染，大量 CSS 失效\n• Outlook 365（新版）：已改用 Edge WebView，好很多\n• 但很多企業用戶還在用舊版 Outlook\n\n所以你沒有選擇，只能為最差的環境設計。`,
+     tip:'caniemail.com 可以查每個 CSS 屬性在各客戶端的支援程度，是 Email 工程師的必備工具。'},
+    {t:'「我明明沒改什麼，怎麼就壞了？」',
+     desc:`Email 開發最崩潰的地方：同樣的 code 在不同地方看起來完全不同。\n\n• 你的 Gmail 網頁版看起來正常\n• 同事的 Outlook 桌機版完全跑版\n• 手機 Gmail app 又是另一個樣子\n• 深色模式下顏色全部反轉\n\n這不是你的錯，這是 Email 這個環境的本質。請把「在所有地方都完美」這個期望放下，改成「在主要平台都可以接受」就好。`,
+     warn:'永遠不要只看自己的瀏覽器就交件。至少要用實際手機確認一次。'},
+    {t:'用「降級思維」設計',
+     desc:`正確的心態是：先讓最爛的環境勉強能看，再讓好的環境看起來漂亮。\n\n✅ 用 table 做排版 → 所有地方都能跑\n✅ 用 inline CSS → 不怕被 email client 濾掉\n✅ 圖片加 alt 文字 → 圖片被擋時還有說明\n✅ 背景圖加底色 fallback → 不支援背景圖也有顏色\n\n不是退步，是針對環境的專業選擇。`,
+     tip:'把每個設計決策想成「如果這個東西不支援，會不會整個壞掉？」，如果會，就要有備案。'},
+    {t:'新手最常有的誤解',
+     desc:`❌「應該有更優雅的寫法」\n→ 有時候真的沒有，古老的暴力解法就是最穩的解法。\n\n❌「這段 code 好醜，能不能重構一下」\n→ Email HTML 的 code 本來就很醜，醜是正常的。\n\n❌「這個問題 Google 搜尋找不到解答」\n→ 找 StackOverflow 搜「html email」相關，或去 litmus.com 社群找，資源比你想像的多。\n\n❌「測試環境沒問題就代表沒問題」\n→ 永遠不夠，要在實際收件環境測試。`,},
+  ]},
+  {title:'📐 Email HTML 的世界規則',items:[
+    {t:'規則 1：排版只能用 table',
+     desc:'Email 不能用 div + flexbox，必須用 table 建構。一個 Block 就用一個 table 包，Block 間距用 td 的 padding（margin 在 table 上不成立）。',
+     code:`<table width="700" border="0" cellspacing="0" cellpadding="0">
+  <tr><td>內容</td></tr>
+</table>`,
+     tip:'table 是 Email 的 flexbox，tr 是列，td 是欄。一旦接受這件事，剩下的都是體力活。'},
+    {t:'規則 2：CSS 要 inline',
+     desc:'樣式要直接寫在標籤的 style="" 裡，不能放在 <style> 或外部檔案。\n\n例外：手機版 RWD 的 media query 寫在 <head> 的 <style> 裡，而且每個屬性一定要加 !important，才能蓋過 inline style。',
+     warn:'Gmail 會把 <head> 裡的 style 完全移除，所以 RWD 以外的樣式絕對不能只寫在 <style> 裡。'},
+    {t:'規則 3：顏色只能用六位數 hex',
+     desc:'Email 只能用六位數 hex，不能縮寫，不能用 rgb()，不能用顏色名稱。',
+     code:`/* ✅ 正確 */\ncolor: #ffffff;\nbgcolor="#ffffff"\n\n/* ❌ 不支援 */\ncolor: #fff;\ncolor: rgb(255,255,255);\ncolor: white;`,
+     warn:'bgcolor 是 HTML 屬性（不是 CSS），直接寫在 td 上，在 Outlook 反而比 CSS background-color 更穩。'},
+    {t:'規則 4：對齊用 HTML 屬性，不用 CSS',
+     desc:'水平對齊、垂直對齊要用 HTML 的 align / valign 屬性，不能靠 CSS 的 float 或 flex。',
+     code:`<td align="center" valign="top">內容</td>\n<table align="center">...</table>`,
+     warn:'Outlook 不支援 CSS float，text-align 勉強能用但不穩，align 屬性才是正解。'},
+    {t:'規則 5：針對 Outlook 用條件判斷',
+     desc:'Outlook 有專屬的條件判斷語法，可以讓某段 code 只在 Outlook 顯示，或只在非 Outlook 顯示。',
+     code:`<!--[if mso]>
+  只有 Outlook 看到這段
+<![endif]-->
+
+<!--[if !mso]><!-->
+  非 Outlook 才看到這段
+<!--<![endif]-->`,
+     tip:'mso 就是 Microsoft Office 的縮寫。這是你對付 Outlook 的秘密武器。'},
+    {t:'規則 6：這些東西永遠不要用',
+     desc:`以下這些在網頁上很正常，在 Email 裡會出問題：\n\n❌ display: flex / grid\n❌ position: absolute / relative\n❌ CSS 動畫（animation、transition）\n❌ JavaScript（幾乎所有客戶端都會擋掉）\n❌ SVG（Outlook 完全不支援）\n❌ <video>、<canvas>、<form>\n❌ 字型縮寫：color: #fff（要寫 #ffffff）\n❌ margin 加在 table 上（用 padding 在 td 上）`,
+     warn:'看到這個清單不要沮喪。你只是換了一套工具，不是失去了什麼。'},
+  ]},
+  {title:'🔧 實戰寫法',items:[
+    {t:'超連結完整寫法',
+     desc:'Email 超連結要同時處理顏色、去底線、hover 效果：',
+     code:`<a href="https://網址" target="_blank"
+   class="button-text"
+   style="color:#82be0f; text-decoration:none;">
+  連結文字
+</a>`,
+     tip:'class="button-text" 是在 <head> style 裡定義 hover 時加底線，讓互動感更好。'},
+    {t:'圖片完整寫法',
+     desc:'Email 圖片有幾個固定要加的屬性，缺一個就可能在某個客戶端出問題：',
+     code:`<a href="https://網址" target="_blank">
+  <img src="images/main.jpg"
+       width="700"
+       alt="圖片說明文字"
+       style="display:block; border:0px;">
+</a>`,
+     tip:'display:block 消除底部空白；border:0px 防止 IE/Outlook 自動加藍色邊框；alt 是圖片被擋時的備案文字。'},
+    {t:'左右並排的正確做法',
+     desc:'兩欄並排不能用 flex，要用 table 裡放兩個 td，中間加空白 td 當 gap：',
+     code:`<table width="700" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td width="340" valign="top">左欄內容</td>
+    <!--blank-->
+    <td width="20" style="font-size:0px; line-height:0px;">&nbsp;</td>
+    <!--blank-->
+    <td width="340" valign="top">右欄內容</td>
+  </tr>
+</table>`,
+     tip:'中間那個空白 td 就是 Email 版的 gap，記得加上 font-size:0 和 line-height:0，否則這個 td 會有預設高度。'},
+    {t:'手機版 RWD 的原理',
+     desc:'Email 的 RWD 完全靠 <head> 裡的 @media query 控制，在手機上用 class 覆蓋 inline style。關鍵是 !important 一定要加，才能蓋過 inline style 的優先權。',
+     code:`/* 在 <head> 的 <style> 裡 */
+@media only screen and (max-width: 600px) {
+  .stack-column-center {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+}`,
+     warn:'Gmail app 在某些版本會忽略 @media query，所以 RWD 要測真實裝置，不能只看桌機的手機模擬器。'},
+    {t:'Preview 預覽文字',
+     desc:'設定收件匣摘要文字，要寫在 body 最頂端，用隱藏的 div 包起來：',
+     code:`<div style="display:none; color:#ffffff; font-size:1px;
+     line-height:1px; max-height:0px; overflow:hidden;">
+  這裡寫預覽文字，大約 90 字以內
+  &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  （不夠長就繼續複製這串）
+</div>`,
+     tip:'&#847;&zwnj;&nbsp; 是「零寬度字元」，用來填充空間，避免信件內文被帶進預覽。'},
+  ]},
+  {title:'😱 常見崩潰時刻與解法',items:[
+    {t:'「圖片下面有莫名其妙的空白」',
+     desc:`這是新手最常遇到的問題之一。原因是 img 預設是 inline 元素，瀏覽器會在下方保留空間給文字的「下伸部分」（descender）。\n\n解法三選一（第一個最穩）：`,
+     code:`/* 解法 1：最穩 */
+<img style="display:block;">
+
+/* 解法 2 */
+<img style="float:left;">
+
+/* 解法 3 */
+<img style="vertical-align:bottom;">`,},
+    {t:'「左右兩欄，其中一欄特別高，另一欄跑掉了」',
+     desc:`兩個 td 高度不一致時，矮的那邊 td 會自動補高，裡面的內容就會在奇怪的位置。\n\n解法：在 td 加上 valign="top"，讓內容強制貼頂。`,
+     code:`<td width="50%" valign="top">左欄</td>
+<td width="50%" valign="top">右欄</td>`,
+     tip:'幾乎所有的 td 都應該加 valign="top"，養成習慣。'},
+    {t:'「字看起來比設計稿還要粗/還要大」',
+     desc:`幾個常見原因：\n\n1. iOS 會自動放大小字（font-size 小於 13px 會被強制放大）\n   → 加上 -webkit-text-size-adjust: none\n\n2. Windows 的字體渲染跟 Mac 不同，同樣的字重看起來更粗\n   → 這是系統差異，接受它\n\n3. Outlook 會自動套用 Times New Roman\n   → 每個有文字的 td 都要明確指定 font-family`,
+     code:`<td style="font-family: Arial, sans-serif; font-size: 15px;">`,},
+    {t:'「連結顏色改不掉，一直是藍色」',
+     desc:`這是 Outlook 的經典問題。Outlook 會強制把超連結變成藍色。\n\n解法：在 a 標籤上直接加 style，同時加 mso-style 覆蓋：`,
+     code:`<a href="#" style="color:#82be0f; text-decoration:none;
+   mso-style-priority:99;">連結文字</a>`,
+     warn:'有些版本的 Outlook 還是會忽略，這時候暴力解是把文字做成圖片，但要加 alt 文字。'},
+    {t:'「我改了 code，但收到的測試信還是舊的」',
+     desc:`圖片暫存問題！這是最容易讓人以為自己 code 沒有存到的陷阱。\n\n原因：你換了圖片內容，但檔名一樣，發信平台或收件人的郵件客戶端把舊圖快取住了。\n\n解法：每次換圖一定要換檔名，哪怕只是在後面加 -v2。`,
+     warn:'改圖之後要請負責上傳的人重新上傳，不然改了等於沒改。'},
+    {t:'「Outlook 完全不顯示我的背景圖」',
+     desc:`Outlook（Word 渲染版）不支援 CSS background-image。這是無解的，只能繞過去。\n\n方案 A：改用實際的 <img> 標籤做背景效果（用 position 疊加）\n方案 B：用 VML（Outlook 專屬的 XML 語法）\n方案 C：接受 Outlook 用戶看到的是純底色版本，用 bgcolor 設定 fallback 背景色`,
+     code:`<!-- 先設定 fallback 底色 -->
+<td bgcolor="#222222">
+  <!--[if !mso]><!-->
+  <div style="background-image:url(bg.jpg);">
+    內容
+  </div>
+  <!--<![endif]-->
+</td>`,
+     tip:'大多數 Email 設計師選擇方案 C，因為 VML 寫起來很痛苦，而且 Outlook 用戶通常對設計要求也比較低。'},
+  ]},
+  {title:'✅ 交件前的心理確認',items:[
+    {t:'完成後一定要做的五件事',
+     desc:`不管做了幾次，每封信交出去前都要逐一確認：\n\n1. ✅ 用真實手機收測試信看過\n2. ✅ 所有連結都有點過，確認開得到\n3. ✅ 圖片全部顯示（包括 alt 文字有沒有打）\n4. ✅ 機制代碼：!*CurrentYear*!、!*cannotsee*!、!*unsubscribe*!\n5. ✅ <RLDMTOpen/> 標籤有加`,
+     warn:'最後一個關掉測試信，用自己的手機當「第一個收件人」的視角看一遍，感受完全不同。'},
+    {t:'HTML 容量快超過 100KB 怎麼辦',
+     desc:`Gmail 在 HTML 超過 102KB 時會截斷信件，後面的內容完全消失，出現「顯示完整訊息」的連結。\n\n緊急縮減方法：\n1. VS Code 全選 body 內容 → Shift+Tab 減少縮排\n2. 把多餘的空行、註解刪掉\n3. 把重複的 style 整理成共用 class（只限 <head> style）`,
+     tip:'平常寫的時候就養成習慣，不要過度縮排，也不要留太多空行。'},
+    {t:'深色模式的雷',
+     desc:`越來越多用戶開啟深色模式，而部分 Email 客戶端（特別是 Apple Mail）會自動把你的顏色反轉。\n\n常見症狀：\n• 白底變黑底，黑字反而看不見\n• 你設定的深色背景被強制變成淺色\n• Logo 圖片的透明背景在深色下看起來很奇怪\n\n基本防禦：\n• 深色背景請用實際深色圖片，不要用純色 + 淺色文字\n• Logo 儘量準備白色版本\n• 或是直接在 code 裡宣告 color-scheme`,
+     warn:'深色模式是個大坑，初期不用完美處理，先知道有這個問題存在，遇到再查就好。'},
+  ]},
+  {title:'📚 推薦資源',items:[
+    {t:'新手必看：從零開始建立 Email HTML 版型',
+     desc:'電子豹寫的中文入門文章，把 Email HTML 的邏輯講得很清楚，新手第一篇必看。',
+     link:'https://blog.newsleopard.com/coding-html-emails/'},
+    {t:'CSS 支援度查詢：Can I Email',
+     desc:'輸入任何 CSS 屬性，就能看到在各個 Email 客戶端的支援程度。寫 Email 的必備工具，比 MDN 更實用。',
+     link:'https://www.caniemail.com/'},
+    {t:'Email 測試工具：Litmus / Email on Acid',
+     desc:'可以截圖預覽你的 Email 在各種客戶端的樣子，不用每個都實際開信。付費工具，但 Litmus 有免費試用。',
+     link:'https://www.litmus.com/'},
+    {t:'VS Code 快捷鍵（Windows）',
+     desc:'官方鍵盤快捷鍵一覽表，建議把常用的幾個記起來，寫起來快很多。',
+     link:'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf'},
+    {t:'HTML Email Boilerplate',
+     desc:'一個社群維護的 Email HTML 起始樣板，把各種 reset 和 Outlook 修復都寫好了，可以直接拿來當基底。',
+     link:'https://htmlemail.io/'},
+  ]},
+];
+
+// ============================================================
+// 情境模式資料
+// ============================================================
+const CTX_DATA = [
+  { icon:'🎯', color:'#EAF3DE', title:'製作主視覺 Banner 區',
+    desc:'有主圖的全幅 Banner，通常是信件最頂部的主視覺，含背景圖、Logo、標題、CTA 按鈕。',
+    items:[
+      {n:'外層容器',     c:'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#111111; background-image:url(images/BG-image.png); background-repeat:no-repeat; border-top-right-radius:8px; border-top-left-radius:8px;">'},
+      {n:'mob-padding',  c:'class="mob-padding-15 mob-background-none"'},
+      {n:'Logo',         c:'<img src="images/logo-CC5.png" width="180" style="display:block" alt="">'},
+      {n:'大標題',       c:'class="mob-email-title-32" style="font-size:48px; font-weight:700; color:#ffffff; line-height:1.2; padding-top:0px; text-transform:uppercase;"'},
+      {n:'CTA 綠底按鈕', c:'class="button-a-green" style="padding:8px 24px; background-color:#82be0f; border:#82be0f 1px solid; font-weight:600; font-size:16px;"'},
+    ],
+    tip:'mob-background-none 讓手機版不顯示背景圖，避免手機版背景圖壓縮變形。'
+  },
+  { icon:'💬', color:'#E6F1FB', title:'純文字說明區塊（白底）',
+    desc:'白底的文章區塊，含 Logo、大標題、副標題、內文、列點說明。',
+    items:[
+      {n:'白底容器',     c:'style="background-color:#ffffff; padding:48px 32px; box-shadow:0px 0px 16px 0px #D4D4D4; border-top:5px solid #82be0f; border-radius:5px;"'},
+      {n:'單 Logo',      c:'<img src="images/logo-CC5.png" width="230" style="display:block;" alt="" class="text-center">'},
+      {n:'大標題',       c:'class="mob-email-title-32" style="font-size:48px; font-weight:700; color:#333333; line-height:1.2; padding-top:0px;"'},
+      {n:'副標題',       c:'class="mob-email-title-22" style="font-size:24px; font-weight:500; color:#4d4d4d; line-height:1.2; padding-top:0px;"'},
+      {n:'內文',         c:'class="mob-email-body" style="font-size:15px; font-weight:400; color:#666666; line-height:1.6; padding-top:0px;"'},
+      {n:'span 強調',    c:'<span style="color:#4d4d4d; font-weight:600;">強調文字</span>'},
+      {n:'超連結',       c:'<a href="#" target="_blank" class="button-text" style="color:#82be0f;">連結文字</a>'},
+    ],
+    tip:'border-top:5px solid #82be0f 是常用的品牌色頂線，讓白底區塊有視覺錨點。'
+  },
+  { icon:'💰', color:'#FCEBEB', title:'折價券區塊',
+    desc:'黑底左側綠線的 Coupon 碼 + Shop Now 按鈕 + 注意事項說明。',
+    items:[
+      {n:'折價券外框',   c:'style="background-color:#000000; padding:24px 32px 28px; border-left:7px solid #82be0f; background-image:url(images/BG-image.png); background-position:right top; background-repeat:no-repeat;"'},
+      {n:'折價碼框',     c:'style="color:#ffffff; font-size:17px; font-weight:600; padding:6px 20px; background-color:#3b3b3b;"'},
+      {n:'Shop Now 按鈕',c:'class="button-a-green" style="padding:6px 20px; background-color:#82be0f; border:#82be0f 1px solid; font-weight:600; font-size:16px;"'},
+      {n:'注意事項框',   c:'style="padding:16px 20px; background:#e4e4e4; border:#c0c0c0 1px dashed; border-radius:4px;"'},
+      {n:'注意事項文字', c:'style="font-size:14px; color:#7a7a7a;"'},
+    ],
+    tip:'折價券區塊通常配合 Email Preview 文字使用，在收件匣就能看到 coupon 碼。'
+  },
+  { icon:'🖼', color:'#FAEEDA', title:'左右2欄 — 圖文並排',
+    desc:'一邊圖片一邊文字，左右並排，手機版自動堆疊。',
+    items:[
+      {n:'外層容器',     c:'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#202020; padding:32px;">'},
+      {n:'圖片欄',       c:'<td width="48%" valign="top" class="stack-column-center">'},
+      {n:'blank 間隔',   c:'<!--blank--><td width="16" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->'},
+      {n:'文字欄',       c:'<td width="48%" valign="top" class="stack-column-center">'},
+      {n:'欄內標題',     c:'style="font-size:20px; font-weight:700; color:#ffffff; line-height:1.4;"'},
+      {n:'欄內說明',     c:'style="font-size:14px; font-weight:400; color:#dadada; line-height:1.6; padding-top:8px;"'},
+    ],
+    tip:'blank 間隔 td 是 Email 的 column gap 做法，不能用 CSS gap。手機版堆疊靠 stack-column-center class 觸發。'
+  },
+  { icon:'📊', color:'#EEEDFE', title:'訂閱方案定價區',
+    desc:'原價劃線、現價大字、月付/年付並排、訂閱按鈕。',
+    items:[
+      {n:'白底容器',     c:'style="background-color:#ffffff; padding:32px; border-radius:8px; box-shadow:0px 0px 8px 0px #D4D4D4;"'},
+      {n:'原價刪除線',   c:'style="font-size:16px; font-weight:400; color:#cccccc; text-decoration:line-through;"'},
+      {n:'現價大字',     c:'style="font-size:36px; font-weight:700; color:#333333;"'},
+      {n:'Member 標籤',  c:'style="background:#ff9f00; color:#fff; font-size:13px; font-weight:700; padding:4px 12px; border-radius:4px;"'},
+      {n:'月付欄',       c:'style="padding:12px 20px; border:1px solid #e0e0e0; border-radius:8px; text-align:center;"'},
+      {n:'年付欄(強調)', c:'style="padding:12px 20px; border:2px solid #82be0f; border-radius:8px; background:#f7fbf0; text-align:center;"'},
+      {n:'Subscribe 按鈕',c:'class="button-a-green" style="padding:10px 16px; background-color:#82be0f; border:1px solid #82be0f; border-radius:4px; font-weight:600;"'},
+    ],
+    tip:'年付欄用 2px 綠框 + 淡綠底色來強調推薦方案，不需要額外標籤就能引導視線。'
+  },
+  { icon:'✉️', color:'#F1EFE8', title:'信件基本骨架',
+    desc:'每封信都需要的固定結構：preview 文字、header、footer。',
+    items:[
+      {n:'Preview 文字', c:'<div style="display:none; color:#ffffff; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">預覽文字 &#847;&zwnj;&nbsp;</div>'},
+      {n:'最外層背景',   c:'<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ededed">'},
+      {n:'700px 容器',   c:'<table width="700" border="0" cellspacing="0" cellpadding="0" class="email-container">'},
+      {n:'Header Logo',  c:'<img src="images/RL_logo.png" alt="" style="display:block;">'},
+      {n:'Cannot see',   c:'Cannot see this email? <a href="!*cannotsee*!" style="color:#666666; text-decoration:underline" class="button-text">Click Here</a>'},
+      {n:'Copyright',    c:'Copyright &copy; !*CurrentYear*! Reallusion Inc. All rights reserved.'},
+      {n:'Unsubscribe',  c:'<a href="!*unsubscribe*!" style="color:#3d3d3d">Unsubscribe Email</a>'},
+    ],
+    tip:'!*CurrentYear*! 和 !*cannotsee*! 是發信平台的機制代碼，會在發送時自動替換，不要手動填入年份。'
+  },
+  { icon:'🏷', color:'#EAF3DE', title:'Text Bar + Label 組合',
+    desc:'常用的標題條 + 標籤，用在區塊上方引導視線。',
+    items:[
+      {n:'Text Bar (漸層)',c:'style="background-color:#3c4a52; background:linear-gradient(to bottom left,#3b4e64,#3c494e); padding:8px 16px; text-transform:uppercase;"'},
+      {n:'Text Bar (黑底)',c:'style="background-color:#1d1d1d; padding:14px 16px; border-radius:4px; text-transform:uppercase;"'},
+      {n:'Label 圓角',    c:'style="background-color:#478d9c; padding:8px 32px; border-top-left-radius:32px; border-top-right-radius:32px; border-bottom-right-radius:32px;"'},
+      {n:'Label 文字色',  c:'style="font-size:17px; font-weight:600; color:#ffffff;"'},
+      {n:'重點色字',      c:'style="font-size:18px; font-weight:700; color:#ffcb22;"'},
+    ],
+    tip:'Text Bar 通常不加 border-radius，保持直角與區塊齊邊；Label 反而用大圓角做出標籤感。'
+  },
+  { icon:'🔗', color:'#E6F1FB', title:'按鈕組（多按鈕並排）',
+    desc:'兩個按鈕並排，一個實心一個空心，常用於 Know More + Download。',
+    items:[
+      {n:'按鈕外層 table',c:'<table class="email-container" cellpadding="0" cellspacing="0" border="0">'},
+      {n:'空心綠框按鈕',  c:'class="email-container button-b-green" style="padding:8px 16px; font-weight:600; font-size:16px; color:#82BE0F; border:1px solid #82BE0F; border-radius:4px;"'},
+      {n:'blank 間隔',    c:'<!--blank--><td width="12" style="font-size:0px;line-height:0px;">&nbsp;</td><!--blank-->'},
+      {n:'實心綠底按鈕',  c:'class="email-container button-a-green" style="padding:8px 16px; font-weight:600; font-size:16px; color:#ffffff; border:1px solid #82BE0F; border-radius:4px; background-color:#82be0f;"'},
+      {n:'箭頭圖示(白)',  c:'<img src="images/arrow-ffffff.gif" width="11" alt="">'},
+      {n:'箭頭圖示(綠)',  c:'<img src="images/arrow-82be0f.png" width="8" alt="">'},
+    ],
+    tip:'雙按鈕通常左邊空心（次要）、右邊實心（主要），引導使用者點主要 CTA。'
+  },
+];
+
+// ============================================================
+// RENDER 情境模式
+// ============================================================
+function renderCtx(){
+  const con=document.getElementById('ctx-container');
+  if(!con)return;
+  const intro=`<div style="font-size:13px;color:#888;margin-bottom:14px;line-height:1.6">每個情境是一組常一起用的語法「食譜」，點開展開，點 code 直接複製。</div>`;
+  const cards=CTX_DATA.map((ctx,ci)=>{
+    const id='ctx_'+ci;
+    const rows=ctx.items.map(it=>{
+      const safe=ESC2(it.c);
+      return `<div class="ctx-item">
+        <div class="ctx-item-name">${it.n}</div>
+        <div class="ctx-item-code" onclick="cpyCtx(this,'${safe}')" title="點擊複製">${ESC(it.c)}</div>
+      </div>`;
+    }).join('');
+    return `<div class="ctx-card">
+      <div class="ctx-head" onclick="togCtx('${id}')">
+        <div class="ctx-icon" style="background:${ctx.color}">${ctx.icon}</div>
+        <span class="ctx-title">${ctx.title}</span>
+        <span class="ctx-count">${ctx.items.length} 個語法</span>
+        <span class="chev" id="ctxcv_${id}" style="margin-left:6px">&#9658;</span>
+      </div>
+      <div class="ctx-body" id="${id}">
+        <div class="ctx-desc">${ctx.desc}</div>
+        ${rows}
+        ${ctx.tip?`<div class="ctx-tip">${ctx.tip}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  con.innerHTML=intro+'<div class="ctx-grid">'+cards+'</div>';
+}
+function togCtx(id){
+  const b=document.getElementById(id),cv=document.getElementById('ctxcv_'+id);
+  const o=b.classList.toggle('open');cv.classList.toggle('open',o);
+}
+function cpyCtx(el,code){
+  navigator.clipboard.writeText(code).then(()=>{
+    const prev=el.textContent;el.textContent='已複製！';el.style.background='#EAF3DE';el.style.color='#3B6D11';
+    setTimeout(()=>{el.textContent=prev;el.style.background='';el.style.color='';},1400);
+  });
+}
+let ckState={}, ieData={}, blockImgs={}, curIssueId=null, iCat='all';
+let curMainTab='ref', curSubTab='syn';
+try{const s=localStorage.getItem('rl_ck');if(s)ckState=JSON.parse(s);}catch(e){}
+try{const s=localStorage.getItem('rl_ie');if(s)ieData=JSON.parse(s);}catch(e){}
+try{const s=localStorage.getItem('rl_bi');if(s)blockImgs=JSON.parse(s);}catch(e){}
+
+// ============================================================
+// NAV — two level
+// ============================================================
+function setMainTab(id,btn){
+  curMainTab=id;
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.wrap>.page').forEach(p=>p.style.display='none');
+  const pg=document.getElementById(id);
+  if(pg)pg.style.display='block';
+  const sb=document.getElementById('sub-bar');
+  if(sb)sb.classList.toggle('visible',id==='ref');
+  document.getElementById('gsearch-page').style.display='none';
+}
+function setSubTab(id,btn){
+  curSubTab=id;
+  document.querySelectorAll('.sub-bar-inner .stab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('#ref .subpage').forEach(p=>p.style.display='none');
+  const sp=document.getElementById(id);
+  if(sp)sp.style.display='block';
+}
+function SP(id,btn){ setMainTab(id,btn); }
+
+// ============================================================
+// 全域搜尋
+// ============================================================
+function doGlobalSearch(q){
+  q=(q||'').trim().toLowerCase();
+  const gp=document.getElementById('gsearch-page');
+  if(!q){
+    gp.style.display='none';
+    setMainTab(curMainTab, document.querySelector('.mtab.active'));
+    return;
+  }
+  document.querySelectorAll('.wrap>.page').forEach(p=>p.style.display='none');
+  gp.style.display='block';
+  const sb=document.getElementById('sub-bar');
+  if(sb)sb.classList.remove('visible');
+
+  let html='';
+  const synHits=[];
+  SYN_GROUPS.forEach(grp=>grp.items.forEach(it=>{
+    if([it.n,(it.c||''),(it.note||'')].join(' ').toLowerCase().includes(q))
+      synHits.push({tag:grp.label,name:it.n,code:it.c});
+  }));
+  if(synHits.length){
+    html+=`<div class="gsearch-section"><div class="gsearch-section-title">快速語法</div>`;
+    synHits.slice(0,6).forEach(h=>{html+=`<div class="gsearch-item" onclick="clearSearch();setMainTab('ref',document.querySelector('.mtab'));setSubTab('syn',document.querySelectorAll('.stab')[0])"><span class="gsearch-tag">${h.tag}</span><span class="gsearch-name">${h.name}</span><span class="gsearch-code">${ESC(h.code)}</span></div>`;});
+    html+='</div>';
+  }
+  const blkHits=BLOCKS_DATA.filter(b=>[b.title,(b.desc||'')].join(' ').toLowerCase().includes(q));
+  if(blkHits.length){
+    html+=`<div class="gsearch-section"><div class="gsearch-section-title">區塊語法</div>`;
+    blkHits.slice(0,4).forEach(b=>{html+=`<div class="gsearch-item" onclick="clearSearch();setMainTab('ref',document.querySelector('.mtab'));setSubTab('block',document.querySelectorAll('.stab')[2])"><span class="gsearch-tag">區塊</span><span class="gsearch-name">${b.title}</span><span class="gsearch-code">${ESC(b.desc||'')}</span></div>`;});
+    html+='</div>';
+  }
+  const uiHits=[];
+  UI_SECTIONS.forEach(sec=>{if(sec.items)sec.items.forEach(it=>{if([it.name,(it.note||''),(it.style||''),(it.cls||'')].join(' ').toLowerCase().includes(q))uiHits.push({tag:sec.label,name:it.name,code:it.style||''}); });});
+  if(uiHits.length){
+    html+=`<div class="gsearch-section"><div class="gsearch-section-title">UI 規範</div>`;
+    uiHits.slice(0,5).forEach(h=>{html+=`<div class="gsearch-item" onclick="clearSearch();setMainTab('ui',document.querySelectorAll('.mtab')[1])"><span class="gsearch-tag">${h.tag}</span><span class="gsearch-name">${h.name}</span><span class="gsearch-code">${ESC(h.code)}</span></div>`;});
+    html+='</div>';
+  }
+  const issHits=ISSUES.filter(x=>x.t.toLowerCase().includes(q));
+  if(issHits.length){
+    html+=`<div class="gsearch-section"><div class="gsearch-section-title">問題圖記</div>`;
+    issHits.slice(0,4).forEach(iss=>{html+=`<div class="gsearch-item" onclick="clearSearch();setMainTab('ref',document.querySelector('.mtab'));setSubTab('issues',document.querySelectorAll('.stab')[3]);openIssue(${iss.id})"><span class="gsearch-tag">${ICATS[iss.c].l}</span><span class="gsearch-name">${iss.t}</span></div>`;});
+    html+='</div>';
+  }
+  if(!html)html=`<div class="gsearch-empty">找不到「${q}」相關結果</div>`;
+  document.getElementById('gsearch-results').innerHTML=html;
+}
+function clearSearch(){
+  const el=document.getElementById('gsearch');
+  if(el)el.value='';
+}
+
+// ============================================================
+// 快速語法
+// ============================================================
+// ============================================================
+// 快速語法 — 無獨立搜尋（用全域搜尋）
+// ============================================================
+// ============================================================
+// 區塊語法 — icon 化
+// ============================================================
+const UPLOAD_ICON=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`;
+const DEL_ICON=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>`;
+const EXPAND_ICON=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+const COLLAPSE_ICON=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`;
+
+function toggleBlockCode(id){
+  const el=document.getElementById('bcode-'+id);
+  const btn=document.getElementById('bexp-'+id);
+  const expanded=el.classList.toggle('expanded');
+  btn.innerHTML=expanded?`${COLLAPSE_ICON}<span>收合</span>`:`${EXPAND_ICON}<span>展開</span>`;
+}
+
+function uploadBlockImg(id,e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{blockImgs[id]=ev.target.result;try{localStorage.setItem('rl_bi',JSON.stringify(blockImgs));}catch(err){}renderBlocks();};
+  r.readAsDataURL(file);
+}
+
+function deleteBlockImg(id){
+  delete blockImgs[id];try{localStorage.setItem('rl_bi',JSON.stringify(blockImgs));}catch(e){}renderBlocks();
+}
+
+// ============================================================
+// 問題圖記 — 點縮圖放大，鉛筆 icon 開編輯
+// ============================================================
+const PENCIL_ICON=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+
+function renderIssueFilters(){
+  const row=document.getElementById('iff');
+  row.innerHTML=['all',...Object.keys(ICATS)].map(c=>{
+    const l=c==='all'?'全部':ICATS[c].l;
+    return `<button class="f-btn${iCat===c?' on':''}" onclick="setIC('${c}',this)">${l}</button>`;
+  }).join('');
+}
+function setIC(cat,btn){iCat=cat;document.querySelectorAll('#iff .f-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderIssueGallery();}
+
+function renderIssueGallery(){
+  const g=document.getElementById('ig');
+  const fi=ISSUES.filter(x=>iCat==='all'||x.c===iCat);
+  if(!fi.length){g.innerHTML='<div style="text-align:center;color:#bbb;padding:32px;grid-column:1/-1">此分類暫無紀錄</div>';return;}
+  g.innerHTML=fi.map(iss=>{
+    const cat=ICATS[iss.c];const e=ieData[iss.id]||{};
+    const thumbContent=e.img
+      ?`<img src="${e.img}" alt="" style="width:100%;height:100%;object-fit:cover">`
+      :`<div class="iph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>點擊上傳截圖</div>`;
+    const dot=(e.desc||e.code)?' <span style="font-size:10px;color:#3B6D11">&#9679;</span>':'';
+    return `<div class="icard">
+      <div class="ithumb" onclick="${e.img?`openImgZoom('${e.img}')`:'openIssue('+iss.id+')'}">
+        ${thumbContent}
+        <div class="iedit-btn" title="編輯筆記" onclick="event.stopPropagation();openIssue(${iss.id})">${PENCIL_ICON}</div>
+      </div>
+      <div class="istrip" style="background:${cat.s}"></div>
+      <div class="iinfo">
+        <div class="ititle">${iss.t}${dot}</div>
+        <div class="icat-lbl">${cat.l}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
+// ============================================================
+// UI 規範
+// ============================================================
+const COPY_ICON = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+
+function renderUI(){
+  const con=document.getElementById('ui-container');
+  if(!con)return;
+  // merge custom UI data
+  if(customData.uiSections){
+    customData.uiSections.forEach((cs,si)=>{
+      if(UI_SECTIONS[si]&&cs.items) UI_SECTIONS[si].items=cs.items;
+    });
+  }
+  con.innerHTML=UI_SECTIONS.map((sec,si)=>{
+    const subtitleEl=sec.note?`<div style="font-size:11px;color:#E24B4A;margin-bottom:10px;line-height:1.5">${sec.note}</div>`:'';
+    const editSecBtn=editMode?`<button class="card-act-btn" style="margin-left:8px;vertical-align:middle" onclick="addUIItem(${si})" title="新增項目"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>`:'';
+    if(sec.codeblock){
+      const cards=sec.items.map((item,ii)=>{
+        const uid='hs_'+item.name.replace(/[\s.:\-]/g,'');
+        const editBtn=editMode?`<button onclick="openUIItemEditor(${si},${ii})" style="width:24px;height:24px;border:1px solid #e5e5e2;border-radius:5px;background:transparent;color:#bbb;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">${COPY_ICON.replace('15','13').replace('15','13')}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:'';
+        return `<div class="ui-row" id="${uid}" style="flex-direction:column;align-items:stretch;cursor:default;padding:0">
+          <div style="display:flex;align-items:center;padding:7px 10px;gap:8px;border-bottom:1px solid #f0f0ec">
+            <span style="font-size:12px;font-weight:500;color:#1a1a1a;flex:1">${item.name}</span>
+            ${editMode?editBtn:`<button onclick="copyUI('${uid}_btn','${ESC2(item.code)}')" id="${uid}_btn" style="width:24px;height:24px;border:1px solid #e5e5e2;border-radius:5px;background:transparent;color:#bbb;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .15s">${COPY_ICON}</button>`}
+          </div>
+          <pre style="margin:0;padding:8px 10px;font-family:'SF Mono',Consolas,monospace;font-size:10px;color:#1a1a1a;line-height:1.8;white-space:pre-wrap;word-break:break-all;background:#f5f5f3">${ESC(item.code)}</pre>
+          <div style="padding:5px 10px;border-top:1px solid #f0f0ec">
+            <span style="font-size:10px;color:${item.note?'#aaa':'#ccc'};font-style:${item.note?'normal':'italic'}">${item.note||'輸入備註...'}</span>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="ui-section">
+        <div class="ui-section-title">${sec.label}${editSecBtn}</div>
+        ${subtitleEl}
+        <div class="ui-grid" style="grid-template-columns:repeat(2,1fr)">${cards}</div>
+      </div>`;
+    }
+    const cards=(sec.items||[]).map((item,ii)=>{
+      if(item.swatchOnly){
+        return `<div class="ui-row" style="cursor:default">
+          <div class="ui-left"><div class="ui-swatch" style="${item.swatchStyle||'background:transparent'}"></div></div>
+          <div class="ui-middle"><span class="ui-name" style="font-size:11px;color:#bbb">${item.name}</span></div>
+        </div>`;
+      }
+      const swatchBg=item.hex?`background:#${item.hex}`:(item.swatchStyle||'background:transparent');
+      const previewHtml=item.preview?`<span class="ui-preview" style="${item.previewStyle||''}">${item.preview}</span>`:'';
+      const noteHtml=item.note?`<span class="ui-note" title="${item.note}">${item.note}</span>`:`<span class="ui-note empty">輸入備註...</span>`;
+      const fullCode=item.fullcode||((item.cls?item.cls+' ':'')+( item.style||''));
+      const rowId='ur_'+item.name.replace(/[^a-z0-9]/gi,'');
+      if(editMode){
+        return `<div class="ui-row" id="${rowId}" style="cursor:default">
+          <div class="ui-left"><div class="ui-swatch" style="${swatchBg}"></div>${previewHtml}</div>
+          <div class="ui-middle">
+            <span class="ui-name">${item.name}</span>
+            ${noteHtml}
+            <span class="ui-codeline">${ESC(fullCode)}</span>
+          </div>
+          <button class="ui-copy-btn" onclick="openUIItemEditor(${si},${ii})" title="編輯" style="cursor:pointer;border:none;background:transparent;color:#bbb;padding:0 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        </div>`;
+      }
+      return `<div class="ui-row" id="${rowId}" onclick="copyUI('${rowId}','${ESC2(fullCode)}')">
+        <div class="ui-left"><div class="ui-swatch" style="${swatchBg}"></div>${previewHtml}</div>
+        <div class="ui-middle">
+          <span class="ui-name">${item.name}</span>
+          ${noteHtml}
+          <span class="ui-codeline">${ESC(fullCode)}</span>
+        </div>
+        <div class="ui-copy-btn">${COPY_ICON}</div>
+      </div>`;
+    }).join('');
+    return `<div class="ui-section">
+      <div class="ui-section-title">${sec.label}${editSecBtn}</div>
+      ${subtitleEl}
+      <div class="ui-grid">${cards}</div>
+    </div>`;
+  }).join('');
+}
+
+function openUIItemEditor(si, ii) {
+  if (!editMode) return;
+  const item = UI_SECTIONS[si].items[ii] || {};
+  const isCodeblock = UI_SECTIONS[si].codeblock;
+  const fullCode = item.fullcode || ((item.cls ? item.cls+' ' : '') + (item.style||'')) || item.code || '';
+  openEditPanel('編輯 UI 規範項目', `
+    <div class="ep-field"><label>名稱</label><input id="ep_uname" value="${(item.name||'').replace(/"/g,'&quot;')}"></div>
+    ${!isCodeblock ? `<div class="ep-field"><label>Hex 色碼（不含 #，例如 82be0f）</label>
+      <div class="color-row">
+        <input type="color" id="ep_uhexColor" value="#${item.hex||'cccccc'}" oninput="document.getElementById('ep_uhexTxt').value=this.value.replace('#','')">
+        <input type="text" id="ep_uhexTxt" value="${item.hex||''}" placeholder="82be0f" oninput="if(this.value.length===6||this.value.length===0)document.getElementById('ep_uhexColor').value='#'+(this.value||'cccccc')">
+      </div>
+    </div>` : ''}
+    <div class="ep-field"><label>Code / Style</label><textarea class="code-ta" id="ep_ucode">${fullCode}</textarea></div>
+    <div class="ep-field"><label>備註說明</label><input id="ep_unote" value="${(item.note||'').replace(/"/g,'&quot;')}"></div>
+  `, [
+    { label: '取消', cls: '', fn: 'closeEditPanel()' },
+    { label: '刪除', cls: 'danger', fn: `deleteUIItem(${si},${ii})` },
+    { label: '儲存', cls: 'primary', fn: `saveUIItem(${si},${ii})` }
+  ]);
+}
+
+function saveUIItem(si, ii) {
+  const item = UI_SECTIONS[si].items[ii];
+  const isCodeblock = UI_SECTIONS[si].codeblock;
+  item.name = document.getElementById('ep_uname').value.trim();
+  item.note = document.getElementById('ep_unote').value.trim();
+  const newCode = document.getElementById('ep_ucode').value.trim();
+  if (isCodeblock) {
+    item.code = newCode;
+  } else {
+    const hexInput = document.getElementById('ep_uhexTxt');
+    if (hexInput) item.hex = hexInput.value.replace('#','').trim();
+    item.style = newCode;
+    item.fullcode = undefined;
+  }
+  saveUIState();
+  closeEditPanel();
+  renderUI();
+  showToast('✅ 已儲存');
+}
+
+function deleteUIItem(si, ii) {
+  UI_SECTIONS[si].items.splice(ii, 1);
+  saveUIState();
+  closeEditPanel();
+  renderUI();
+  showToast('🗑️ 已刪除');
+}
+
+function addUIItem(si) {
+  if (!editMode) return;
+  const isCodeblock = UI_SECTIONS[si].codeblock;
+  UI_SECTIONS[si].items.push(isCodeblock
+    ? { name: '新項目', code: '', note: '' }
+    : { name: '新項目', hex: 'cccccc', style: '', note: '', preview: 'Aa', previewStyle: 'font-size:13px;font-weight:500;color:#ccc' }
+  );
+  saveUIState();
+  renderUI();
+  openUIItemEditor(si, UI_SECTIONS[si].items.length - 1);
+}
+
+function saveUIState() {
+  customData.uiSections = UI_SECTIONS.map(sec => ({
+    label: sec.label,
+    items: (sec.items || []).map(it => Object.assign({}, it))
+  }));
+  saveCustomData();
+}
+
+function copyUI(btnId,code){
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById(btnId);
+    if(btn){
+      const prev=btn.style.color;
+      btn.style.color='#3B6D11';
+      setTimeout(()=>btn.style.color=prev,1400);
+    }
+    const row=document.getElementById(btnId);
+    if(row&&row.classList.contains('ui-row')){
+      row.classList.add('copied');
+      setTimeout(()=>row.classList.remove('copied'),1400);
+    }
+  });
+}
+
+function cpyRaw(code){
+  navigator.clipboard.writeText(code).then(()=>{});
+}
+
+// ============================================================
+// Checklist
+// ============================================================
+function tck(t,i){const k=t+'_'+i;ckState[k]=!ckState[k];try{localStorage.setItem('rl_ck',JSON.stringify(ckState));}catch(e){}renderCheck();}
+function resetCheck(){ckState={};try{localStorage.removeItem('rl_ck');}catch(e){}renderCheck();}
+function updProg(){
+  const tot=Object.keys(CHECKS).reduce((s,t)=>s+CHECKS[t].items.length,0);
+  const done=Object.keys(ckState).filter(k=>ckState[k]).length;
+  const pct=tot?Math.round(done/tot*100):0;
+  const pf=document.getElementById('pf');
+  const pt=document.getElementById('pt');
+  if(pf)pf.style.width=pct+'%';
+  if(pt)pt.textContent=done+'/'+tot;
+}
+function togTut(id){const cb=document.getElementById('tcb_'+id),cv=document.getElementById('tcv_'+id);const o=cb.classList.toggle('open');cv.classList.toggle('open',o);}
+function cpyTut(id,e){e.stopPropagation();const el=document.getElementById(id);const t=el.innerText.replace('複製','').trim();navigator.clipboard.writeText(t).then(()=>{const b=el.querySelector('.tcpb');b.textContent='已複製';setTimeout(()=>b.textContent='複製',1500);});}
+
+// ============================================================
+// 問題圖記 — openIssue / closeIssueModal / handleImg / saveIssue
+// ============================================================
+function openIssue(id){
+  curIssueId=id;
+  const iss=ISSUES.find(x=>x.id===id);const cat=ICATS[iss.c];const e=ieData[id]||{};
+  document.getElementById('m-title').textContent=iss.t;
+  const mb=document.getElementById('m-badge');mb.textContent=cat.l;mb.style.background=cat.bg;mb.style.color=cat.fg;
+  document.getElementById('m-desc').value=e.desc||'';
+  document.getElementById('m-code').value=e.code||'';
+  const uz=document.getElementById('uzone');const uh=document.getElementById('uhint');
+  const pv=uz.querySelector('img.prev');if(pv)pv.remove();
+  const zh=uz.querySelector('.zoom-hint');if(zh)zh.remove();
+  if(e.img){
+    const img=document.createElement('img');img.src=e.img;img.className='prev';
+    img.style.cssText='width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;cursor:zoom-in';
+    img.onclick=ev=>{ev.stopPropagation();openImgZoom(e.img);};
+    uz.appendChild(img);
+    const hint=document.createElement('div');hint.className='zoom-hint';hint.textContent='點擊放大';
+    uz.appendChild(hint);
+    uh.style.display='none';
+  } else {uh.style.display='flex';}
+  document.getElementById('svok').style.display='none';
+  document.getElementById('issue-overlay').classList.add('open');
+}
+function closeIssueModal(){document.getElementById('issue-overlay').classList.remove('open');curIssueId=null;}
+function handleIssueBg(e){if(e.target===document.getElementById('issue-overlay'))closeIssueModal();}
+function handleImg(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    if(!ieData[curIssueId])ieData[curIssueId]={};
+    ieData[curIssueId].img=ev.target.result;
+    saveIeData();
+    const uz=document.getElementById('uzone');const uh=document.getElementById('uhint');
+    const pv=uz.querySelector('img.prev');if(pv)pv.remove();
+    const zh=uz.querySelector('.zoom-hint');if(zh)zh.remove();
+    const img=document.createElement('img');img.src=ev.target.result;img.className='prev';
+    img.style.cssText='width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;cursor:zoom-in';
+    img.onclick=ev2=>{ev2.stopPropagation();openImgZoom(ev.target.result);};
+    uz.appendChild(img);
+    const hint=document.createElement('div');hint.className='zoom-hint';hint.textContent='點擊放大';
+    uz.appendChild(hint);
+    uh.style.display='none';
+    renderIssueGallery();
+  };
+  r.readAsDataURL(file);
+}
+async function saveIssue(){
+  if(!curIssueId)return;
+  if(!ieData[curIssueId])ieData[curIssueId]={};
+  ieData[curIssueId].desc=document.getElementById('m-desc').value;
+  ieData[curIssueId].code=document.getElementById('m-code').value;
+  saveIeData();
+  renderIssueGallery();
+
+  const ok=document.getElementById('svok');
+  const ghSettings = getGHSettings();
+
+  if (ghSettings.token) {
+    // 有設定 GitHub，上傳圖片和筆記
+    const imgData = ieData[curIssueId].img || null;
+    const success = await pushNoteToGitHub(
+      curIssueId,
+      imgData,
+      ieData[curIssueId].desc,
+      ieData[curIssueId].code
+    );
+    ok.textContent = success ? '✅ 已儲存並同步到 GitHub' : '⚠️ 已儲存（GitHub 同步失敗）';
+    ok.style.background = success ? '' : '#FAEEDA';
+    ok.style.color = success ? '' : '#854F0B';
+  } else {
+    ok.textContent = '已儲存（尚未連接 GitHub）';
+  }
+
+  ok.style.display='block';
+  setTimeout(()=>{ok.style.display='none';ok.textContent='已儲存';ok.style.background='';ok.style.color='';},3000);
+}
+function saveIeData(){try{localStorage.setItem('rl_ie',JSON.stringify(ieData));}catch(e){}}
+
+// ============================================================
+// 圖片放大 Overlay
+// ============================================================
+function openImgZoom(src){
+  document.getElementById('img-zoom-el').src=src;
+  document.getElementById('img-overlay').classList.add('open');
+}
+function closeImgOverlay(){document.getElementById('img-overlay').classList.remove('open');}
+
+// ============================================================
+// UTIL
+// ============================================================
+function ESC(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function ESC2(s){return String(s).replace(/'/g,'&#39;').replace(/"/g,'&quot;');}
+
+// ============================================================
+// INIT
+// ============================================================
+applyCustomData();
+renderSyn();renderCtx();renderBlocks();renderUI();renderCheck();renderNotes();renderIssueFilters();renderIssueGallery();renderTut();
+document.getElementById('sub-bar').classList.add('visible');
+setSubTab('syn', document.querySelector('.stab'));
+
+</script>
+</body>
+</html>
