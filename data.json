@@ -1,0 +1,87 @@
+{
+  "blocks": [
+    {
+      "id": "b1",
+      "title": "Header 頭圖",
+      "desc": "Email 最上方的頭圖區塊，通常是主視覺",
+      "code": "<table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr><td align=\"center\">\n    <img src=\"header.jpg\" width=\"600\" style=\"display:block;\">\n  </td></tr>\n</table>"
+    },
+    {
+      "id": "b2",
+      "title": "CTA 按鈕",
+      "desc": "號召行動按鈕，使用 table 確保 Outlook 相容",
+      "code": "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr><td bgcolor=\"#d94f2b\" style=\"border-radius:6px;\">\n    <a href=\"#\" style=\"display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-weight:700;\">立即購買</a>\n  </td></tr>\n</table>"
+    },
+    {
+      "id": "b3",
+      "title": "雙欄商品區",
+      "desc": "左右並列的商品介紹，使用 table 雙欄",
+      "code": "<table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr>\n    <td width=\"290\" valign=\"top\">\n      <img src=\"p1.jpg\" width=\"290\" style=\"display:block;\">\n    </td>\n    <td width=\"20\"></td>\n    <td width=\"290\" valign=\"top\">\n      <img src=\"p2.jpg\" width=\"290\" style=\"display:block;\">\n    </td>\n  </tr>\n</table>"
+    }
+  ],
+  "syntax": [
+    {
+      "title": "文字樣式",
+      "rows": [
+        { "label": "粗體", "code": "font-weight: 700;" },
+        { "label": "字距", "code": "letter-spacing: 0.05em;" },
+        { "label": "底線", "code": "text-decoration: underline;" },
+        { "label": "刪除線", "code": "text-decoration: line-through;" },
+        { "label": "全大寫", "code": "text-transform: uppercase;" }
+      ]
+    },
+    {
+      "title": "間距 & 版型",
+      "rows": [
+        { "label": "內距上下", "code": "padding: 20px 0;" },
+        { "label": "外距置中", "code": "margin: 0 auto;" },
+        { "label": "行高", "code": "line-height: 1.6;" },
+        { "label": "圓角", "code": "border-radius: 6px;" }
+      ]
+    },
+    {
+      "title": "Email 相容小撇步",
+      "rows": [
+        { "label": "圖片去縫隙", "code": "display: block;" },
+        { "label": "Outlook 表格清零", "code": "border-collapse: collapse;" },
+        { "label": "強制 iOS 不轉連結", "code": "color: inherit; text-decoration: none;" }
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "id": "n1",
+      "title": "Gmail 圖片封鎖",
+      "body": "Gmail 預設會擋圖片，所以 alt 文字必須有設，視覺也要考慮「圖沒載出來」的情境。"
+    },
+    {
+      "id": "n2",
+      "title": "Outlook 的 padding bug",
+      "body": "Outlook 對 padding 的支援不完全，建議用 table 的 cellpadding 或空的 td 來做間距。"
+    }
+  ],
+  "checklist": [
+    { "id": "c1", "text": "所有圖片都有設定 alt 文字", "done": false },
+    { "id": "c2", "text": "所有連結都已加上追蹤參數", "done": false },
+    { "id": "c3", "text": "寬度固定為 600px", "done": false },
+    { "id": "c4", "text": "在 Gmail、Outlook、Apple Mail 都測過", "done": false },
+    { "id": "c5", "text": "退訂連結正常運作", "done": false },
+    { "id": "c6", "text": "發件人姓名與 email 正確", "done": false }
+  ],
+  "tutorial": [
+    {
+      "id": "t1",
+      "title": "檔案過工流程",
+      "items": [
+        { "id": "ti1", "title": "1. 接收設計稿", "body": "確認設計稿為 600px 寬，切圖前確認文案與連結清單完整。" },
+        { "id": "ti2", "title": "2. 切圖", "body": "使用 Photoshop 切片，圖片統一存成 JPG（商品圖）或 PNG（Logo），檔名用英文小寫。" },
+        { "id": "ti3", "title": "3. 寫 HTML", "body": "以 table 為主結構，所有樣式內聯，不使用 div + CSS class。" },
+        { "id": "ti4", "title": "4. 測試", "body": "用 Litmus 或 Email on Acid 跑多平台測試，重點檢查 Outlook 2013+。" }
+      ]
+    }
+  ],
+  "meta": {
+    "version": 1,
+    "updatedAt": 0
+  }
+}
