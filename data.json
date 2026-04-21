@@ -2,7 +2,7 @@
   "blocks": [
     {
       "id": "b1",
-      "title": "Header 頭圖123",
+      "title": "Header 頭圖45666",
       "desc": "Email 最上方的頭圖區塊，通常是主視覺",
       "code": "<table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr><td align=\"center\">\n    <img src=\"header.jpg\" width=\"600\" style=\"display:block;\">\n  </td></tr>\n</table>"
     },
@@ -158,6 +158,6 @@
   ],
   "meta": {
     "version": 2,
-    "updatedAt": 1776739626842
+    "updatedAt": 1776740340634
   }
 }
