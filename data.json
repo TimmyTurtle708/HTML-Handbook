@@ -8,7 +8,7 @@
     },
     {
       "id": "b2",
-      "title": "CTA 按鈕",
+      "title": "CTA CCTAA",
       "desc": "號召行動按鈕，使用 table 確保 Outlook 相容",
       "code": "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr><td bgcolor=\"#d94f2b\" style=\"border-radius:6px;\">\n    <a href=\"#\" style=\"display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-weight:700;\">立即購買</a>\n  </td></tr>\n</table>"
     },
@@ -157,7 +157,7 @@
     }
   ],
   "meta": {
-    "version": 2,
-    "updatedAt": 1776740512015
+    "version": 3,
+    "updatedAt": 1776740559507
   }
 }
