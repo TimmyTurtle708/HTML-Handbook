@@ -2476,7 +2476,7 @@ main { flex: 1; padding: 28px 36px; }
         <div style="font-size:11px;color:var(--ink-mute);margin-top:4px;">點「↑ 上傳新版」時會更新這個檔案，通常是 <code style="background:var(--bg);padding:1px 5px;border-radius:3px;font-size:11px;">index.html</code>。</div>
       </div>
       <!-- 連線狀態 -->
-      <div id="ghStatusMsg" style="display: block; padding: 10px 14px; border-radius: 7px; font-size: 13px; margin-top: 4px; background: rgb(240, 250, 245); color: var(--ok);">✅ 全部通過！<br>· 登入身份：TimmyTurtle708<br>· Repo：TimmyTurtle708/HTML-Handbook<br>· 檔案：data.json（1357.3 KB）</div>
+      <div id="ghStatusMsg" style="display: block; padding: 10px 14px; border-radius: 7px; font-size: 13px; margin-top: 4px; background: rgb(240, 250, 245); color: var(--ok);">✅ 連線成功！Repo: TimmyTurtle708/HTML-Handbook</div>
     </div>
     <div class="modal-footer" style="justify-content:space-between;">
       <button class="btn" onclick="testGHConnection()" style="color:var(--ink-mute);">🔌 測試連線</button>
@@ -2599,7 +2599,7 @@ main { flex: 1; padding: 28px 36px; }
   <img id="lightboxImg" src="" alt="">
 </div>
 
-<div class="toast" id="toast">✅ 設定已儲存</div>
+<div class="toast" id="toast">✅ 已儲存</div>
 
 <script>
 // ============================================================
@@ -3586,14 +3586,20 @@ function uploadImg(type, id) {
 // GitHub Contents API
 // ============================================================
 function getGH() {
-  try { return JSON.parse(localStorage.getItem(LS_GH) || '{}'); } catch(e) { return {}; }
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_GH) || '{}');
+    // 預設值（owner/repo 固定，token 由使用者自行設定）
+    return Object.assign({ owner: 'TimmyTurtle708', repo: 'HTML-Handbook', dataFile: 'data.json', htmlFile: 'index.html' }, saved);
+  } catch(e) {
+    return { owner: 'TimmyTurtle708', repo: 'HTML-Handbook', dataFile: 'data.json', htmlFile: 'index.html' };
+  }
 }
 
 function openGHPanel() {
   const g = getGH();
   document.getElementById('ghToken').value = g.token || '';
-  document.getElementById('ghOwner').value = g.owner || '';
-  document.getElementById('ghRepo').value = g.repo || '';
+  document.getElementById('ghOwner').value = g.owner || 'TimmyTurtle708';
+  document.getElementById('ghRepo').value = g.repo || 'HTML-Handbook';
   document.getElementById('ghFile').value = g.dataFile || 'data.json';
   document.getElementById('ghHtmlFile').value = g.htmlFile || 'index.html';
   document.getElementById('ghStatusMsg').style.display = 'none';
@@ -3632,12 +3638,15 @@ function saveGHSettings() {
 function updateGHButtons() {
   const g = getGH();
   const hasConfig = !!(g.token && g.owner && g.repo);
-  document.getElementById('btnPull').style.display = hasConfig ? 'inline-flex' : 'none';
+  const canPull = !!(g.owner && g.repo); // 拉取只需要 owner/repo，不需要 token
+  document.getElementById('btnPull').style.display = canPull ? 'inline-flex' : 'none';
   document.getElementById('btnPush').style.display = hasConfig ? 'inline-flex' : 'none';
   document.getElementById('btnPushHTML').style.display = hasConfig ? 'inline-flex' : 'none';
   const pill = document.getElementById('statusPill');
   if (hasConfig) {
     pill.innerHTML = '<div class="status-dot"></div> 已連線';
+  } else if (canPull) {
+    pill.innerHTML = '<div class="status-dot" style="background:var(--warn)"></div> 唯讀模式';
   } else {
     pill.innerHTML = '<div class="status-dot" style="background:var(--ink-mute)"></div> 就緒';
   }
@@ -3761,22 +3770,25 @@ async function ghPushHTML() {
 // 從 GitHub 拉取 data.json
 async function ghPull() {
   const g = getGH();
-  if (!g.token) { showToast('請先設定 GitHub Token', 'err'); return; }
+  // 拉取只需要 owner/repo/dataFile，不強制要求 Token（Public repo 不需要）
+  if (!g.owner || !g.repo) { showToast('請先至 ⚙️ 設定填寫用戶名稱與 Repo 名稱', 'err'); return; }
   if (!confirm('確定要從 GitHub 拉取？這會覆蓋目前本機的所有資料。')) return;
   setPillState('syncing');
   try {
-    const url = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${g.dataFile}`;
-    const res = await fetch(url, {
-      headers: { Authorization: `token ${g.token}`, Accept: 'application/vnd.github+json' }
-    });
+    const dataFile = g.dataFile || 'data.json';
+    const url = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${dataFile}`;
+    const headers = { Accept: 'application/vnd.github+json' };
+    // 若有 Token 則附上（Private repo 或避免 rate limit）
+    if (g.token) headers['Authorization'] = `token ${g.token}`;
+    const res = await fetch(url, { headers });
     if (!res.ok) {
       let errMsg = `HTTP ${res.status}`;
       try {
         const errBody = await res.json();
         if (errBody.message) errMsg += `：${errBody.message}`;
-        if (res.status === 401) errMsg = '❌ Token 無效或已過期，請重新產生';
-        if (res.status === 403) errMsg = '❌ Token 權限不足，請確認已勾選 repo 或 Contents 讀取權限';
-        if (res.status === 404) errMsg = `❌ 找不到檔案，請確認 owner/repo/${g.dataFile} 路徑是否正確`;
+        if (res.status === 401) errMsg = 'Token 無效或已過期，請重新產生';
+        if (res.status === 403) errMsg = 'Token 權限不足，請確認已勾選 repo 或 Contents 讀取權限';
+        if (res.status === 404) errMsg = `找不到檔案「${dataFile}」，請先用原帳號推送資料，或確認 owner/repo 設定正確`;
       } catch(_) {}
       throw new Error(errMsg);
     }
