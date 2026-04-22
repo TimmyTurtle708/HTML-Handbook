@@ -238,8 +238,8 @@
     {
       "id": "i1",
       "cat": "",
-      "t": "RWD 跑版",
-      "desc": "莫名的空白",
+      "t": "莫名的空白",
+      "desc": "",
       "detail": "沒有錯 就是Eden聖旨裡面提到的\n如果收測試信時你的圖片下方出現莫名的空格、空間、白線，請在圖片的地方設定 style=\"\" 試試加入 display: block ; 或 float: left; 或 border: 0px ; 這些都可以透過 DevTools 工具 (開著網頁按你的鍵盤 F12) 來幫助尋找錯誤及嘗試解方\n記得要按右鍵以html編輯 改完後點一下旁邊才會生效",
       "img": "",
       "codeBefore": "",
@@ -282,6 +282,6 @@
   ],
   "meta": {
     "version": 1,
-    "updatedAt": 1776850767671
+    "updatedAt": 1776850780747
   }
 }
