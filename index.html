@@ -3668,6 +3668,10 @@ async function getFileSHA(g) {
 async function ghPush() {
   const g = getGH();
   if (!g.token) { showToast('請先設定 GitHub Token', 'err'); return; }
+  // 防止新頁面未拉取就直接覆蓋 GitHub 資料
+  if (!window.__pulledFromGH && !localStorage.getItem('html_handbook_pulled')) {
+    if (!confirm('⚠️ 你尚未從 GitHub 拉取資料\n直接推送會覆蓋 GitHub 上的資料！\n\n確定要用本機資料覆蓋嗎？')) return;
+  }
   setPillState('syncing');
   try {
     const sha = await getFileSHA(g);
@@ -3814,6 +3818,8 @@ async function ghPull() {
     updateTimestamp();
     setPillState('ok');
     showToast('✅ 已從 GitHub 拉取最新資料', 'ok');
+    window.__pulledFromGH = true;
+    localStorage.setItem('html_handbook_pulled', '1');
   } catch(e) {
     setPillState('err');
     showToast('❌ 拉取失敗：' + e.message, 'err');
