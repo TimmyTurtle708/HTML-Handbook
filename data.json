@@ -251,7 +251,7 @@
       "id": "i4",
       "cat": "layout",
       "t": "因字數不一樣造成高度不一樣...待補",
-      "desc": "暴力解法 & 相對安全解法",
+      "desc": "style=\"height: OOpx\" class=height-auto\"",
       "detail": "暴力解法 : 在內文最後加上  </a><br>&nbsp;\n相對安全解法: 取高的那一邊當高度，左右兩邊都限制，EX: height: 80px ，但衍伸另一個問題 RWD時空格會過大，所以還須加上mob自動高度 class=height-auto\"\n",
       "img": "",
       "codeBefore": "",
@@ -294,6 +294,6 @@
   ],
   "meta": {
     "version": 1,
-    "updatedAt": 1776851474258
+    "updatedAt": 1776851536705
   }
 }
