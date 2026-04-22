@@ -981,7 +981,95 @@ main { flex: 1; padding: 28px 36px; }
 .check-item span { font-size: 13px; flex: 1; }
 .check-item.done span { color: var(--ink-mute); text-decoration: line-through; }
 
+/* ======== 備忘錄 ======== */
+.memo-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.memo-filter-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--line);
+  background: var(--bg-card);
+  color: var(--ink-soft);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.memo-filter-chip:hover { border-color: var(--ink-soft); color: var(--ink); }
+.memo-filter-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.memo-filter-chip.important-chip { border-color: #f59e0b; color: #d97706; }
+.memo-filter-chip.important-chip.active { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+.memo-search {
+  flex: 1;
+  min-width: 160px;
+  padding: 7px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+  font-size: 12.5px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s;
+}
+.memo-search:focus { border-color: var(--accent); }
+.memo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+.memo-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px 12px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  position: relative;
+}
+.memo-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(217,79,43,.07); }
+.memo-card.is-important { border-color: #f59e0b; }
+.memo-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.memo-card-title { font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.4; flex: 1; }
+.memo-important-star { color: #f59e0b; font-size: 15px; flex-shrink: 0; cursor: pointer; }
+.memo-body {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.memo-footer { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.memo-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.memo-date { font-size: 11px; color: var(--ink-mute); margin-left: auto; }
+
+/* 備忘錄 Modal */
+.memo-modal-body { font-size: 13.5px; color: var(--ink); line-height: 1.7; white-space: pre-wrap; word-break: break-all; margin-bottom: 14px; }
+.memo-tag-input-wrap { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
+.memo-tag-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); cursor: default; }
+.memo-tag-pill button { background: none; border: none; cursor: pointer; color: var(--accent); font-size: 13px; padding: 0; line-height: 1; }
+
 /* ======== 教學 ======== */
+
 .tutorial-section { margin-bottom: 28px; }
 
 .tutorial-title-badge {
@@ -1638,6 +1726,18 @@ main { flex: 1; padding: 28px 36px; }
         <span class="nav-label">Check 清單</span>
       </button></li>
 
+      <li><button data-panel="memo" onclick="switchPanel('memo')">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </span>
+        <span class="nav-label">備忘錄</span>
+      </button></li>
       <li><button data-panel="tutorial" onclick="switchPanel('tutorial')">
         <span class="nav-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1651,7 +1751,7 @@ main { flex: 1; padding: 28px 36px; }
 
   <div class="sidebar-footer">
     <div class="sidebar-footer-inner">
-      <div class="sidebar-timestamp" id="sidebarTimestamp">最後更新 4/22 下午04:54 · v1</div>
+      <div class="sidebar-timestamp" id="sidebarTimestamp">最後更新 4/22 下午06:48 · v1</div>
     </div>
   </div>
 </aside>
@@ -2264,6 +2364,35 @@ main { flex: 1; padding: 28px 36px; }
       </div>
     </section>
 
+    <!-- ===== 備忘錄 ===== -->
+    <section id="memo-panel" class="panel" style="display:none;">
+      <div class="content-header">
+        <h2>備忘錄</h2>
+        <div class="desc">零散筆記、踩雷紀錄、臨時備忘</div>
+      </div>
+      <div class="memo-toolbar">
+        <span class="memo-filter-chip active" onclick="setMemoFilter('all',this)">全部</span>
+        <span id="memoTagChips"></span>
+        <span class="memo-filter-chip important-chip" onclick="setMemoFilter('important',this)">⭐ 重要</span>
+        <span class="memo-filter-chip" onclick="setMemoFilter('recent',this)">🕐 近期更新</span>
+        <input class="memo-search" id="memoSearch" placeholder="搜尋備忘錄..." oninput="renderMemos()">
+        <button class="btn accent" onclick="openMemoEditor(null)" style="margin-left:auto;white-space:nowrap;">＋ 新增</button>
+      </div>
+      <div class="memo-grid" id="memoGrid">
+    <div class="memo-card" onclick="openMemoViewer('m1776854881125')">
+      <div class="memo-card-header">
+        <div class="memo-card-title">測試</div>
+        <span class="memo-important-star" onclick="event.stopPropagation();toggleMemoImportant('m1776854881125')" title="標記重要">☆</span>
+      </div>
+      <div class="memo-body">測試測試</div>
+      <div class="memo-footer">
+        
+        <span class="memo-date">4/22</span>
+      </div>
+    </div>
+  </div>
+    </section>
+
     <!-- ===== 新手教學 ===== -->
     <section id="tutorial-panel" class="panel" style="display:none;">
       <div class="content-header">
@@ -2516,6 +2645,11 @@ const DEFAULT_DATA = {
     { id: 'i4', cat: 'layout', t: '高度無法置頂',       desc: '', detail: '', img: '' },
     { id: 'i5', cat: 'image',  t: '圖片下方莫名空格',   desc: '', detail: '', img: '' },
     { id: 'i6', cat: 'misc',   t: '網頁影片筆記',       desc: '', detail: '', img: '' }
+  ],
+  memos: [
+    { id: 'm1', title: 'hub倒數計時會卡住', body: '雖然乍看之下有正常在倒數，但是只要切去其他地方在切回來時間又會倒流。等於打開hub的那一秒時間就靜止了。\n於是apple說之後news應該就都不要放倒數計時就好\n(尚未紀錄)1萬次開信，每逢黑五付費購買一個月15萬次', tags: ['Newsletter'], important: false, updatedAt: Date.now() },
+    { id: 'm2', title: '卡catch看網頁的方法', body: '1. 複製 https://stage-www.reallusion.com/press/2412-1_RLnews/default.html\n2. 打開無痕案 ctrl+5\n3. 不行的話關掉在打開一次重複上述動作\n4. 因此通常不用特別換檔名，Apple會跟別人說stage圖先更新', tags: ['RWD'], important: false, updatedAt: Date.now() },
+    { id: 'm3', title: '自動更新年份機制代碼', body: '!*CurrentYear*! 在Newsletter所使用的郵寄平台GetResponse裡無法使用\nChatGPT的回答是需要把語法改成 {{ YEAR }}\n!!!但是!!!我們還有跟HUB共用 所以還是直接手動打年份吧', tags: ['Newsletter'], important: true, updatedAt: Date.now() }
   ],
   meta: { version: 1, updatedAt: Date.now() }
 };
@@ -3392,6 +3526,21 @@ function editorSave() {
       DATA.notes.push({ id: 'n' + Date.now(), title, body, img: '' });
     }
     saveLocal(); renderNotes();
+  } else if (EDITOR_CTX.type === 'memo') {
+    const titleEl = document.getElementById('f_title');
+    const title = titleEl ? titleEl.value.trim() : '';
+    const body = document.getElementById('f_body') ? document.getElementById('f_body').value : '';
+    const important = document.getElementById('f_important') ? document.getElementById('f_important').checked : false;
+    const tags = EDITOR_CTX.tempTags || [];
+    if (!title) { showToast('標題不可為空', 'err'); titleEl && titleEl.focus(); return; }
+    if (!DATA.memos) DATA.memos = [];
+    if (EDITOR_CTX.id) {
+      const m = DATA.memos.find(x => x.id === EDITOR_CTX.id);
+      if (m) { m.title = title; m.body = body; m.important = important; m.tags = tags; m.updatedAt = Date.now(); }
+    } else {
+      DATA.memos.push({ id: 'm' + Date.now(), title, body, important, tags, updatedAt: Date.now() });
+    }
+    saveLocal(); renderMemos(); renderMemoTagChips();
   } else if (EDITOR_CTX.type === 'issue') {
     const titleEl = document.getElementById('f_title');
     const title = titleEl ? titleEl.value.trim() : '';
@@ -3422,6 +3571,9 @@ function editorDelete() {
   if (EDITOR_CTX.type === 'block') {
     DATA.blocks = DATA.blocks.filter(b => b.id !== EDITOR_CTX.id);
     saveLocal(); renderBlocks();
+  } else if (EDITOR_CTX.type === 'memo') {
+    DATA.memos = (DATA.memos||[]).filter(m => m.id !== EDITOR_CTX.id);
+    saveLocal(); renderMemos(); renderMemoTagChips();
   } else if (EDITOR_CTX.type === 'note') {
     DATA.notes = DATA.notes.filter(n => n.id !== EDITOR_CTX.id);
     saveLocal(); renderNotes();
@@ -3876,6 +4028,166 @@ function showToast(msg, type) {
   el._t = setTimeout(() => { el.className = 'toast'; }, 2500);
 }
 
+// ============================================================
+// 備忘錄
+// ============================================================
+let MEMO_FILTER = 'all';
+
+function setMemoFilter(filter, el) {
+  MEMO_FILTER = filter;
+  document.querySelectorAll('.memo-toolbar .memo-filter-chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderMemos();
+}
+
+function renderMemoTagChips() {
+  const tags = [...new Set((DATA.memos || []).flatMap(m => m.tags || []))].sort();
+  const wrap = document.getElementById('memoTagChips');
+  if (!wrap) return;
+  wrap.innerHTML = tags.map(t =>
+    `<span class="memo-filter-chip" onclick="setMemoTagFilter('${escapeAttr(t)}',this)">${escapeHtml(t)}</span>`
+  ).join('');
+}
+
+function setMemoTagFilter(tag, el) {
+  MEMO_FILTER = 'tag:' + tag;
+  document.querySelectorAll('.memo-toolbar .memo-filter-chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderMemos();
+}
+
+function renderMemos() {
+  const grid = document.getElementById('memoGrid');
+  if (!grid) return;
+  const q = (document.getElementById('memoSearch')?.value || '').toLowerCase();
+  let list = DATA.memos || [];
+
+  if (MEMO_FILTER === 'important') list = list.filter(m => m.important);
+  else if (MEMO_FILTER === 'recent') list = [...list].sort((a, b) => (b.updatedAt||0) - (a.updatedAt||0));
+  else if (MEMO_FILTER.startsWith('tag:')) {
+    const tag = MEMO_FILTER.slice(4);
+    list = list.filter(m => (m.tags||[]).includes(tag));
+  }
+  if (q) list = list.filter(m => m.title.toLowerCase().includes(q) || (m.body||'').toLowerCase().includes(q));
+
+  if (!list.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:48px 0;text-align:center;color:var(--ink-mute);font-size:13px;">沒有符合的備忘錄</div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(m => `
+    <div class="memo-card${m.important ? ' is-important' : ''}" onclick="openMemoViewer('${m.id}')">
+      <div class="memo-card-header">
+        <div class="memo-card-title">${escapeHtml(m.title)}</div>
+        <span class="memo-important-star" onclick="event.stopPropagation();toggleMemoImportant('${m.id}')" title="標記重要">${m.important ? '⭐' : '☆'}</span>
+      </div>
+      <div class="memo-body">${escapeHtml(m.body||'')}</div>
+      <div class="memo-footer">
+        ${(m.tags||[]).map(t => `<span class="memo-tag">${escapeHtml(t)}</span>`).join('')}
+        <span class="memo-date">${formatMemoDate(m.updatedAt)}</span>
+      </div>
+    </div>
+  `).join('');
+
+  renderMemoTagChips();
+}
+
+function formatMemoDate(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+function toggleMemoImportant(id) {
+  const m = (DATA.memos||[]).find(x => x.id === id);
+  if (!m) return;
+  m.important = !m.important;
+  saveLocal(); renderMemos(); scheduleSync();
+}
+
+function openMemoViewer(id) {
+  const m = (DATA.memos||[]).find(x => x.id === id);
+  if (!m) return;
+  EDITOR_CTX = { type: 'memo_view', id };
+  document.getElementById('editorTitle').innerHTML = `
+    <span style="font-size:16px;font-weight:700;flex:1;">${escapeHtml(m.title)}</span>
+    ${m.important ? '<span style="color:#f59e0b;font-size:16px;margin-right:4px;">⭐</span>' : ''}
+    <button class="btn" onclick="openMemoEditor('${id}')" style="font-size:12px;padding:5px 12px;">✏️ 編輯</button>
+  `;
+  document.getElementById('editorDeleteBtn').style.display = 'none';
+  const saveBtn = document.getElementById('editorSaveBtn');
+  if (saveBtn) saveBtn.style.display = 'none';
+
+  document.getElementById('editorBody').innerHTML = `
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+      ${(m.tags||[]).map(t => `<span class="memo-tag" style="font-size:12px;padding:3px 10px;">${escapeHtml(t)}</span>`).join('')}
+      <span style="font-size:11px;color:var(--ink-mute);align-self:center;margin-left:auto;">${formatMemoDate(m.updatedAt)}</span>
+    </div>
+    <div class="memo-modal-body">${escapeHtml(m.body||'')}</div>
+  `;
+  document.getElementById('editorOverlay').classList.add('open');
+}
+
+function openMemoEditor(id) {
+  const m = id ? (DATA.memos||[]).find(x => x.id === id) : null;
+  EDITOR_CTX = { type: 'memo', id: m ? m.id : null };
+
+  const saveBtn = document.getElementById('editorSaveBtn');
+  if (saveBtn) saveBtn.style.display = 'inline-flex';
+
+  document.getElementById('editorTitle').innerHTML = m
+    ? `<input id="f_title" value="${escapeAttr(m.title)}" placeholder="備忘錄標題" style="border:none;background:transparent;font-size:16px;font-weight:700;font-family:inherit;color:var(--ink);width:100%;outline:none;padding:0;">`
+    : `<input id="f_title" placeholder="備忘錄標題" style="border:none;background:transparent;font-size:16px;font-weight:700;font-family:inherit;color:var(--ink);width:100%;outline:none;padding:0;">`;
+
+  document.getElementById('editorDeleteBtn').style.display = m ? 'inline-flex' : 'none';
+
+  const currentTags = m ? (m.tags||[]) : [];
+  EDITOR_CTX.tempTags = [...currentTags];
+
+  document.getElementById('editorBody').innerHTML = `
+    <div class="form-group">
+      <label class="field-label">內容</label>
+      <textarea id="f_body" style="font-family:inherit;font-size:13.5px;min-height:180px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);resize:vertical;line-height:1.6;" placeholder="筆記內容...">${m ? escapeHtml(m.body||'') : ''}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="field-label">標籤</label>
+      <div class="memo-tag-input-wrap" id="memoTagPills">
+        ${currentTags.map(t => `<span class="memo-tag-pill">${escapeHtml(t)}<button onclick="removeMemoTag('${escapeAttr(t)}')">×</button></span>`).join('')}
+        <input id="f_tag_input" placeholder="輸入標籤按 Enter" style="border:1px solid var(--line);border-radius:5px;padding:4px 8px;font-size:12px;font-family:inherit;background:var(--bg);color:var(--ink);min-width:120px;" onkeydown="addMemoTag(event)">
+      </div>
+    </div>
+    <div class="form-group" style="display:flex;align-items:center;gap:8px;">
+      <label class="field-label" style="margin:0;">重要</label>
+      <input type="checkbox" id="f_important" ${m && m.important ? 'checked' : ''} style="width:16px;height:16px;cursor:pointer;">
+    </div>
+  `;
+  document.getElementById('editorOverlay').classList.add('open');
+}
+
+function addMemoTag(e) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const input = document.getElementById('f_tag_input');
+  const tag = input.value.trim();
+  if (!tag || EDITOR_CTX.tempTags.includes(tag)) { input.value = ''; return; }
+  EDITOR_CTX.tempTags.push(tag);
+  input.value = '';
+  const pills = document.getElementById('memoTagPills');
+  const newPill = document.createElement('span');
+  newPill.className = 'memo-tag-pill';
+  newPill.innerHTML = `${escapeHtml(tag)}<button onclick="removeMemoTag('${escapeAttr(tag)}')">×</button>`;
+  pills.insertBefore(newPill, input);
+}
+
+function removeMemoTag(tag) {
+  EDITOR_CTX.tempTags = EDITOR_CTX.tempTags.filter(t => t !== tag);
+  const pills = document.getElementById('memoTagPills');
+  if (!pills) return;
+  pills.querySelectorAll('.memo-tag-pill').forEach(p => {
+    if (p.textContent.replace('×','').trim() === tag) p.remove();
+  });
+}
+
 function renderAll() {
   renderBlocks();
   renderSyntax();
@@ -3885,6 +4197,8 @@ function renderAll() {
   renderTutorial();
   renderIssues();
   renderIssuesCore('issuesContainer2');
+  renderMemos();
+  renderMemoTagChips();
 }
 
 // ============================================================
