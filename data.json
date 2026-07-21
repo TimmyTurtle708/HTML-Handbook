@@ -1250,7 +1250,7 @@
       "id": "m1776856138208",
       "title": "特殊記事如何融入手冊",
       "body": "圖片紀錄，放在首頁裡有一個連結可以外連? 還是直接在側邊選單新增一欄 並將所有的內容匯入進這個網站裡\nTemplate\n信件發送排程表\nart req\n點擊開信率等月報\n記錄檔案位置",
-      "important": true,
+      "important": false,
       "tags": [],
       "updatedAt": 1776856138208
     },
@@ -1305,6 +1305,6 @@
   ],
   "meta": {
     "version": 1,
-    "updatedAt": 1784654115258
+    "updatedAt": 1784654121969
   }
 }
