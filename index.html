@@ -1221,7 +1221,7 @@ main { flex: 1; padding: 24px; }
   /* 允許略微超出底部，讓腳「站」在 banner 下緣 */
   margin-bottom: -2px;
 }
-.timmy-photo:hover { transform: scale(1.06) translateY(-8px); }
+.timmy-photo:hover { transform: none; }
 .timmy-caption {
   font-size: 13px;
   color: var(--ink-mute);
@@ -1409,6 +1409,66 @@ main { flex: 1; padding: 24px; }
   .home-widget { min-width: 140px; flex: 1; }
   .wheel-wrap { max-width: 180px; margin: 0 auto; }
   .home-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* F-003：首頁 Dashboard 精簡 */
+.home-hero-row { display:grid; grid-template-columns:minmax(320px, .85fr) 260px minmax(280px, 1.15fr); min-height:0; align-items:stretch; }
+.home-hero-row .home-banner,
+.fortune-col,
+.home-widgets-col { height: 240px; }
+.home-hero-row .home-banner { padding:var(--space-4) 0 0 var(--space-4); min-width:0; max-width:none; min-height:0; border-radius:6px; }
+.home-hero-row .home-banner::after { background:radial-gradient(ellipse 90% 125% at 100% 100%, var(--timmy-bg, transparent) 0%, transparent 100%); }
+.home-banner-left { align-self:stretch; padding-bottom:var(--space-4); }
+.home-date-block { display:flex; align-items:center; gap:var(--space-2); margin-bottom: var(--space-3); white-space:nowrap; }
+.home-date-main { font-size: 13px; font-weight: 700; color: var(--ink); }
+.home-date-sub { margin-top: 0; font-size: 12px; color: var(--ink-mute); }
+.home-quote { font-size: 19px; line-height: 1.4; }
+.home-quote-deco { font-size: 11px; }
+.timmy-photo { height: 180px; transition: filter .15s; }
+.timmy-caption { display: none; }
+.fortune-col { min-width:260px; }
+.fortune-box { height: 100%; min-height: 0; padding: var(--space-2); border-radius: 6px; }
+.wheel-wrap { width: 142px; max-width: 142px; }
+.fortune-result-bar { min-height: 28px; }
+.home-widgets-col { min-width:280px; max-width:none; }
+.home-widget { min-height: 0; border-radius: 6px; padding: var(--space-2); }
+.home-widget-main { font-size: 18px !important; }
+.home-widget-sub { font-size: 12px; }
+.home-quick-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-2); }
+.home-quick-header .home-section-title { margin-bottom:0; }
+.home-quick-next { border:0; background:none; color:var(--ink-mute); font-size:20px; line-height:1; padding:2px 0 2px 10px; cursor:pointer; }
+.home-quick-next:hover { color:var(--accent); }
+.home-grid { display:flex; flex-wrap:nowrap; gap:var(--space-2); overflow-x:hidden; scroll-behavior:smooth; max-width:100%; }
+.home-grid::-webkit-scrollbar { display:none; }
+.home-card { flex-direction: row; align-items: center; gap: var(--space-3); border-radius: 6px; padding: var(--space-3); }
+.home-grid .home-card { flex:0 0 164px; min-width:164px; }
+.home-card-icon { flex: 0 0 auto; }
+.home-card-copy { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.home-card-title, .home-card-count { line-height: 1.2; }
+.home-memo-header { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); margin-bottom:var(--space-2); }
+.home-memo-header .home-section-title { margin-bottom:0; }
+.home-memo-actions { display:flex; align-items:center; gap:var(--space-2); color:var(--accent); }
+.home-memo-separator { color:var(--ink-mute); opacity:.75; font-weight:400; }
+.home-memo-action { border:0; background:none; padding:0; color:var(--accent); font:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+.home-memo-action:hover { color:var(--accent); }
+.home-memo-arrow { font-size:18px; line-height:1; }
+.home-memo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:var(--space-2); margin-bottom:var(--space-4); }
+.home-memo-card { min-height:0; padding:var(--space-3); }
+.home-memo-card .memo-body { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.home-empty-memos { padding:var(--space-4); border:1px dashed var(--line); border-radius:6px; color:var(--ink-mute); font-size:13px; }
+.sidebar-timestamp { font-size:10px; }
+@media (max-width: 900px) {
+  .home-hero-row { display:flex; }
+  .home-hero-row .home-banner, .fortune-col, .home-widgets-col { height:auto; min-height:220px; }
+  .home-widgets-col { flex:1; min-width:160px; max-width:none; }
+  .fortune-col { min-width:200px; }
+}
+@media (max-width: 600px) {
+  .home-hero-row .home-banner, .fortune-col, .home-widgets-col { min-height:0; }
+  .home-widgets-col { flex:1 1 100%; }
+  .home-card { align-items:flex-start; }
+  .home-memo-header { align-items:flex-start; }
+  .home-memo-actions { gap:var(--space-2); }
 }
 
 
@@ -2305,8 +2365,11 @@ body.modal-open {
     </div>
 
     <!-- 快捷卡片 -->
-    <div class="home-section-title">快速前往</div>
-    <div class="home-grid">
+    <div class="home-quick-header">
+      <div class="home-section-title">快速前往</div>
+      <button class="home-quick-next" aria-label="向右查看更多快速入口" onclick="document.getElementById('homeQuickGrid')?.scrollBy({left:344,behavior:'smooth'})">→</button>
+    </div>
+    <div class="home-grid" id="homeQuickGrid">
       
         <div class="home-card" onclick="switchPanel('syntax')">
           <div class="home-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></div>
@@ -4925,8 +4988,26 @@ const LS_VERSIONS = 'rl_handbook_versions_v9';
 // ============================================================
 function saveLocal() {
   DATA.meta.updatedAt = Date.now();
-  try { localStorage.setItem(LS_DATA, JSON.stringify(DATA)); } catch(e) {}
+  try { localStorage.setItem(LS_DATA, JSON.stringify(getPersistableData())); } catch(e) {}
   updateTimestamp();
+}
+
+// 本機預覽用資料不寫入 localStorage，也不會被推送至 GitHub。
+function getPersistableData() {
+  const persistable = structuredClone(DATA);
+  persistable.memos = (persistable.memos || []).filter(m => !m.localOnly);
+  return persistable;
+}
+
+function injectLocalMemoFixtures() {
+  if (!['localhost', '127.0.0.1'].includes(location.hostname)) return;
+  const fixtures = [
+    { id: 'local-memo-1', title: '本機測試：首頁重要備忘', body: '確認首頁只顯示已加星號的備忘，並依更新時間排序。', tags: ['本機測試'], important: true, updatedAt: Date.now(), localOnly: true },
+    { id: 'local-memo-2', title: '本機測試：第二筆重要備忘', body: '確認卡片標題、兩行摘要、標籤與日期顯示正常。', tags: ['UI 驗收'], important: true, updatedAt: Date.now() - 60000, localOnly: true },
+    { id: 'local-memo-3', title: '本機測試：一般備忘', body: '此筆不應出現在首頁，但應顯示於「瀏覽全部」。', tags: ['篩選測試'], important: false, updatedAt: Date.now() - 120000, localOnly: true }
+  ];
+  const fixtureIds = new Set(fixtures.map(m => m.id));
+  DATA.memos = [...(DATA.memos || []).filter(m => !fixtureIds.has(m.id)), ...fixtures];
 }
 
 function loadLocal() {
@@ -6500,7 +6581,7 @@ async function ghPush() {
   setPillState('syncing');
   try {
     const sha = await getFileSHA(g);
-    const jsonStr = JSON.stringify(DATA, null, 2);
+    const jsonStr = JSON.stringify(getPersistableData(), null, 2);
     const bytes = new TextEncoder().encode(jsonStr);
     let binary = '';
     for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
@@ -7720,10 +7801,6 @@ function renderHome() {
   const quote = scene.quotes[Math.floor(Math.random() * scene.quotes.length)];
   const quoteHtml = quote.replace(/\n/g, '<br>');
 
-  // 問候語
-  const h = new Date().getHours();
-  const greeting = h < 5 ? '夜深了，注意身體 🌙' : h < 11 ? '早安，今天也加油 ☀️' : h < 14 ? '午安，記得吃飯 🍱' : h < 18 ? '下午好，繼續衝 💪' : h < 22 ? '晚上好，辛苦了 ✨' : '還在？你最棒了 🌙';
-
   // sidebar 完全相同的 icon SVG（與 nav 一致）
   const _si = (path) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
   const NAV = {
@@ -7741,10 +7818,13 @@ function renderHome() {
     { icon: NAV.issue,  title: '問題圖記', sub: `${(DATA.issues||[]).length} 筆紀錄`, action: `switchPanel('syntax');setTimeout(()=>document.querySelector('[onclick*=blocks-issues-sub]')?.click(),50)` },
     { icon: NAV.notes,  title: 'UI 規範', sub: '色票・字型・圖素', action: `switchPanel('notes')` },
     { icon: NAV.checks, title: '出稿檢查', sub: '出稿前核對', action: `switchPanel('checks')` },
-    { icon: NAV.memo,   title: '備忘錄', sub: `${(DATA.memos||[]).length} 則備忘`, action: `switchPanel('memo')` },
+    { icon: NAV.memo,   title: '注意事項', sub: `${(DATA.memos||[]).length} 則備忘`, action: `switchPanel('memo')` },
   ];
 
-  const recentMemos = [...(DATA.memos||[])].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)).slice(0,3);
+  const recentMemos = [...(DATA.memos||[])]
+    .filter(m => m.important)
+    .sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0))
+    .slice(0,6);
 
   c.innerHTML = `
     ${!window.__pulledFromGH && !localStorage.getItem('html_handbook_pulled') ? `
@@ -7763,9 +7843,12 @@ function renderHome() {
     <div class="home-hero-row">
       <div class="home-banner" style="--timmy-bg: ${scene.bg};">
         <div class="home-banner-left">
-          <div class="home-greeting-banner">${greeting}</div>
+          <div class="home-date-block">
+            <div class="home-date-main" id="todayDateFull"></div>
+            <div class="home-date-sub" id="todayDay"></div>
+          </div>
           <div class="home-quote">${quoteHtml}</div>
-          <div class="home-quote-deco">— Timmy 說</div>
+          <div class="home-quote-deco">— 地精程式師 Timmy 說</div>
         </div>
         <div class="home-banner-right">
           <img src="${scene.img}" alt="${scene.caption}" class="timmy-photo" onclick="refreshTimmy()" title="點我換一個 Timmy！" style="cursor:pointer;">
@@ -7791,12 +7874,6 @@ function renderHome() {
       </div>
       <!-- 右側小工具欄 -->
       <div class="home-widgets-col" id="homeWidgets">
-        <!-- 時鐘 -->
-        <div class="home-widget">
-          <div class="home-widget-label" id="todayDateFull">2025年4月30日</div>
-          <div class="home-widget-main" id="todayClock" style="font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;">--:--</div>
-          <div class="home-widget-sub" id="todayDay"></div>
-        </div>
         <!-- 辦公室溫度 -->
         <div class="home-widget" id="widgetOfficeTemp">
           <div class="home-widget-label">辦公室溫度</div>
@@ -7818,20 +7895,36 @@ function renderHome() {
       ${shortcuts.map(s=>`
         <div class="home-card" onclick="${s.action}">
           <div class="home-card-icon">${s.icon}</div>
-          <div class="home-card-title">${s.title}</div>
-          <div class="home-card-count">${s.sub}</div>
+          <div class="home-card-copy">
+            <div class="home-card-title">${s.title}</div>
+            <div class="home-card-count">${s.sub}</div>
+          </div>
         </div>`).join('')}
     </div>
 
+    <div class="home-memo-header">
+      <div class="home-section-title">備忘錄（已加星號）</div>
+      <div class="home-memo-actions">
+        <button class="home-memo-action" onclick="switchPanel('memo');setTimeout(()=>openMemoEditor(),50)">＋ 新增備忘</button>
+        <span class="home-memo-separator" aria-hidden="true">|</span>
+        <button class="home-memo-action" onclick="switchPanel('memo')">瀏覽全部 &gt;</button>
+      </div>
+    </div>
     ${recentMemos.length ? `
-    <div class="home-section-title">最近備忘</div>
-    <div class="home-recent-list">
+    <div class="home-memo-grid">
       ${recentMemos.map(m=>`
-        <div class="home-recent-item" onclick="switchPanel('memo');setTimeout(()=>openMemoEditor('${m.id}'),50)">
-          <div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.title)}</div>
-          ${(m.tags||[]).slice(0,1).map(t=>`<span class="home-recent-label">${escapeHtml(t)}</span>`).join('')}
+        <div class="memo-card is-important home-memo-card" onclick="openMemoViewer('${m.id}')">
+          <div class="memo-card-header">
+            <div class="memo-card-title">${escapeHtml(m.title)}</div>
+            <span class="memo-important-star" aria-label="重要備忘">⭐</span>
+          </div>
+          <div class="memo-body">${escapeHtml(m.body||'')}</div>
+          <div class="memo-footer">
+            ${(m.tags||[]).slice(0,1).map(t=>`<span class="memo-tag">${escapeHtml(t)}</span>`).join('')}
+            <span class="memo-date">${formatMemoDate(m.updatedAt)}</span>
+          </div>
         </div>`).join('')}
-    </div>` : ''}
+    </div>` : `<div class="home-empty-memos">目前沒有重要備忘　<button class="home-memo-action" onclick="switchPanel('memo');setTimeout(()=>openMemoEditor(),50)">＋ 新增備忘</button></div>`}
   `;
   // 初始化轉盤 + 日期小工具 + Check 進度
   setTimeout(() => {
@@ -8075,6 +8168,7 @@ function renderAll() {
 // 初始化
 // ============================================================
 loadLocal();
+injectLocalMemoFixtures();
 renderAll();
 updateTimestamp();
 updateGHButtons();
