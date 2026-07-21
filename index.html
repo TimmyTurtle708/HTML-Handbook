@@ -23,6 +23,7 @@
   --code-ink: #e6e6e6;
   --sidebar-w: 210px;
   --header-h: 56px;
+  --radius-ui: 6px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2036,6 +2037,54 @@ body.modal-open {
 .toast.show { transform: translateX(-50%) translateY(0); }
 .toast.ok { background: var(--ok); }
 .toast.err { background: var(--err); }
+
+/* v3.0 F-001: 一般 UI 元件統一使用 6px 圓角。 */
+.card,
+.modal,
+.mini-modal,
+.editor-img-zone,
+.editor-img-zone img,
+.editor-img-zone .img-overlay,
+.lightbox img,
+.add-block-btn,
+.syn-add-card,
+.syn-table-wrap,
+.note-card,
+.check-item,
+.ui-color-card,
+.ui-type-card,
+.ui-code-card,
+.ui-asset-card,
+.ui-add-card,
+.home-banner,
+.home-card,
+.home-recent-item,
+.home-onboard,
+.fortune-box,
+.home-widget,
+.memo-search,
+.memo-card,
+.tutorial-item,
+.issue-item,
+.form-group input,
+.form-group textarea,
+.field-input,
+.header-dropdown,
+.issue-compact,
+.ba-zone,
+.diff-wrap,
+.toast,
+#ghStatusMsg,
+#f_desc,
+#f_cat,
+#f_detail,
+#f_body {
+  border-radius: var(--radius-ui) !important;
+}
+
+@media (max-width: 700px) {
+  .modal { border-radius: var(--radius-ui) var(--radius-ui) 0 0 !important; }
+}
 </style>
 </head>
 <body>
