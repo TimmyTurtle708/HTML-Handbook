@@ -30,6 +30,8 @@ Use this scale for layout spacing, component padding, gaps, and section rhythm w
 
 Exceptions are limited to documented optical corrections, borders, transforms, and accessibility dimensions such as minimum touch-target height.
 
+For the F-003 desktop hero, the center fortune column remains fixed at `260px`; the Timmy and weather columns use weighted flexible tracks so additional width favors the weather widgets. Below `900px`, the existing responsive flex layout remains authoritative.
+
 ### Unit Guidelines
 
 - Components: use `px` for predictable padding, gaps, and touch targets.
