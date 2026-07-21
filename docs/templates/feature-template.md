@@ -10,7 +10,14 @@
 
 ## Scope
 
+## Required Changes
+
+## Responsive Review
+
 ## Implementation Notes
 
 ## Acceptance Criteria
+
 - [ ]
+
+## Deliverables
