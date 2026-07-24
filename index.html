@@ -1806,7 +1806,10 @@ body.modal-open {
   .sidebar-overlay {
     display: none;
     position: fixed;
-    inset: 0;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(26,26,26,0.4);
     z-index: 299;
     backdrop-filter: blur(2px);
@@ -1896,6 +1899,9 @@ body.modal-open {
   text-align: left;
 }
 }
+
+/* 手機側邊欄遮罩（預設隱藏，手機才顯示）*/
+.sidebar-overlay { display: none; }
 
 /* 手機選單按鈕（預設隱藏）*/
 .mobile-menu-btn {
@@ -5106,6 +5112,15 @@ function switchPanel(name) {
   // 切回語法庫時，確保子頁籤回到「區塊語法」
   if (name === 'syntax') {
     resetSyntaxSub();
+  }
+  // 手機版：切換頁面後自動關閉側邊欄
+  if (window.innerWidth <= 900) {
+    const sb = document.getElementById('sidebar');
+    const ov = document.getElementById('sidebarOverlay');
+    if (sb && !sb.classList.contains('mobile-hidden')) {
+      sb.classList.add('mobile-hidden');
+      if (ov) ov.classList.remove('show');
+    }
   }
 }
 
